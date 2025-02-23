@@ -1,6 +1,5 @@
 # MicrobTiSDA
-Title:    BacArena: Agent based modeling framework for cellular communities  
-Author:   Eugen Bauer and Johannes Zimmermann
+Author:   Shijia Li
 
 ## Installation
 - Install the development version:
