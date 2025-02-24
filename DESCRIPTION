@@ -3,7 +3,7 @@ Title: Microbiome Time-Series Data Analysis
 Version: 0.0.0.9000
 Authors@R: 
     person("Shijia", "Li", , "s.li2@uva.nl", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: MicrobTiSDA specifically designed for analyzing longitudinal microbiome data. This tool integrates seven functional modules, providing a systematic framework for microbiome time-series analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
