@@ -29,7 +29,7 @@ Imports:
     tidyr,
     vegan
 Depends: 
-    R (>= 2.10)
+    R (>= 3.40)
 LazyData: true
 Suggests: 
     knitr,
