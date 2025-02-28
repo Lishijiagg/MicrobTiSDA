@@ -1,8 +1,6 @@
 ---
 title: "MicrobTiSDA-vignette"
 output:  
-  html_document:  
-    df_print: paged  
   pdf_document:  
     latex_engine: xelatex 
 eval: false  
