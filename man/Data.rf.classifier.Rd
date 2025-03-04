@@ -2,7 +2,7 @@
 % Please edit documentation in R/Data.rf.classifier.R
 \name{Data.rf.classifier}
 \alias{Data.rf.classifier}
-\title{Random Forest classification and Biomarker selection for OTU/ASV data}
+\title{Random Forest classification for OTU/ASV Data}
 \usage{
 Data.rf.classifier(
   raw_data,
@@ -48,20 +48,23 @@ is retained. The default is \code{NA}.}
 \item{legend_text_size}{Numeric value for the font size of legend text. Defaults to 6.}
 }
 \value{
-A list containing the following elements: (1) A data frame of the selected OTU/ASV table containing the top biomarkers.
-(2) Predicted class labels for the training dataset. (3) Predicted class labels for the testing dataset. (4) A confusion
-matrix comparing actural versus predicted classes in the training set. (5) A confusion matrix comparing actural versus predicted
-classes in the testing set. (6) A ggplot object displaying the margin scores for the training dataset. (7) A data frame of OTU
-importance metrics from the random forest model, ranked by Mean Decrease Accuracy. (8) A duplicate of the testing set confusion
-matrix (for compatibility). (9) A ggplot object of the cross-validation error curve with a vertical line indicating the user-selected
-optimal number of OTUs/ASVs.
+A list with the following elements:
+\describe{
+\item{Input_data}{The transposed and (optionally) filtered OTU table.}
+\item{Predicted_results_on_train_set}{A vector of predicted group labels for the training set.}
+\item{Predicted_results_on_test_set}{A vector of predicted group labels for the test set.}
+\item{Traindata_confusion_matrix}{A confusion matrix comparing actual vs. predicted group labels for the training set.}
+\item{Testdata_confusion_matrix}{A confusion matrix comparing actual vs. predicted group labels for the test set.}
+\item{Margin_scores_train}{A ggplot object displaying the margin scores of the training set samples.}
+\item{OTU_importance}{A data frame of OTU importance metrics, sorted by Mean Decrease Accuracy.}
+\item{cross_validation}{A ggplot object showing the cross-validation error curve as a function of the number of features.}
+}
 }
 \description{
 This function implements a random forest classification model tailored for OTU/ASV datasets.
 It performs data filtering, model training, performance evaluation, cross-validation, and
 biomarker (important microbial features) selection based on Mean Decrease Accuracy.
-}
-\details{
+#' @details
 The function processes the input OTU count data and corresponding metadata in several steps:
 \enumerate{
 \item \strong{Data Filtering and Preparation:} If a minimum count threshold (\code{OTU_counts_filter_value}) is provided,
@@ -77,12 +80,10 @@ are generated to compare the actual versus predicted classes.
 Repeated k-fold cross-validation (default 10-fold repeated \code{reps} times) is performed to determine the optimal number
 of OTUs (biomarkers). A cross-validation error curve is plotted, and the user is prompted to input the best number
 of OTUs based on the plot.
-\item \strong{Biomarker Selection:} Based on the user input, the top OTUs are selected as potential biomarkers, and
-the corresponding OTU table is returned along with all the diagnostic outputs.
 }
 }
 \examples{
-\dontrun{
+#' \dontrun{
 # Example OTU count data (20 OTUs x 10 samples)
 set.seed(123)
 otu_data <- matrix(sample(0:100, 200, replace = TRUE), nrow = 20)

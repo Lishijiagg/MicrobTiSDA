@@ -1,6 +1,6 @@
 Package: MicrobTiSDA
 Title: Microbiome Time-Series Data Analysis
-Version: 0.0.0.9000
+Version: 0.0.1.0000
 Authors@R: 
     person("Shijia", "Li", , "s.li2@uva.nl", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
@@ -29,7 +29,7 @@ Imports:
     tidyr,
     vegan
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
 LazyData: true
 Suggests: 
     knitr,

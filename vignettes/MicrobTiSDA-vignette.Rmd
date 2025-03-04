@@ -1,13 +1,14 @@
 ---
 title: "MicrobTiSDA-vignette"
-output:  
-  html_document:  
-    df_print: paged  
-  pdf_document:  
-    latex_engine: xelatex 
-eval: false  
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+  pdf_document:
+    toc: true
+    toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{MicrobTiSDA-vigenette}
+  %\VignetteIndexEntry{My Vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -103,6 +104,8 @@ oslo_interact_vis = Interact.vis(Interact_data = oslo_data_interact,
                                  title_size = 12,
                                  label_distance = 0.35,
                                  label_font_size = 3)
+oslo_interact_vis$ID_10
+oslo_interact_vis$ID_11
 ```
 
 Another functionality of MicrobTiSDA is the construction of natural spline regression models for the time series data of each microbial feature. Before this, it is necessary to construct the design matrix. The sampling time data for each sample will be added as columns to the species composition data frame after transformation. Additionally, dummy variables will be used to label each subject's samples, where 1 indicates that the sample belongs to that subject and 0 indicates that it does not.
@@ -134,20 +137,26 @@ oslo_model_pred = Pred.data(Fitted_models = oslo_model,
                             time_step = 1)
 ```
 
-By calculating the correlation distances between the time series of microbial features predicted by the model, MicrobTiSDA employs hierarchical clustering to identify OTU clusters with similar temporal patterns. If the `auto_cutree` parameter of the Data.cluster function is set to FALSE, a dendrogram of the microbial feature time series clusters for each subject will be output during the execution of the `Data.cluster` function. The user will need to manually input the correlation distance threshold for OTU clustering. In this case study, we will set the threshold for clustering OTUs to a correlation distance of less than 0.15.
+By calculating the correlation distance between the predicted microbial feature time series from the computational model, MicrobTiSDA employs a hierarchical clustering method to cluster OTUs based on the correlation distance between them.
 
 ```{r}
 oslo_model_clust = Data.cluster(predicted_data = oslo_model_pred,
                                 clust_method = 'average',
-                                auto_cutree = FALSE,
                                 dend_title_size = 12,
-                                font_size = 2.5)
+                                font_size = 2)
 ```
+After obtaining the dendrogram of OTU clustering, we manually set a correlation distance threshold of less than 0.15 (\code{cut_height} = 0.15) to group OTUs into clusters based on the output dendrogram.
+
+```{r}
+oslo_clust_results = Data.cluster.cut(cluster_outputs = oslo_model_clust,cut_height = 0.15,font_size = 2)
+```
+
+If the `auto_cutree` parameter of the Data.cluster function is set to FALSE, a dendrogram of the microbial feature time series clusters for each subject will be output during the execution of the `Data.cluster` function.
 
 Next, we can visualize the clustered OTU groups. The temporal patterns of the OTU clusters for each subject will be generated separately in the plots. If the `Taxa` parameter is set to `NULL`, the plots will only display the IDs of each microbial feature. If `Taxa` contains species annotation information, the annotation will be added in parentheses following the microbial feature IDs in the plots. If `plot_dots` is `True`, the original transformed microbial feature abundances will be visualized in figures.
 
 ```{r message=TRUE}
-oslo_model_vis = Data.visual(cluster_results = oslo_model_clust,
+oslo_model_vis = Data.visual(cluster_results = oslo_clust_results,
                              cutree_by = 'height',
                              cluster_height = c(0.15,0.15),
                              predicted_data = oslo_model_pred,
@@ -201,20 +210,26 @@ preterm_rf = Data.rf.classifier(raw_data = preterm.data,
                                 train_p = 0.7,
                                 Group = 'Group',
                                 OTU_counts_filter_value = 0)
+preterm_rf$Margin_scores_train
 ```
+Here, we choose to use 70% of the samples as the training set and the remaining 30% as the testing set. Given that the number of microbial features in this dataset is relatively small, we didn't filter out low_abundant microbial features in this step (`OTU_counts_filter_value = 0`). The results indicate that the sample classification model built using all OTUs as inputs demonstrates high performance, with an Out of Bag error of 0.081.
 
-Here, we choose to use 70% of the samples as the training set and the remaining 30% as the testing set. Given that the number of microbial features in this dataset is relatively small, we didn't filter out low_abundant microbial features in this step (`OTU_counts_filter_value = 0`). The results indicate that the sample classification model built using all OTUs as inputs demonstrates high performance, with an Out of Bag error of 0.081. Additionally, based on the cross-validation curve, we selected the top 125 OTUs as biomarkers according to their mean decrease accuracy (MDA) ranking.
-
-Using these biomarkers and applying NMDS (Non-metric Multidimensional Scaling), we can observe that the selected biomarkers effectively distinguish between the two groups of samples.
+Additionally, based on the cross-validation curve output above, we selected the top 10 OTUs as biomarkers according to their mean decrease accuracy (MDA) ranking by running the function \code{Rf.biomarkers}.
 
 ```{r}
-preterm_rf_vis = Classify.vis(classified_results = preterm_rf,dist_method = 'bray')
+selected_biomarkers = Rf.biomarkers(rf = preterm_rf,feature_select_num = 10)
+```
+
+Using the selected biomarkers and applying NMDS (Non-metric Multidimensional Scaling), we can observe that the selected biomarkers effectively distinguish between the two groups of samples.
+
+```{r}
+preterm_rf_vis = Classify.vis(classified_results = selected_biomarkers,dist_method = 'bray')
 ```
 
 Extract the biomarker data (`Important_OTU_table`) from the output of the `Data.rf.classifier` function for subsequent analysis, and first apply the modified centered log-ratio (mCLR) transformation to the data.
 
 ```{r}
-preterm_trans = Data.trans(Data = preterm_rf$Important_OTU_table,
+preterm_trans = Data.trans(Data = selected_biomarkers$OTU_importance,
                            Group_var = 'Group',
                            metadata = preterm.meta)
 ```
@@ -252,9 +267,13 @@ Following the same analytical workflow as in Case 1, we can also cluster the pre
 ```{r}
 preterm_clust = Data.cluster(predicted_data = preterm_pred,
                              clust_method = 'average',
-                             auto_cutree = FALSE,
                              font_size = 3.5,
                              dend_title_size = 12)
+```
+And we can determine the OTU clusters according to the output results above using \code{Data.cluster.cut} by setting the cutting distance equals to 0.2.
+
+```{r}
+preterm_clust_results = Data.cluster.cut(cluster_outputs = preterm_clust,cut_height = 0.2,font_size = 3.5)
 ```
 
 Here, OTUs with a correlation distance of less than 0.2 are grouped into clusters.
@@ -263,7 +282,7 @@ The visualization of microbial feature abundance time patterns fitted by the lin
 
 ```{r}
 preterm_data_vis = Data.visual.MESR(Design_data = preterm_design,
-                                    cluster_results = preterm_clust,
+                                    cluster_results = preterm_clust_results,
                                     cutree_by = 'height',
                                     cluster_height = c(0.2,0.2),
                                     predicted_data = preterm_pred,

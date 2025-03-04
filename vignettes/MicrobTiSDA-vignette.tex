@@ -1,0 +1,580 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={MicrobTiSDA-vignette},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{MicrobTiSDA-vignette}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\section{Introduction to MicrobTiSDA}\label{introduction-to-microbtisda}
+
+Longitudinal analysis of microbiomes is crucial for understanding the
+temporal dynamics of host-associated or environmental microbiomes,
+Laying the foundation for exploring ecological patterns and mechanisms
+of host-microbiome interactions. Sampling microbiota at multiple time
+points allows researchesrs to uncover community trends, stability and
+responses to external interventions such as therapies. Thus, developing
+efficient and accurate methods for microbiome time-series analysis has
+become increasingly urgent. Here, we developed MicrobTiSDA, an R package
+that integrates the Learning interactions from Microbial Time-Series
+(LIMITS) algorithm. By employing discrete-time Lotka-Volterra models,
+MicrobTiSDA infers inter-species interactions from microbiome
+time-series data. Moreover, the package enables the construction of
+regression models to investigate the dynamic abundance changes of
+individual species within microbial communities and provides reliable
+methods for identifying species groups with similar (or opposing)
+temporal pattens, thereby offering novel perspectives on potential
+inter-species relationships.
+
+\subsection{Getting started}\label{getting-started}
+
+First we have to load the installed package and other necessary packages
+in the workspace with
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"MicrobTiSDA"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"tidyr"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"dplyr"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"ggplot2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Case study 1: Infant gut microbiome
+dataset}\label{case-study-1-infant-gut-microbiome-dataset}
+
+The first case study involves applying MicrobTiSDA to an infant gut
+microbiome dataset. We focused on data from dizygotic twins (ID10 and
+ID11) collected from day six to day sixty after birth. This dataset
+comprises a total of 77 fecal samples with 476,921 operational taxonomic
+units (OTUs). ID10 was hospitalized due to an infection with
+Streptococcus serogroup B β-hemolytic (S. agalactiae) and received
+antibiotic treatment from day 22 to day 33. Overall, we collected 77
+fecal samples, with ID10 contributing 34 samples and ID11 providing 43
+samples.
+
+The input data required by MicrobTiSDA typically includes a species
+composition data table from high-throughput sequencing (OTU/ASV table),
+a metadata file that records all sample information, and species
+annotation data for microbial characteristics. The input species
+composition table is required to have microbial feature IDs as rows and
+sample IDs as columns. The input metadata must have sample IDs as row
+names and must include information such as the subject ID to which the
+samples belong and the sampling time of the samples.
+
+Here, we load the data of this case study.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(}\StringTok{"OSLO.infant.data"}\NormalTok{)}
+\FunctionTok{data}\NormalTok{(}\StringTok{"OSLO.infant.meta"}\NormalTok{)}
+\FunctionTok{data}\NormalTok{(}\StringTok{"OSLO.infant.taxa"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We first filter out OTUs from the loaded OTU table that have a total
+abundance of less than 5000 across all samples and a prevalence of less
+than 20\% in all samples from each subject.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_data\_filt }\OtherTok{=} \FunctionTok{Data.filter}\NormalTok{(}\AttributeTok{Data =}\NormalTok{ OSLO.infant.data,}\AttributeTok{metadata =}\NormalTok{ OSLO.infant.meta,}
+                             \AttributeTok{OTU\_counts\_filter\_value =} \DecValTok{5000}\NormalTok{, }\AttributeTok{OTU\_filter\_value =} \FloatTok{0.2}\NormalTok{,}
+                             \AttributeTok{Group\_var =} \StringTok{\textquotesingle{}ID\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Subsequently, we performe interpolation on the filtered OTU table to
+generate continuous time series data for each subject from the first
+sampling time point to just before the last sampling time point.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_data\_intp }\OtherTok{=} \FunctionTok{Data.interpolate}\NormalTok{(}\AttributeTok{Data =}\NormalTok{ oslo\_data\_filt,}\AttributeTok{metadata =}\NormalTok{ OSLO.infant.meta,}
+                                  \AttributeTok{Group\_var =} \StringTok{\textquotesingle{}ID\textquotesingle{}}\NormalTok{,}
+                                  \AttributeTok{Sample\_ID =} \StringTok{\textquotesingle{}ID\textquotesingle{}}\NormalTok{,}
+                                  \AttributeTok{Sample\_Time =} \StringTok{\textquotesingle{}day\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The interpolated OTU table and the new metadata will be used for
+subsequent analyses.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_data\_int }\OtherTok{=}\NormalTok{ oslo\_data\_intp}\SpecialCharTok{$}\NormalTok{Interpolated\_Data}
+\NormalTok{oslo\_meta\_int }\OtherTok{=}\NormalTok{ oslo\_data\_intp}\SpecialCharTok{$}\NormalTok{Interpolated\_Data\_metadata}
+\end{Highlighting}
+\end{Shaded}
+
+Transform the filtered and interpolated data using modified centered
+log-ratio transformation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_data\_trans }\OtherTok{=} \FunctionTok{Data.trans}\NormalTok{(}\AttributeTok{Data =}\NormalTok{ oslo\_data\_int,}
+                             \AttributeTok{metadata =}\NormalTok{ oslo\_meta\_int,}
+                             \AttributeTok{Group\_var =} \StringTok{\textquotesingle{}Group\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Next, we will infer the species interactions within the gut microbiomes
+of each individual and visualize the topological results of these
+species interactions. To reduce computation time, we will set the number
+of iterations for bagging to 5 (the default is 10).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_data\_interact }\OtherTok{=} \FunctionTok{Spec.interact}\NormalTok{(}\AttributeTok{Data =}\NormalTok{ oslo\_data\_trans,}
+                                   \AttributeTok{metadata =}\NormalTok{ oslo\_meta\_int,}
+                                   \AttributeTok{Group\_var =} \StringTok{\textquotesingle{}Group\textquotesingle{}}\NormalTok{,}
+                                   \AttributeTok{num\_iterations =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Visualize the topological results of interspecies interactions within
+microbiomes of each individual.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_interact\_vis }\OtherTok{=} \FunctionTok{Interact.vis}\NormalTok{(}\AttributeTok{Interact\_data =}\NormalTok{ oslo\_data\_interact,}
+                                 \AttributeTok{count\_data =}\NormalTok{ oslo\_data\_trans,}
+                                 \AttributeTok{metadata =}\NormalTok{ oslo\_meta\_int,}
+                                 \AttributeTok{Subject\_ID =} \StringTok{\textquotesingle{}ID\textquotesingle{}}\NormalTok{,}
+                                 \AttributeTok{Interact\_threshold =} \FloatTok{1e{-}6}\NormalTok{,}
+                                 \AttributeTok{legend\_text\_size =} \DecValTok{8}\NormalTok{,}
+                                 \AttributeTok{legend\_title\_size =} \DecValTok{10}\NormalTok{,}
+                                 \AttributeTok{title\_size =} \DecValTok{12}\NormalTok{,}
+                                 \AttributeTok{label\_distance =} \FloatTok{0.35}\NormalTok{,}
+                                 \AttributeTok{label\_font\_size =} \DecValTok{3}\NormalTok{)}
+\NormalTok{oslo\_interact\_vis}\SpecialCharTok{$}\NormalTok{ID\_10}
+\NormalTok{oslo\_interact\_vis}\SpecialCharTok{$}\NormalTok{ID\_11}
+\end{Highlighting}
+\end{Shaded}
+
+Another functionality of MicrobTiSDA is the construction of natural
+spline regression models for the time series data of each microbial
+feature. Before this, it is necessary to construct the design matrix.
+The sampling time data for each sample will be added as columns to the
+species composition data frame after transformation. Additionally, dummy
+variables will be used to label each subject's samples, where 1
+indicates that the sample belongs to that subject and 0 indicates that
+it does not.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_data\_design }\OtherTok{=} \FunctionTok{Design}\NormalTok{(}\AttributeTok{metadata =}\NormalTok{ oslo\_meta\_int,}
+                          \AttributeTok{Group\_var =} \StringTok{\textquotesingle{}Group\textquotesingle{}}\NormalTok{,}
+                          \AttributeTok{Sample\_ID =} \StringTok{\textquotesingle{}ID\textquotesingle{}}\NormalTok{,}
+                          \AttributeTok{Sample\_Time =} \StringTok{\textquotesingle{}Time\textquotesingle{}}\NormalTok{,}
+                          \AttributeTok{Pre\_processed\_Data =}\NormalTok{ oslo\_data\_trans)}
+\end{Highlighting}
+\end{Shaded}
+
+Here, we construct natural spline regression models for each microbial
+feature based on the transformed time series data. Given that subject
+ID10 was hospitalized and received antibiotic treatment from day 22 to
+day 33 after birth, we will use days 22 and 33 as the time konts.
+Additionally, we will filter out microbial features from each subject's
+gut microbiome time series that have fewer than 10 unique transformed
+abundance values, as such features do not provide sufficient data for
+constructing regression models.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_model }\OtherTok{=} \FunctionTok{Reg.SPLR}\NormalTok{(}\AttributeTok{Data\_for\_Reg =}\NormalTok{ oslo\_data\_design,}
+                      \AttributeTok{pre\_processed\_data =}\NormalTok{ oslo\_data\_trans,}
+                      \AttributeTok{Knots =} \FunctionTok{c}\NormalTok{(}\DecValTok{22}\NormalTok{,}\DecValTok{33}\NormalTok{),}
+                      \AttributeTok{unique\_values =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Next, we will use the constructed regression models for the microbial
+feature time series to make predictions, aiming to investigate the
+temporal patterns of the microbial features.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_model\_pred }\OtherTok{=} \FunctionTok{Pred.data}\NormalTok{(}\AttributeTok{Fitted\_models =}\NormalTok{ oslo\_model,}
+                            \AttributeTok{metadata =}\NormalTok{ oslo\_meta\_int,}
+                            \AttributeTok{Group =} \StringTok{\textquotesingle{}Group\textquotesingle{}}\NormalTok{,}
+                            \AttributeTok{Sample\_Time =} \StringTok{\textquotesingle{}Time\textquotesingle{}}\NormalTok{,}
+                            \AttributeTok{time\_step =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+By calculating the correlation distance between the predicted microbial
+feature time series from the computational model, MicrobTiSDA employs a
+hierarchical clustering method to cluster OTUs based on the correlation
+distance between them.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_model\_clust }\OtherTok{=} \FunctionTok{Data.cluster}\NormalTok{(}\AttributeTok{predicted\_data =}\NormalTok{ oslo\_model\_pred,}
+                                \AttributeTok{clust\_method =} \StringTok{\textquotesingle{}average\textquotesingle{}}\NormalTok{,}
+                                \AttributeTok{dend\_title\_size =} \DecValTok{12}\NormalTok{,}
+                                \AttributeTok{font\_size =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+After obtaining the dendrogram of OTU clustering, we manually set a
+correlation distance threshold of less than 0.15 (\code{cut_height} =
+0.15) to group OTUs into clusters based on the output dendrogram.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_clust\_results }\OtherTok{=} \FunctionTok{Data.cluster.cut}\NormalTok{(}\AttributeTok{cluster\_outputs =}\NormalTok{ oslo\_model\_clust,}\AttributeTok{cut\_height =} \FloatTok{0.15}\NormalTok{,}\AttributeTok{font\_size =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+If the \texttt{auto\_cutree} parameter of the Data.cluster function is
+set to FALSE, a dendrogram of the microbial feature time series clusters
+for each subject will be output during the execution of the
+\texttt{Data.cluster} function.
+
+Next, we can visualize the clustered OTU groups. The temporal patterns
+of the OTU clusters for each subject will be generated separately in the
+plots. If the \texttt{Taxa} parameter is set to \texttt{NULL}, the plots
+will only display the IDs of each microbial feature. If \texttt{Taxa}
+contains species annotation information, the annotation will be added in
+parentheses following the microbial feature IDs in the plots. If
+\texttt{plot\_dots} is \texttt{True}, the original transformed microbial
+feature abundances will be visualized in figures.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{oslo\_model\_vis }\OtherTok{=} \FunctionTok{Data.visual}\NormalTok{(}\AttributeTok{cluster\_results =}\NormalTok{ oslo\_clust\_results,}
+                             \AttributeTok{cutree\_by =} \StringTok{\textquotesingle{}height\textquotesingle{}}\NormalTok{,}
+                             \AttributeTok{cluster\_height =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.15}\NormalTok{,}\FloatTok{0.15}\NormalTok{),}
+                             \AttributeTok{predicted\_data =}\NormalTok{ oslo\_model\_pred,}
+                             \AttributeTok{Design\_data =}\NormalTok{ oslo\_data\_design,}
+                             \AttributeTok{pre\_processed\_data =}\NormalTok{ oslo\_data\_trans,}
+                             \AttributeTok{plot\_dots =} \ConstantTok{TRUE}\NormalTok{,}
+                             \AttributeTok{figure\_x\_scale =} \DecValTok{5}\NormalTok{,}
+                             \AttributeTok{Taxa =}\NormalTok{ OSLO.infant.taxa,}
+                             \AttributeTok{plot\_lm =} \ConstantTok{FALSE}\NormalTok{,}
+                             \AttributeTok{legend\_title\_size =} \DecValTok{10}\NormalTok{,}
+                             \AttributeTok{legend\_text\_size =} \DecValTok{8}\NormalTok{)}
+
+\CommentTok{\# Visualize the first OTU cluster in ID10}
+\NormalTok{oslo\_model\_vis}\SpecialCharTok{$}\NormalTok{ID\_10[[}\DecValTok{1}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+The output results above represent OTU clusters with highly similar
+temporal patterns. If you want to find other OTUs with temporal patterns
+that are opposite to those of the identified OTUs, you can use the
+Data.opp.cor.vis function. This function will help identify and
+visualize OTUs that exhibit contrasting time patterns. The microbial
+features being compared will be represented by solid curves, while those
+that are negatively correlated (with a high correlation distance, for
+example, greater than 0.9, and \texttt{ng\_cor\_thres} set to 0.1) will
+be represented by dashed curves. This distinction will help to clearly
+visualize the relationships between the microbial features in the plots.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{opposite\_vis }\OtherTok{=} \FunctionTok{Data.opp.cor.vis}\NormalTok{(}\AttributeTok{predicted\_data =}\NormalTok{ oslo\_model\_pred,}
+                                \AttributeTok{pre\_processed\_data =}\NormalTok{ oslo\_data\_trans,}
+                                \AttributeTok{Design\_data =}\NormalTok{ oslo\_data\_design,}
+                                \AttributeTok{ng\_cor\_thres =} \FloatTok{0.1}\NormalTok{,}
+                                \AttributeTok{Taxa =}\NormalTok{ OSLO.infant.taxa,}
+                                \AttributeTok{plot\_dots =} \ConstantTok{FALSE}\NormalTok{,}\AttributeTok{legend\_text\_size =} \DecValTok{5}\NormalTok{)}
+
+\CommentTok{\# For example, taking OTU\_000001 of ID10}
+\CommentTok{\# we can observe microbial features with a correlation distance greater than 0.9}
+\NormalTok{opposite\_vis}\SpecialCharTok{$}\NormalTok{ID\_10}\SpecialCharTok{$}\NormalTok{OTU\_000001}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Case study 2: Gut microbiome dataset of preterm infant
+with
+sepsis.}\label{case-study-2-gut-microbiome-dataset-of-preterm-infant-with-sepsis.}
+
+In this case study, we applied MicrobTiSDA to a subset of gut microbiome
+time-series data from preterm infants diagnosed with sepsis, aiming to
+investigate the dynamic differences between the gut microbiomes of
+septic preterm infants infected with pathogenic E.coli and their matched
+controls. This dataset consisted of 4 preterm infants diagnosed with
+sepsis within the first month of life (S\_D, ID\_7, ID\_14, ID\_19,
+ID\_21) and 4 individually matched controls (S\_C, ID\_31, ID\_37,
+ID\_42, ID\_43).
+
+This dataset contains a total of 51 samples and 202 OTUs, with the
+metadata including information such as subject ID, sample ID, sampling
+time, and sample grouping. To standardize sampling times, we normalized
+the sepsis diagnosis day for each patient to the pseudo-Day 11, aligning
+all sampling times to a 10-day window prior to diagnosis (i.e.,
+pseudo-Days 1--10).
+
+Load data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(}\StringTok{"preterm.data"}\NormalTok{)}
+\FunctionTok{data}\NormalTok{(}\StringTok{"preterm.meta"}\NormalTok{)}
+\FunctionTok{data}\NormalTok{(}\StringTok{"preterm.taxa"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Since this case study involves comparing the dynamic differences in gut
+microbiomes between two groups, we will first use the random forest
+method, treating all OTUs as input features to classify the gut
+microbiome samples of the two groups. We will select OTUs that
+contribute significantly to the sample classification (i.e., biomarkers)
+for subsequent analysis. In this case, this step will serve as a
+replacement for the data filtering step.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_rf }\OtherTok{=} \FunctionTok{Data.rf.classifier}\NormalTok{(}\AttributeTok{raw\_data =}\NormalTok{ preterm.data,}
+                                \AttributeTok{metadata =}\NormalTok{ preterm.meta,}
+                                \AttributeTok{train\_p =} \FloatTok{0.7}\NormalTok{,}
+                                \AttributeTok{Group =} \StringTok{\textquotesingle{}Group\textquotesingle{}}\NormalTok{,}
+                                \AttributeTok{OTU\_counts\_filter\_value =} \DecValTok{0}\NormalTok{)}
+\NormalTok{preterm\_rf}\SpecialCharTok{$}\NormalTok{Margin\_scores\_train}
+\end{Highlighting}
+\end{Shaded}
+
+Here, we choose to use 70\% of the samples as the training set and the
+remaining 30\% as the testing set. Given that the number of microbial
+features in this dataset is relatively small, we didn't filter out
+low\_abundant microbial features in this step
+(\texttt{OTU\_counts\_filter\_value\ =\ 0}). The results indicate that
+the sample classification model built using all OTUs as inputs
+demonstrates high performance, with an Out of Bag error of 0.081.
+
+Additionally, based on the cross-validation curve output above, we
+selected the top 10 OTUs as biomarkers according to their mean decrease
+accuracy (MDA) ranking by running the function \code{Rf.biomarkers}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{selected\_biomarkers }\OtherTok{=} \FunctionTok{Rf.biomarkers}\NormalTok{(}\AttributeTok{rf =}\NormalTok{ preterm\_rf,}\AttributeTok{feature\_select\_num =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Using the selected biomarkers and applying NMDS (Non-metric
+Multidimensional Scaling), we can observe that the selected biomarkers
+effectively distinguish between the two groups of samples.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_rf\_vis }\OtherTok{=} \FunctionTok{Classify.vis}\NormalTok{(}\AttributeTok{classified\_results =}\NormalTok{ selected\_biomarkers,}\AttributeTok{dist\_method =} \StringTok{\textquotesingle{}bray\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Extract the biomarker data (\texttt{Important\_OTU\_table}) from the
+output of the \texttt{Data.rf.classifier} function for subsequent
+analysis, and first apply the modified centered log-ratio (mCLR)
+transformation to the data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_trans }\OtherTok{=} \FunctionTok{Data.trans}\NormalTok{(}\AttributeTok{Data =}\NormalTok{ selected\_biomarkers}\SpecialCharTok{$}\NormalTok{OTU\_importance,}
+                           \AttributeTok{Group\_var =} \StringTok{\textquotesingle{}Group\textquotesingle{}}\NormalTok{,}
+                           \AttributeTok{metadata =}\NormalTok{ preterm.meta)}
+\end{Highlighting}
+\end{Shaded}
+
+Construct the design matrix.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_design }\OtherTok{=} \FunctionTok{Design}\NormalTok{(}\AttributeTok{metadata =}\NormalTok{ preterm.meta,}
+                        \AttributeTok{Group\_var =} \StringTok{\textquotesingle{}Group\textquotesingle{}}\NormalTok{,}
+                        \AttributeTok{Pre\_processed\_Data =}\NormalTok{ preterm\_trans,}
+                        \AttributeTok{Sample\_ID =} \StringTok{\textquotesingle{}ID\textquotesingle{}}\NormalTok{,}
+                        \AttributeTok{Sample\_Time =} \StringTok{\textquotesingle{}Time\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Next, mixed-effects natural spline regression model is applied to
+construct general OTU time series regression model for each group, with
+time as a fixed effect and the subject ID within the group as a random
+effect.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_model}\OtherTok{=} \FunctionTok{Reg.MESR}\NormalTok{(}\AttributeTok{Data\_for\_Reg =}\NormalTok{ preterm\_design,}
+                        \AttributeTok{pre\_processed\_data =}\NormalTok{ preterm\_trans,}
+                        \AttributeTok{max\_Knots =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Based on the fitted regression model, the \texttt{Pred.data.MESR}
+function is used to predict the general time pattern of each microbial
+feature within the group. Note that \texttt{Pred.data.MESR} can only
+accept output from the \texttt{Reg.MESR} function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_pred }\OtherTok{=} \FunctionTok{Pred.data.MESR}\NormalTok{(}\AttributeTok{Fitted\_models =}\NormalTok{ preterm\_model,}
+                              \AttributeTok{metadata =}\NormalTok{ preterm.meta,}
+                              \AttributeTok{Group =} \StringTok{\textquotesingle{}Group\textquotesingle{}}\NormalTok{,}
+                              \AttributeTok{Sample\_Time =} \StringTok{\textquotesingle{}Time\textquotesingle{}}\NormalTok{,}
+                              \AttributeTok{time\_step =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Following the same analytical workflow as in Case 1, we can also cluster
+the predicted time patterns of microbial features.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_clust }\OtherTok{=} \FunctionTok{Data.cluster}\NormalTok{(}\AttributeTok{predicted\_data =}\NormalTok{ preterm\_pred,}
+                             \AttributeTok{clust\_method =} \StringTok{\textquotesingle{}average\textquotesingle{}}\NormalTok{,}
+                             \AttributeTok{font\_size =} \FloatTok{3.5}\NormalTok{,}
+                             \AttributeTok{dend\_title\_size =} \DecValTok{12}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+And we can determine the OTU clusters according to the output results
+above using \code{Data.cluster.cut} by setting the cutting distance
+equals to 0.2.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_clust\_results }\OtherTok{=} \FunctionTok{Data.cluster.cut}\NormalTok{(}\AttributeTok{cluster\_outputs =}\NormalTok{ preterm\_clust,}\AttributeTok{cut\_height =} \FloatTok{0.2}\NormalTok{,}\AttributeTok{font\_size =} \FloatTok{3.5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Here, OTUs with a correlation distance of less than 0.2 are grouped into
+clusters.
+
+The visualization of microbial feature abundance time patterns fitted by
+the linear mixed-effects spline regression model requires the use of the
+\texttt{Data.visual.MESR} function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preterm\_data\_vis }\OtherTok{=} \FunctionTok{Data.visual.MESR}\NormalTok{(}\AttributeTok{Design\_data =}\NormalTok{ preterm\_design,}
+                                    \AttributeTok{cluster\_results =}\NormalTok{ preterm\_clust\_results,}
+                                    \AttributeTok{cutree\_by =} \StringTok{\textquotesingle{}height\textquotesingle{}}\NormalTok{,}
+                                    \AttributeTok{cluster\_height =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{,}\FloatTok{0.2}\NormalTok{),}
+                                    \AttributeTok{predicted\_data =}\NormalTok{ preterm\_pred,}
+                                    \AttributeTok{pre\_processed\_data =}\NormalTok{ preterm\_trans,}
+                                    \AttributeTok{Taxa =}\NormalTok{ preterm.taxa,}
+                                    \AttributeTok{plot\_dots =} \ConstantTok{TRUE}\NormalTok{,}
+                                    \AttributeTok{plot\_lm =} \ConstantTok{FALSE}\NormalTok{,}
+                                    \AttributeTok{figure\_x\_scale =} \DecValTok{1}\NormalTok{,}
+                                    \AttributeTok{legend\_title\_size =} \DecValTok{10}\NormalTok{,}
+                                    \AttributeTok{legend\_text\_size =} \DecValTok{8}\NormalTok{,}
+                                    \AttributeTok{axis\_title\_size =} \DecValTok{10}\NormalTok{,}
+                                    \AttributeTok{axis\_x\_size =} \DecValTok{7}\NormalTok{,}
+                                    \AttributeTok{axis\_y\_size =} \DecValTok{7}\NormalTok{)}
+
+\CommentTok{\# Example: visualize the first OTU cluster in both the S\_C and S\_D groups}
+\NormalTok{preterm\_data\_vis}\SpecialCharTok{$}\NormalTok{S\_C[[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{preterm\_data\_vis}\SpecialCharTok{$}\NormalTok{S\_D[[}\DecValTok{1}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

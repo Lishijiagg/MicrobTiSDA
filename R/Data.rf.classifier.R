@@ -1,11 +1,10 @@
-#' @title Random Forest classification and Biomarker selection for OTU/ASV data
+#' @title Random Forest classification for OTU/ASV Data
 #'
 #' @description
 #' This function implements a random forest classification model tailored for OTU/ASV datasets.
 #'     It performs data filtering, model training, performance evaluation, cross-validation, and
 #'     biomarker (important microbial features) selection based on Mean Decrease Accuracy.
-#'
-#' @details
+#' #' @details
 #' The function processes the input OTU count data and corresponding metadata in several steps:
 #' \enumerate{
 #'   \item \strong{Data Filtering and Preparation:} If a minimum count threshold (`OTU_counts_filter_value`) is provided,
@@ -21,8 +20,6 @@
 #'   Repeated k-fold cross-validation (default 10-fold repeated `reps` times) is performed to determine the optimal number
 #'   of OTUs (biomarkers). A cross-validation error curve is plotted, and the user is prompted to input the best number
 #'   of OTUs based on the plot.
-#'   \item \strong{Biomarker Selection:} Based on the user input, the top OTUs are selected as potential biomarkers, and
-#'   the corresponding OTU table is returned along with all the diagnostic outputs.
 #' }
 #'
 #' @param raw_data A numeric matrix or data frame of counts data with OTUs/ASVs as rows and samples as columns.
@@ -43,13 +40,17 @@
 #' @param legend_title_size Numeric value for the font size of legend titles. Defaults to 8.
 #' @param legend_text_size Numeric value for the font size of legend text. Defaults to 6.
 #'
-#' @return A list containing the following elements: (1) A data frame of the selected OTU/ASV table containing the top biomarkers.
-#'     (2) Predicted class labels for the training dataset. (3) Predicted class labels for the testing dataset. (4) A confusion
-#'     matrix comparing actural versus predicted classes in the training set. (5) A confusion matrix comparing actural versus predicted
-#'     classes in the testing set. (6) A ggplot object displaying the margin scores for the training dataset. (7) A data frame of OTU
-#'     importance metrics from the random forest model, ranked by Mean Decrease Accuracy. (8) A duplicate of the testing set confusion
-#'     matrix (for compatibility). (9) A ggplot object of the cross-validation error curve with a vertical line indicating the user-selected
-#'     optimal number of OTUs/ASVs.
+#' @return A list with the following elements:
+#' \describe{
+#'   \item{Input_data}{The transposed and (optionally) filtered OTU table.}
+#'   \item{Predicted_results_on_train_set}{A vector of predicted group labels for the training set.}
+#'   \item{Predicted_results_on_test_set}{A vector of predicted group labels for the test set.}
+#'   \item{Traindata_confusion_matrix}{A confusion matrix comparing actual vs. predicted group labels for the training set.}
+#'   \item{Testdata_confusion_matrix}{A confusion matrix comparing actual vs. predicted group labels for the test set.}
+#'   \item{Margin_scores_train}{A ggplot object displaying the margin scores of the training set samples.}
+#'   \item{OTU_importance}{A data frame of OTU importance metrics, sorted by Mean Decrease Accuracy.}
+#'   \item{cross_validation}{A ggplot object showing the cross-validation error curve as a function of the number of features.}
+#' }
 #'
 #' @importFrom caret createDataPartition
 #' @importFrom randomForest randomForest
@@ -58,11 +59,11 @@
 #' @importFrom ggplot2 ggplot
 #' @importFrom reshape2 melt
 #' @importFrom splines ns
+#'
 #' @export
 #' @author Shijia Li
-#'
 #' @examples
-#' \dontrun{
+#' #' \dontrun{
 #' # Example OTU count data (20 OTUs x 10 samples)
 #' set.seed(123)
 #' otu_data <- matrix(sample(0:100, 200, replace = TRUE), nrow = 20)
@@ -80,16 +81,16 @@
 #'                              OTU_counts_filter_value = 50)
 #' }
 Data.rf.classifier = function(raw_data,
-                          metadata,
-                          train_p,
-                          Group,
-                          OTU_counts_filter_value = NA,
-                          reps = 5,
-                          cv_fold = 10,
-                          title_size = 10,
-                          axis_title_size = 8,
-                          legend_title_size = 8,
-                          legend_text_size = 6) {
+                              metadata,
+                              train_p,
+                              Group,
+                              OTU_counts_filter_value = NA,
+                              reps = 5,
+                              cv_fold = 10,
+                              title_size = 10,
+                              axis_title_size = 8,
+                              legend_title_size = 8,
+                              legend_text_size = 6) {
 
   otu = raw_data
 
@@ -188,34 +189,22 @@ Data.rf.classifier = function(raw_data,
   print(compare_test)
   print('==================================================================================')
 
-  features_number = readline(paste(
-    "According to the cross-validation results, the best selected number of OTUs could be: "))
-  p = p + geom_vline(xintercept = as.numeric(features_number),linetype = 'dashed')+
-    scale_x_continuous(breaks = c(as.numeric(features_number)))
-  print(p)
-
-  otu_select = rownames(importance_otu)[1:features_number]
-  important_otu_table = otu[otu_select]
-  important_otu_table = as.data.frame(t(important_otu_table))
-
-  output_result = list(important_otu_table,
+  output_result = list(otu,
                        train_predict,
                        test_predict,
                        compare_train,
                        compare_test,
                        p_margin,
                        importance_otu,
-                       compare_test,
                        p)
-  names(output_result) = c('Important_OTU_table',
+  names(output_result) = c('Input_data',
                            'Predicted_results_on_train_set',
                            'Predicted_results_on_test_set',
                            'Traindata_confusion_matrix',
                            'Testdata_confusion_matrix',
                            'Margin_scores_train',
                            'OTU_importance',
-                           'Confusion_matrix_testset',
-                           'cross-validation')
+                           'cross_validation')
 
   return(output_result)
 }
