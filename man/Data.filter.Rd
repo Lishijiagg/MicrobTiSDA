@@ -30,7 +30,7 @@ this argument should be \code{NA}, As the low abundance OTUs/ASVs might be filte
 \item{OTU_filter_value}{Numeric between 0 and 1. This specifies the minimum prevalence rate of an OTU/ASV across all samples within
 each group or individual. OTUs/ASVs with a prevalence rate below the given threshold will be removed.}
 
-\item{log_base}{This argument species the base of the logarithm. When the dataset is not very large, the default is \code{NA},
+\item{log_base}{This argument specifies the base of the logarithm. When the dataset is not very large, the default is \code{NA},
 and no logarithmic transformation is applied. For large datasets, the logarithm base can be 2, "e", or 10.}
 
 \item{Group_var}{A string or a vector. This specifies the grouping variables, which should match the column names in

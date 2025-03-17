@@ -23,13 +23,13 @@ comparing each value to the geometric mean of the positive values in its row.
 }
 \details{
 The MCLR method calculates the geometric mean of each sample from positive proportions only, normalized and
-log-transformation all non-zero components in the dataset. Specifically, let \eqn{x_s \in \Omega^p} denotes
-the compositional vector for sample \eqn{\textit{s}}, where \eqn{\Omega^p} represents the collection of \eqn{\textit{p}}
-microbial features in sample \eqn{\textit{s}}. For simplicity of illustration, assume that the first \eqn{\textit{q}}
-elements of \eqn{x_s} are zero while the remaining elements are non-zero. Then itcan be expressed as:
-\deqn{mclr_\epsilon (x_s) = [0, \dots, 0, \ln{\left(\frac{x_{s(q+1)}}{\tilde{g}(x_s)}\right)} + \epsilon, \dots, \ln{\left(\frac{x_{sp}}{\tilde{g}(x_s)}\right)} + \epsilon]}
-where \eqn{\tilde{g}(x_s) = \left(\prod_{r=q+1}^{p} x_{sr}\right)^{\frac{1}{p-q}}} is the geometric mean of the
-non-zero elements of \eqn{x_s}. When \eqn{\varepsilon = 0}, \eqn{\text{mclr}_0} corresponds to the centered
+log-transformation all non-zero components in the dataset. Specifically, let \eqn{x_{nt} \in \Omega^I} denotes
+the compositional vector for the sample from subject \eqn{\textit{n}} at timepoint \eqn{\textit{t}}, where \eqn{\Omega^I} represents the collection of \eqn{\textit{I}}
+microbial features.For simplicity of illustration, assume that the first \eqn{\textit{q}}
+elements of \eqn{x_{nt}} are zero while the remaining elements are non-zero. Then itcan be expressed as:
+\deqn{mclr_\epsilon (x_{nt}) = [0, \dots, 0, \ln{\left(\frac{x_{nt(q+1)}}{\tilde{g}(x_{nt})}\right)} + \epsilon, \dots, \ln{\left(\frac{x_{ntI}}{\tilde{g}(x_{nt})}\right)} + \epsilon]}
+where \eqn{\tilde{g}(x_{nt}) = \left(\prod_{i=q+1}^{p} x_{nti}\right)^{\frac{1}{I-q}}} is the geometric mean of the
+non-zero elements of \eqn{x_{nt}}. When \eqn{\varepsilon = 0}, \eqn{\text{mclr}_0} corresponds to the centered
 log-ratio transform applied to non-zero proportions only. When \eqn{\varepsilon > 0}, \eqn{\text{mclr}_\varepsilon}
 applies a positive shift to all non-zero compositions. To make all non-zero values strictly positive, by
 default \eqn{\varepsilon = 0.1}. The MCLR transformation is invariant to the addition of extra zero components,

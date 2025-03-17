@@ -42,9 +42,9 @@ natural splines to model the relationship between time and microbial feature abu
 This function fits mixed-effects spline regression models. Unlike \code{\link[MicrobTiSDA]{Reg.SPLR}}, this function
 captures the overall temporal dynamics of microbial features across different groups. Assuming the dataset contains
 \eqn{\textit{m}} groups, each with \eqn{\textit{n}} subjects, the model is formulated as:
-\deqn{x_{(m,i)}(t) = \beta_0 + \sum_{k=1}^{K} \sum_{d=1}^{D} \beta_{kd} \cdot N_k(t) \cdot t^d + b_n(m) + \epsilon}
-where \eqn{x_{(m,i)}(t)} represents the abundance of microbial feature \eqn{\textit{i}} at time point \eqn{\textit{t}}
-in group \eqn{\textit{m}}. The random effect \eqn{b_n(m)} reflects the departure of individual \eqn{\textit{n}} in group
+\deqn{x_{(mi)}(t) = \beta_{m0} + \sum_{k=1}^{K} \beta_{mk} \cdot N_{mk}(t) + b_{n(m)} + \epsilon}
+where \eqn{x_{(mi)}(t)} represents the abundance of microbial feature \eqn{\textit{i}} at time point \eqn{\textit{t}}
+in group \eqn{\textit{m}}. The random effect \eqn{b_{n(m)}} reflects the departure of individual \eqn{\textit{n}} in group
 \eqn{\textit{m}} from overall population average effects. The parameter \eqn{K} refers to the number of basis functions,
 which is equal to the number of knots plus one. (i.e., \eqn{K = number of knots + 1}).
 

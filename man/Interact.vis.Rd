@@ -9,13 +9,13 @@ Interact.vis(
   count_data,
   metadata,
   Subject_ID,
-  Interact_threshold,
+  Interact_threshold = 1e-06,
   Taxa = NULL,
   label_font_size = 3,
-  label_distance = 0.15,
-  title_size = 5,
-  legend_title_size = 3,
-  legend_text_size = 3
+  label_distance = 0.2,
+  title_size = 12,
+  legend_title_size = 10,
+  legend_text_size = 8
 )
 }
 \arguments{
@@ -28,7 +28,7 @@ individual information (\code{Group} and \code{ID}), the sampling \code{Time} po
 
 \item{Subject_ID}{A character string specifying the column name in metadata that identifies subjects.}
 
-\item{Interact_threshold}{A numeric value specifying the minimum absolute interaction strength to include in the network.}
+\item{Interact_threshold}{A numeric value specifying the minimum absolute interaction strength to include in the network (default: 1e-6).}
 
 \item{Taxa}{A data frame providing taxonomic annotations for microbial species.}
 

@@ -7,7 +7,7 @@
 #' @param metadata A data frame. Containing information about all samples, including at least the grouping of all samples as well as
 #'     individual information (\code{Group} and \code{ID}), the sampling \code{Time} point for each sample, and other relevant information.
 #' @param Subject_ID A character string specifying the column name in metadata that identifies subjects.
-#' @param Interact_threshold A numeric value specifying the minimum absolute interaction strength to include in the network.
+#' @param Interact_threshold A numeric value specifying the minimum absolute interaction strength to include in the network (default: 1e-6).
 #' @param Taxa A data frame providing taxonomic annotations for microbial species.
 #' @param label_font_size A numeric value specifying the font size for species labels in the network (default: 3).
 #' @param label_distance A numeric value controlling the distance of labels from nodes (default: 0.15).
@@ -33,9 +33,9 @@
 #' @importFrom stats median
 #' @importFrom tibble rownames_to_column
 #'
-Interact.vis = function(Interact_data, count_data, metadata, Subject_ID, Interact_threshold, Taxa=NULL,
-                        label_font_size = 3, label_distance = 0.15,title_size = 5,legend_title_size = 3,
-                        legend_text_size = 3) {
+Interact.vis = function(Interact_data, count_data, metadata, Subject_ID, Interact_threshold = 1e-6, Taxa=NULL,
+                        label_font_size = 3, label_distance = 0.2,title_size = 12,legend_title_size = 10,
+                        legend_text_size = 8) {
   figure_list = list()
   count_data = as.data.frame(t(count_data))
   for (g in names(Interact_data)) {

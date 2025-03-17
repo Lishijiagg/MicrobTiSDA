@@ -70,13 +70,13 @@ oslo_data_trans = Data.trans(Data = oslo_data_int,
                              Group_var = 'Group')
 ```
 
-Next, we will infer the species interactions within the gut microbiomes of each individual and visualize the topological results of these species interactions. To reduce computation time, we will set the number of iterations for bagging to 5 (the default is 10).
+Next, we will infer the species interactions within the gut microbiomes of each individual and visualize the topological results of these species interactions. This step may take a long time, to reduce computation time, we will set the number of iterations for bagging to 5 (the default is 10).
 
 ```{r}
 oslo_data_interact = Spec.interact(Data = oslo_data_trans,
                                    metadata = oslo_meta_int,
                                    Group_var = 'Group',
-                                   num_iterations = 5)
+                                   num_iterations = 10)
 ```
 
 Visualize the topological results of interspecies interactions within microbiomes of each individual.
@@ -90,7 +90,7 @@ oslo_interact_vis = Interact.vis(Interact_data = oslo_data_interact,
                                  legend_text_size = 8,
                                  legend_title_size = 10,
                                  title_size = 12,
-                                 label_distance = 0.35,
+                                 label_distance = 0.55,
                                  label_font_size = 3)
 # visualise the species interaction results
 # oslo_interact_vis$ID_10
@@ -132,13 +132,13 @@ By calculating the correlation distance between the predicted microbial feature 
 oslo_model_clust = Data.cluster(predicted_data = oslo_model_pred,
                                 clust_method = 'average',
                                 dend_title_size = 12,
-                                font_size = 2)
+                                font_size = 2.5)
 ```
 
 After obtaining the dendrogram of OTU clustering, we manually set a correlation distance threshold of less than 0.15 (\code{cut_height} = 0.15) to group OTUs into clusters based on the output dendrogram.
 
 ```{r}
-oslo_clust_results = Data.cluster.cut(cluster_outputs = oslo_model_clust,cut_height = 0.15,font_size = 2)
+oslo_clust_results = Data.cluster.cut(cluster_outputs = oslo_model_clust,cut_height = 0.15,font_size = 2.5)
 ```
 
 If the `auto_cutree` parameter of the Data.cluster function is set to FALSE, a dendrogram of the microbial feature time series clusters for each subject will be output during the execution of the `Data.cluster` function.
@@ -157,7 +157,7 @@ oslo_model_vis = Data.visual(cluster_results = oslo_clust_results,
                              Taxa = OSLO.infant.taxa,
                              plot_lm = FALSE,
                              legend_title_size = 10,
-                             legend_text_size = 8)
+                             legend_text_size = 8,axis_x_size = 8,axis_title_size = 10,axis_y_size = 10)
 
 # Visualize the first OTU cluster in ID10
 # oslo_model_vis$ID_10[[1]]

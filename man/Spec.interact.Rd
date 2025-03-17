@@ -45,24 +45,24 @@ This function describes interspecies interactions based on the discrete-time Lot
 }
 \details{
 This function implements the discrete-time Lotka-Volterra model to characterize species interactions in microbiome time-series data.
-The model describes the abundance (MCLR transformed) \eqn{x_i} of species \eqn{i} at time \eqn{t+\Delta t} as:
-\deqn{x_i (t+\Delta t) = \eta_i (t) x_i (t) \exp\left(\Delta t \sum_j c_{ij} (x_j (t) - <x_j>) \right)}
-where \eqn{<x_j>} represents the equilibrium abundance of species \eqn{j}, typically defined as the
-median abundance across samples from the same subject; \eqn{c_{ij}} denotes the interaction coefficient of species
-\eqn{j} on species \eqn{i}; and \eqn{\eta_i (t)} accounts for log-normally distributed stochastic effects. For
+The model describes the abundance (MCLR transformed) \eqn{x_{ni}} of species \eqn{i} for subject \eqn{n} at time \eqn{t+\Delta t} as:
+\deqn{x_{ni} (t+\Delta t) = \eta_{ni} (t) x_{ni} (t) \exp\left(\Delta t \sum_j c_{nij} (x_{nj} (t) - <x_{nj}>) \right)}
+where \eqn{<x_{nj}>} represents the equilibrium abundance of species \eqn{j}, typically defined as the
+median abundance across samples from the same subject; \eqn{c_{nij}} denotes the interaction coefficient of species
+\eqn{j} on species \eqn{i}; and \eqn{\eta_{ni} (t)} accounts for log-normally distributed stochastic effects. For
 computational simplicity, stochastic effects are ignored, \eqn{\Delta t} is set to 1. Taking the natural logarithm yealds:
-\deqn{\ln x_i (t+1) - \ln x_i (t) = \sum_j c_{ij} (x_j (t) - <x_j>)}
+\deqn{\ln x_{ni} (t+1) - \ln x_{ni} (t) = \sum_j c_{nij} (x_{nj} (t) - <x_{nj}>)}
 To improve sparsity and interpretability, the LIMITS algorithm is applied, incorporating stepwise regression and bagging.
 First, 50\% of the samples are randomly selected as the training set while the rest serve as the test set. An initial regression
 model includes only the self-interaction term:
-\deqn{\ln x_i (t+1) - \ln x_i (t) = c_{ii} (x_i (t) - <x_i>)}
+\deqn{\ln x_{ni} (t+1) - \ln x_{ni} (t) = c_{nii} (x_{ni} (t) - <x_{ni}>)}
 Stepwise regression then iteratively adds species interaction terms from a candidate set \eqn{S}, forming:
-\deqn{\ln x_i (t+1) - \ln x_i (t) = c_{ii} (x_i (t) - <x_i>) + \sum_{j \in S} c_{ij} (x_j (t) - <x_j>)}
+\deqn{\ln x_{ni} (t+1) - \ln x_{ni} (t) = c_{nii} (x_{ni} (t) - <x_{ni}>) + \sum_{j \in S} c_{nij} (x_{nj} (t) - <x_{nj}>)}
 The inclusion of a new term is determined based on the improvement in mean squared error (MSE) on the test set:
 \deqn{\theta = \frac{\text{MSE}_{\text{before}} - \text{MSE}_{\text{after}}}{\text{MSE}_{\text{before}}}}
 If \eqn{\theta} exceeds a predefined threshold (default \( 10^{-3} \)), the species is included. Bagging is performed over \eqn{B}
 iterations by repeating the random splitting and stepwise regression, enhancing robustness. The final interaction coefficient matrix is computed as:
-\deqn{c_{ij} = \text{median}(c_{ij}^{(1)}, c_{ij}^{(2)}, ..., c_{ij}^{(B)})}
+\deqn{c_{nij} = \text{median}(c_{nij}^{(1)}, c_{nij}^{(2)}, ..., c_{nij}^{(B)})}
 This approach refines the inferred species interactions while ensuring sparsity.
 }
 \examples{

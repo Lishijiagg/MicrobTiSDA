@@ -40,12 +40,12 @@ abundance and time, incorporating a z-score based outlier filtering step (option
 of knots via the Generalized Cross-Validation (GCV) criterion when not provided by the user.
 }
 \details{
-\code{Reg_SPLR} utilize Generalised Additive Model (GAM,see \code{\link[mgcv]{gam}}) to fit natural splines. Here, let \eqn{x_i(t)} denote
+\code{Reg_SPLR} utilize Generalised Additive Model (GAM,see \code{\link[mgcv]{gam}}) to fit natural splines. Here, let \eqn{x_{ni}(t)} denote
 the transformed abundance of microbial feature \eqn{i} at time point \eqn{t}. To explain the evolution of microbial abundance along the
 time (\eqn{t}), the following generalized additive model is considered
-\deqn{x_i(t) = \beta_0 + \sum_{k=1}^K \beta_k \cdot N_k(t) + \epsilon}
-where \eqn{\beta_0} is the intercept term, \eqn{\beta_k} denotes the regression coefficients for the k-th natural spline basis function
-\eqn{N_k(t)}, and \eqn{\epsilon} is the error term. The parameter \eqn{K} refers to the number of basis functions, which is equal to the
+\deqn{x_{ni}(t) = \beta_{n0} + \sum_{k=1}^K \beta_{nk} \cdot N_{nk}(t) + \epsilon_{ni}}
+where \eqn{\beta_{n0}} is the intercept term, \eqn{\beta_{nk}} denotes the regression coefficients for the k-th natural spline basis function
+\eqn{N_{nk}(t)}, and \eqn{\epsilon_{ni}} is the error term. The parameter \eqn{K} refers to the number of basis functions, which is equal to the
 number of knots plus one. (i.e., \eqn{K = number of knots + 1}).
 
 If a z-score threshold is specified via \code{z_score}, observations with absolute z-scores exceeding this threshold are removed prior to model
