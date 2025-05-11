@@ -49,6 +49,7 @@
 #'   \item{Testdata_confusion_matrix}{A confusion matrix comparing actual vs. predicted group labels for the test set.}
 #'   \item{Margin_scores_train}{A ggplot object displaying the margin scores of the training set samples.}
 #'   \item{OTU_importance}{A data frame of OTU importance metrics, sorted by Mean Decrease Accuracy.}
+#'   \item{Classifier}{A random forest classifier object trained on the training set.}
 #'   \item{cross_validation}{A ggplot object showing the cross-validation error curve as a function of the number of features.}
 #' }
 #'
@@ -195,6 +196,7 @@ Data.rf.classifier = function(raw_data,
                        compare_test,
                        p_margin,
                        importance_otu,
+                       otu_train.forest,
                        p)
   names(output_result) = c('Input_data',
                            'Predicted_results_on_train_set',
@@ -203,6 +205,7 @@ Data.rf.classifier = function(raw_data,
                            'Testdata_confusion_matrix',
                            'Margin_scores_train',
                            'OTU_importance',
+                           'Classifier',
                            'cross_validation')
 
   return(output_result)

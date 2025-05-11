@@ -191,7 +191,9 @@ Data.visual.MESR = function(cluster_results,
                      aes(x = Time,
                          y = Abundance,
                          color = Features,
-                         shape = ID))
+                         shape = ID))+
+          guides(color = guide_legend(order = 1),
+                 shape = guide_legend(order = 2))
 
       } else {
         curves_plot[[i]][[j]] = curves_plot[[i]][[j]]

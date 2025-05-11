@@ -49,7 +49,9 @@ Interact.vis = function(Interact_data, count_data, metadata, Subject_ID, Interac
     long_table = subset(long_table, abs(Interaction) >= Interact_threshold)
 
     edges = long_table
-    edges$Class = ifelse(edges$Interaction > 0, "Positive", 'Negative')
+    #edges$Class = ifelse(edges$Interaction > 0, "Positive", 'Negative')
+    edges$Class <- factor(ifelse(edges$Interaction > 0, "Positive", "Negative"),
+                          levels = c("Negative", "Positive"))
 
     edges = edges %>%
       dplyr::group_by(From, To) %>%
@@ -115,8 +117,9 @@ Interact.vis = function(Interact_data, count_data, metadata, Subject_ID, Interac
                                     angle = 20),
                       start_cap = ggraph::circle(3, "mm"),
                       end_cap = ggraph::circle(3, "mm")) +
-        ggraph::scale_edge_colour_manual(values = c('blue', '#ed7d31'),
-                                 name = 'Interaction types') +
+        ggraph::scale_edge_colour_manual(values = c("Negative" = "blue", "Positive" = '#ed7d31'),
+                                         limits = c("Negative", "Positive"),
+                                         name = 'Interaction types') +
         ggraph::scale_edge_width_continuous(range = c(0.3, 2),
                                     name = 'Interaction strength') +
         scale_size_continuous(name = 'Log-median abundance') +
@@ -170,8 +173,9 @@ Interact.vis = function(Interact_data, count_data, metadata, Subject_ID, Interac
                                     angle = 20),
                       start_cap = ggraph::circle(3, "mm"),
                       end_cap = ggraph::circle(3, "mm")) +
-        ggraph::scale_edge_colour_manual(values = c('blue', '#ed7d31'),
-                                 name = 'Interaction types') +
+        ggraph::scale_edge_colour_manual(values = c("Negative" = "blue", "Positive" = '#ed7d31'),
+                                         limits = c("Negative", "Positive"),
+                                         name = 'Interaction types') +
         ggraph::scale_edge_width_continuous(range = c(0.3, 2),
                                     name = 'Interaction strength') +
         scale_size_continuous(name = 'Log-median abundance') +
@@ -182,7 +186,11 @@ Interact.vis = function(Interact_data, count_data, metadata, Subject_ID, Interac
               legend.title = element_text(size = legend_title_size),
               legend.text = element_text(size = legend_text_size))
     }
-    figure_list[[g]] = Interact_plot
+    figure_list[[g]] = Interact_plot + guides(
+      edge_colour = guide_legend(order = 1),
+      size = guide_legend(order = 2),
+      edge_width = guide_legend(order = 3)
+    )
   }
   return(figure_list)
 }

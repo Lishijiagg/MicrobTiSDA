@@ -140,6 +140,7 @@ Spec.interact <- function(Data, metadata, Group_var, abund_centered_method = 'me
     final_interaction_matrix_median <- apply(interaction_matrices, c(1, 2), median, na.rm = TRUE)
     colnames(final_interaction_matrix_median) <- colnames(otu_table)
     rownames(final_interaction_matrix_median) <- colnames(otu_table)
+    final_interaction_matrix_median = round(final_interaction_matrix_median,4)
 
     results[[g]] <- list(interaction_matrices = interaction_matrices, final_interaction_matrix = final_interaction_matrix_median)
   }

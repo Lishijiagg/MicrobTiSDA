@@ -79,6 +79,7 @@ Data.trans = function(Data,metadata,Group_var) {
     }
     transformed_data = dplyr::bind_rows(group_OTU)
   }
+  transformed_data = transformed_data[match(rownames(metadata), rownames(transformed_data)), ]
 
   return(transformed_data)
 }

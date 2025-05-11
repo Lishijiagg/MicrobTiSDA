@@ -125,7 +125,8 @@ Reg.MESR = function(Data_for_Reg,
       } else {
         fit_data[[i]][[j]] = NULL
         knots_info[[i]][[j]] = NULL
-        cat("The model of",j,"in group",i,"was excluded due to less than specified unique transformed value for model fitting\n")
+        #cat("The model of",j,"in group",i,"was excluded due to less than specified unique transformed value for model fitting\n")
+        cat("The number of non-zero value for",j,"in group",i,"is",length(unique(Sub_data_for_fit[,1])),"less than",unique_values,", thus the model was excluded.\n")
       }
     }
   }
