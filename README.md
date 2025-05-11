@@ -12,3 +12,28 @@ This package integrates the â€œLearning Interactions from Microbial Time Seriesâ
 library(devtools)
 install_github("Lishijiagg/MicrobTiSDA")
 ```
+
+## Tutorial
+Here is an example of applying MicrobTiSDA to an in vitro cultured aquatic microbiome dataset. The dataset was obtained from the study by [Fujita et al](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-023-01474-5).
+
+First, we should load MicrobTiSDA and related packages.
+```r
+library("MicrobTiSDA")
+library("tidyr")
+library("dplyr")
+library("ggplot2")
+```
+
+In this dataset, the in vitro cultivation of aquatic microbiomes was conducted in eight replicate experiments. Each replicate involved continuous cultivation for 110 days, with daily sampling performed throughout the entire period. As a result, a total of 880 aquatic microbiome community samples were obtained. In total, 28 ASVs were detected across all samples.
+```r
+data("fujita.data")
+data("fujita.meta")
+data("fujita.taxa")
+```
+
+Next, we need to perform filtering on the feature table in this dataset. However, given the relatively small number of microbial features (ASVs) in this dataset, we chose not to filter out ASVs with low abundance or low prevalence.
+```r
+fujita_filt = Data.filter(Data = fujita.data,metadata = fujita.meta,OTU_counts_filter_value = 0,
+                          OTU_filter_value = 0,Group_var = 'replicate.id')
+```
+
