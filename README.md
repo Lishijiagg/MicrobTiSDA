@@ -1,4 +1,4 @@
-MicrobTiSDA: a flexible R package for inferring interspecies interactions and abundance dynamics in microbiome time series data
+### MicrobTiSDA: a flexible R package for inferring interspecies interactions and abundance dynamics in microbiome time series data
  
 Author:   
 Shijia Li
