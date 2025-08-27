@@ -199,7 +199,7 @@ is specified, the network for each group will be plotted by default.
 plot(fujita_interact_vis,groups = "Rep.1")
 #> Plot: Rep.1
 ```
-
+# <img src="Interact_plot.png" align="middle" height="300" alt="">
 Please note that the output is an interactive HTML chart supporting
 zooming and dragging for detailed exploration. However, since
 interactive htmlwidgets cannot be rendered here, only a static
