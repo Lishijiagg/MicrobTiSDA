@@ -67,12 +67,10 @@ data("fujita.meta")
 data("fujita.taxa")
 ```
 
-Please note that MicrobTiSDA has specific format requirements for the
-user-provided microbiome count table, metadata, and taxonomic annotation
-files:
+Please note that MicrobTiSDA has specific format requirements for the microbial community count tables, metadata, and taxonomic annotation files provided by users. If you need to run your own data, please prepare them strictly according to the following examples:
 
 - The count table (OTU/ASV table) must have OTU/ASV IDs as row names and
-  sample IDs as column names.
+  sample IDs as column names, and no annotations attached.
 
 ``` r
 head(fujita.data[,c(1:6)])
