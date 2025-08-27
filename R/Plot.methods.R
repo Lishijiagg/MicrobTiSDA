@@ -15,7 +15,7 @@ plot.microbTiSDA_dynamic_vis <- function(x, groups = NULL, ...) {
     groups <- names(x$visualization)
   }
   for (g in groups) {
-    cat("Plot:", names(x$visualization)[g],"\n")
+    cat("Plot:", names(x$visualization[g]),"\n")
     print(x$visualization[[g]])
   }
   invisible(x)

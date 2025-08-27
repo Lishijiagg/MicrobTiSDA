@@ -1,6 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# MicrobTiSDA <img src="MicrobTiSDA.png" align="right" height="275" alt="">
+
 # MicrobTiSDA
 
 <!-- badges: start -->
@@ -75,21 +77,14 @@ files:
   sample IDs as column names.
 
 ``` r
-head(fujita.data[,c(1:10)])
-#>        S_00073 S_00169 S_00265 S_00361 S_00457 S_00553 S_00649 S_00745 S_00841
-#> X_0002   11932   10453    8974    4452    6881    6651    6421    5638   14885
-#> X_0004       0       0       0       0       0       0       0       0       0
-#> X_0007       0       0       0       0       0       0       0       0       0
-#> X_0008       0       0       0       0       0       0       0       0       0
-#> X_0010       0       0       0       0       0       0       0       0       0
-#> X_0015       0       0       0       0       0       0       0       0       0
-#>        S_00937
-#> X_0002 12833.5
-#> X_0004     0.0
-#> X_0007     0.0
-#> X_0008     0.0
-#> X_0010     0.0
-#> X_0015     0.0
+head(fujita.data[,c(1:6)])
+#>        S_00073 S_00169 S_00265 S_00361 S_00457 S_00553
+#> X_0002   11932   10453    8974    4452    6881    6651
+#> X_0004       0       0       0       0       0       0
+#> X_0007       0       0       0       0       0       0
+#> X_0008       0       0       0       0       0       0
+#> X_0010       0       0       0       0       0       0
+#> X_0015       0       0       0       0       0       0
 ```
 
 - The metadata file must use sample IDs as row names, with additional
@@ -101,21 +96,14 @@ head(fujita.data[,c(1:10)])
   classification models, and other analyses.
 
 ``` r
-head(fujita.meta)
-#>         time resource inoculum replicate.id         treat1 treat2 missing
-#> S_00073    1 Medium-C    Water        Rep.1 Water/Medium-C     WC       N
-#> S_00169    2 Medium-C    Water        Rep.1 Water/Medium-C     WC       Y
-#> S_00265    3 Medium-C    Water        Rep.1 Water/Medium-C     WC       N
-#> S_00361    4 Medium-C    Water        Rep.1 Water/Medium-C     WC       Y
-#> S_00457    5 Medium-C    Water        Rep.1 Water/Medium-C     WC       N
-#> S_00553    6 Medium-C    Water        Rep.1 Water/Medium-C     WC       Y
-#>         timeChar
-#> S_00073  Day_001
-#> S_00169  Day_002
-#> S_00265  Day_003
-#> S_00361  Day_004
-#> S_00457  Day_005
-#> S_00553  Day_006
+head(fujita.meta[,c(1:6)])
+#>         time resource inoculum replicate.id         treat1 treat2
+#> S_00073    1 Medium-C    Water        Rep.1 Water/Medium-C     WC
+#> S_00169    2 Medium-C    Water        Rep.1 Water/Medium-C     WC
+#> S_00265    3 Medium-C    Water        Rep.1 Water/Medium-C     WC
+#> S_00361    4 Medium-C    Water        Rep.1 Water/Medium-C     WC
+#> S_00457    5 Medium-C    Water        Rep.1 Water/Medium-C     WC
+#> S_00553    6 Medium-C    Water        Rep.1 Water/Medium-C     WC
 ```
 
 - The taxonomic annotation table should have microbial features (OTU/ASV
@@ -213,15 +201,17 @@ is specified, the network for each group will be plotted by default.
 
 ``` r
 plot(fujita_interact_vis,groups = "Rep.1")
-#> Plot: NA
+#> Plot: Rep.1
 ```
 
-The output is an interactive HTML plot that supports zooming and
-dragging for detailed exploration. In the graph, arrow colors indicate
-the type of interaction: orange represents positive interactions, and
-blue represents negative interactions. Nodes represent species, with
-keystone species—those involved in multiple pairwise
-interactions—highlighted in yellow.
+Please note that the output is an interactive HTML chart supporting
+zooming and dragging for detailed exploration. However, since
+interactive htmlwidgets cannot be rendered here, only a static
+screenshot is displayed. In the chart, arrow colors indicate interaction
+types: orange represents positive interactions, and blue represents
+negative interactions. Nodes represent species, with keystone species
+(i.e., those involved in multiple pairwise interactions) highlighted in
+yellow.
 
 After completing species interaction inference for the aquatic
 microbiome, we can proceed to analyze the temporal abundance patterns of

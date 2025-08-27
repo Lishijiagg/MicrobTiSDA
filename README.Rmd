@@ -4,6 +4,8 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# MicrobTiSDA <img src="MicrobTiSDA.png" align="right" height="275" alt="">
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -59,13 +61,13 @@ Please note that MicrobTiSDA has specific format requirements for the user-provi
 * The count table (OTU/ASV table) must have OTU/ASV IDs as row names and sample IDs as column names.
 
 ```{r}
-head(fujita.data[,c(1:10)])
+head(fujita.data[,c(1:6)])
 ```
 
 * The metadata file must use sample IDs as row names, with additional sample information as column names. The columns must include the sampling time (Time) and either group (Group) or individual (SampleID) information for each sample. MicrobTiSDA uses these details to perform species inference, construct microbial abundance time regression models, interpolate missing data, construct random forest classification models, and other analyses.
 
 ```{r}
-head(fujita.meta)
+head(fujita.meta[,c(1:6)])
 ```
 
 * The taxonomic annotation table should have microbial features (OTU/ASV IDs) as row names, and the columns should represent taxonomic annotations for each feature. These annotations must be split into different taxonomic levels (e.g., arranged sequentially from kingdom to species)
@@ -120,7 +122,7 @@ We can use the \code{plot()} function to visualize species interaction networks.
 plot(fujita_interact_vis,groups = "Rep.1")
 ```
 
-The output is an interactive HTML plot that supports zooming and dragging for detailed exploration. In the graph, arrow colors indicate the type of interaction: orange represents positive interactions, and blue represents negative interactions. Nodes represent species, with keystone species—those involved in multiple pairwise interactions—highlighted in yellow.
+Please note that the output is an interactive HTML chart supporting zooming and dragging for detailed exploration. However, since interactive htmlwidgets cannot be rendered here, only a static screenshot is displayed. In the chart, arrow colors indicate interaction types: orange represents positive interactions, and blue represents negative interactions. Nodes represent species, with keystone species (i.e., those involved in multiple pairwise interactions) highlighted in yellow.
 
 After completing species interaction inference for the aquatic microbiome, we can proceed to analyze the temporal abundance patterns of microbial features using MicrobTiSDA. To support this analysis, MicrobTiSDA provides a method for fitting regression models to the abundance trajectories of microbial features. To begin, we first need to construct a design matrix for modeling temporal trends for each microbial feature. This can be accomplished using the \code{Design} function, where users must specify the variables in the metadata that represent the group ID for each subject or replicate, the sample ID, and the time point of each sample.
 
