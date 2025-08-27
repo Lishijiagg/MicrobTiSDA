@@ -1,0 +1,320 @@
+---
+title: "MicrobTiSDA"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MicrobTiSDA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Introduction to MicrobTiSDA
+
+Longitudinal analysis of microbiomes is crucial for understanding the temporal dynamics of host-associated or environmental microbiomes, Laying the foundation for exploring ecological patterns and mechanisms of host-microbiome interactions. Sampling microbiota at multiple time points allows researchesrs to uncover community trends, stability and responses to external interventions such as therapies. Thus, developing efficient and accurate methods for microbiome time-series analysis has become increasingly urgent. Here, we developed MicrobTiSDA, an R package that integrates the Learning interactions from Microbial Time-Series (LIMITS) algorithm. By employing discrete-time Lotka-Volterra models, MicrobTiSDA infers inter-species interactions from microbiome time-series data. Moreover, the package enables the construction of regression models to investigate the dynamic abundance changes of individual species within microbial communities and provides reliable methods for identifying species groups with similar (or opposing) temporal pattens, thereby offering novel perspectives on potential inter-species relationships.
+
+## Getting started
+
+First we have to load the installed package and other necessary packages in the workspace with
+
+```{r setup}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(MicrobTiSDA)
+```
+
+### Case study 1: Infant gut microbiome dataset
+
+Here, we load the data of this case study obtained from [de Muinck et al](https://www.nature.com/articles/s41467-018-04641-7).
+
+```{r}
+data("OSLO.infant.data")
+data("OSLO.infant.meta")
+data("OSLO.infant.taxa")
+```
+
+The first case study involves applying MicrobTiSDA to an infant gut microbiome dataset. We focused on data from dizygotic twins (ID10 and ID11) collected from day six to day sixty after birth. This dataset comprises a total of 77 fecal samples with 476,921 operational taxonomic units (OTUs). ID10 was hospitalized due to an infection with Streptococcus serogroup B β-hemolytic (S. agalactiae) and received antibiotic treatment from day 22 to day 33. Overall, we collected 77 fecal samples, with ID10 contributing 34 samples and ID11 providing 43 samples. please check \code{OSLO.infant.meta} for detail information.
+
+The input data required by MicrobTiSDA typically includes a species composition data table from high-throughput sequencing (OTU/ASV table), a metadata file that records all sample information, and species annotation data for microbial characteristics. The input species composition table is required to have microbial feature IDs as rows and sample IDs as columns. The input metadata must have sample IDs as row names and must include information such as the subject ID to which the samples belong and the sampling time of the samples.
+
+We first filter out OTUs from the loaded OTU table that have a total abundance of less than 5000 across all samples and a prevalence of less than 20% in all samples from each subject.
+
+```{r}
+oslo_data_filt = Data.filter(Data = OSLO.infant.data,
+                             metadata = OSLO.infant.meta,
+                             OTU_counts_filter_value = 5000, 
+                             OTU_filter_value = 0.2,
+                             Group_var = 'ID')
+```
+
+Subsequently, we performe interpolation on the filtered OTU table to generate continuous time series data for each subject from the first sampling time point to just before the last sampling time point.
+
+```{r}
+oslo_data_intp = Data.interpolate(Data = oslo_data_filt,
+                                  metadata = OSLO.infant.meta,
+                                  Group_var = 'ID',
+                                  Sample_ID = 'ID',
+                                  Sample_Time = 'day')
+```
+
+The interpolated OTU table and the new metadata will be used for subsequent analyses.
+
+```{r}
+oslo_data_int = oslo_data_intp$Interpolated_Data
+oslo_meta_int = oslo_data_intp$Interpolated_Data_metadata
+```
+
+Transform the filtered and interpolated data using modified centered log-ratio transformation.
+
+```{r}
+oslo_data_trans = Data.trans(Data = oslo_data_int,
+                             metadata = oslo_meta_int,
+                             Group_var = 'Group')
+```
+
+Next, we will infer the species interactions within the gut microbiomes of each individual and visualize the topological results of these species interactions. This step may take a long time, to reduce computation time, we will set the number of iterations for bagging to 5 (the default is 10).
+
+```{r}
+oslo_data_interact = Spec.interact(Data = oslo_data_trans,
+                                   metadata = oslo_meta_int,
+                                   Group_var = 'Group',
+                                   num_iterations = 5)
+```
+
+Visualize the topological results of interspecies interactions within microbiomes of each individual.
+
+```{r}
+oslo_interact_vis = Interact.dyvis(Interact_data = oslo_data_interact,
+                                   threshold = 1e-6,
+                                   core_arrow_num = 4,
+                                   Taxa = OSLO.infant.taxa,
+                                   fontsize = 20,
+                                   ret_data = F)
+
+# Use plot method to visualized species interaction results
+#plot(oslo_interact_vis)
+```
+
+Please note that the output includes interactive HTML charts supporting zooming and dragging for detailed exploration. However, since interactive htmlwidgets cannot be rendered here, users could do the visualizations by your owns. In the chart, arrow colors indicate interaction types: orange represents positive interactions, and blue represents negative interactions. Nodes represent species, with keystone species (i.e., those involved in multiple pairwise interactions) highlighted in yellow.
+
+Another functionality of MicrobTiSDA is the construction of natural spline regression models for the time series data of each microbial feature. Before this, it is necessary to construct the design matrix. The sampling time data for each sample will be added as columns to the species composition data frame after transformation. Additionally, dummy variables will be used to label each subject's samples, where 1 indicates that the sample belongs to that subject and 0 indicates that it does not.
+
+```{r}
+oslo_data_design = Design(metadata = oslo_meta_int,
+                          Group_var = 'Group',
+                          Sample_ID = 'ID',
+                          Sample_Time = 'Time',
+                          Pre_processed_Data = oslo_data_trans)
+```
+
+Here, we construct natural spline regression models for each microbial feature based on the transformed time series data. Given that subject ID10 was hospitalized and received antibiotic treatment from day 22 to day 33 after birth, we will use days 22 and 33 as the time konts. Additionally, we will filter out microbial features from each subject's gut microbiome time series that have fewer than 10 unique transformed abundance values, as such features do not provide sufficient data for constructing regression models.
+
+```{r}
+oslo_model = Reg.SPLR(Data_for_Reg = oslo_data_design,
+                      pre_processed_data = oslo_data_trans,
+                      Knots = c(22,33),
+                      unique_values = 10)
+```
+
+Next, we will use the constructed regression models for the microbial feature time series to make predictions, aiming to investigate the temporal patterns of the microbial features.
+
+```{r}
+oslo_model_pred = Pred.data(Fitted_models = oslo_model,
+                            metadata = oslo_meta_int,
+                            Group = 'Group',
+                            Sample_Time = 'Time',
+                            time_step = 1)
+```
+
+By calculating the correlation distance between the predicted microbial feature time series from the computational model, MicrobTiSDA employs a hierarchical clustering method to cluster microbial features based on the correlation distance between them.
+
+```{r}
+oslo_model_clust = Data.cluster(predicted_data = oslo_model_pred,
+                                clust_method = 'average',
+                                dend_title_size = 12,
+                                font_size = 2.5)
+plot(oslo_model_clust)
+```
+
+After obtaining the dendrogram of microbial features clustering, we manually set a correlation distance threshold of less than 0.15 (\code{cut_height} = 0.15) to group microbial features into clusters based on the output dendrogram.
+
+```{r}
+oslo_clust_results = Data.cluster.cut(cluster_outputs = oslo_model_clust,cut_height = 0.15,font_size = 2.5)
+plot(oslo_clust_results)
+```
+
+If the \code{auto_cutree} parameter of the Data.cluster function is set to FALSE, a dendrogram of the microbial feature time series clusters for each subject will be output during the execution of the \code{Data.cluster} function.
+
+Next, we can visualize the clustered feature groups. The temporal patterns of the feature clusters for each subject will be generated separately in the plots. If the \code{Taxa} parameter is set to \code{NULL}, the plots will only display the IDs of each microbial feature. If \code{Taxa} contains species annotation information, the annotation will be added in parentheses following the microbial feature IDs in the plots. If \code{plot_dots} is \code{TRUE}, the original transformed microbial feature abundances will be visualized in figures.
+
+```{r}
+oslo_model_vis = Data.visual(cluster_results = oslo_clust_results,
+                             cutree_by = 'height',
+                             cluster_height = c(0.15,0.15),
+                             predicted_data = oslo_model_pred,
+                             Design_data = oslo_data_design,
+                             pre_processed_data = oslo_data_trans,
+                             plot_dots = TRUE,
+                             figure_x_scale = 5,
+                             Taxa = OSLO.infant.taxa,
+                             plot_lm = FALSE,
+                             legend_title_size = 12,
+                             legend_text_size = 10,axis_x_size = 8,axis_title_size = 10,axis_y_size = 10)
+# Here we will only visualize ID_10's gut microbial features in the first cluster.
+plot(oslo_model_vis,groups = "ID_10",clusters = 1)
+```
+
+The output results above represent microbial feature clusters with highly similar temporal patterns. If you want to find microbial features with temporal patterns that are opposite to those of the identified microbial features, you can use the \code{Data.opp.cor.vis} function. This function will help identify and visualize microbial features that exhibit contrasting temporal patterns. The microbial features being compared will be represented by solid curves, while those that are negatively correlated (with a high correlation distance, for example, greater than 0.9, and \code{ng_cor_thres} set to 0.1) will be represented by dashed curves. This distinction will help to clearly visualize the relationships between the microbial features in the plots.
+
+```{r}
+opposite_vis = Data.opp.cor.vis(predicted_data = oslo_model_pred,
+                                pre_processed_data = oslo_data_trans,
+                                Design_data = oslo_data_design,
+                                ng_cor_thres = 0.1,
+                                Taxa = OSLO.infant.taxa,
+                                plot_dots = FALSE,legend_text_size = 5)
+
+# For example, taking OTU_000001 of ID10
+# we can observe microbial features with a correlation distance greater than 0.9
+plot(opposite_vis,group = 'ID_10',feature = 'OTU_000001')
+```
+
+### Case study 2: Gut microbiome dataset of preterm infant with sepsis.
+
+In this case study, we applied MicrobTiSDA to a subset of gut microbiome time-series data from preterm infants diagnosed with sepsis, aiming to investigate the dynamic differences between the gut microbiomes of septic preterm infants infected with pathogenic E.coli and their matched controls. This dataset consisted of 4 preterm infants diagnosed with sepsis within the first month of life (S_D, ID_7, ID_14, ID_19, ID_21) and 4 individually matched controls (S_C, ID_31, ID_37, ID_42, ID_43).
+
+Load data
+
+```{r}
+data("preterm.data")
+data("preterm.meta")
+data("preterm.taxa")
+```
+
+This dataset contains a total of 51 samples and 202 OTUs, with the metadata including information such as subject ID, sample ID, sampling time, and sample grouping. To standardize sampling times, we normalized the sepsis diagnosis day for each patient to the pseudo-Day 11, aligning all sampling times to a 10-day window prior to diagnosis (i.e., pseudo-Days 1–10).
+
+Since this case study involves comparing the dynamic differences in gut microbiomes between two groups, we will first use the random forest method, treating all OTUs as input features to classify the gut microbiome samples of the two groups. We will select OTUs that contribute significantly to the sample classification (i.e., biomarkers) for subsequent analysis. In this case, this step will serve as a replacement for the data filtering step.
+
+Here, we choose to use 70% of the samples as the training set and the remaining 30% as the testing set (\code{train_p = 0.7}). Given that the number of microbial features in this dataset is relatively small (only 202 OTUs), we didn't filter out low_abundant microbial features in this step (\code{OTU_counts_filter_value = 0}). 
+
+```{r}
+preterm_rf = Data.rf.classifier(raw_data = preterm.data,
+                                metadata = preterm.meta,
+                                train_p = 0.7,
+                                Group = 'Group',
+                                OTU_counts_filter_value = 0,
+                                legend_title_size = 12,
+                                legend_text_size = 10,
+                                axis_title_size = 10,
+                                title_size = 12)
+
+# The output object contains the results of classification model evaluation 
+# and cross-validation results, use plot() to visualize them.
+plot(preterm_rf)
+```
+
+The results indicate that the sample classification model built using all OTUs as inputs demonstrates high performance, with an Out of Bag error of 0.081.
+
+Additionally, based on the cross-validation curve output above, we selected the top 10 OTUs as biomarkers according to their mean decrease accuracy (MDA) ranking by running the function \code{Rf.biomarkers}.
+
+```{r}
+selected_biomarkers = Rf.biomarkers(rf = preterm_rf,feature_select_num = 10)
+plot(selected_biomarkers)
+```
+
+Using the selected biomarkers and applying NMDS (Non-metric Multidimensional Scaling), we can observe that the selected biomarkers effectively distinguish between the two groups of samples.
+
+```{r}
+preterm_rf_vis = Classify.vis(classified_results = selected_biomarkers,
+                              dist_method = 'bray',
+                              legend_title_size = 12,
+                              legend_text_size = 10,
+                              axis_title_size = 10,
+                              axis_text_size = 8)
+```
+
+Extract the biomarker data (\code{Important_OTU_table}) from the output of the \code{Data.rf.classifier} function for subsequent analysis, and first apply the modified centered log-ratio (mCLR) transformation to the data.
+
+```{r}
+preterm_trans = Data.trans(Data = selected_biomarkers,
+                           Group_var = 'Group',
+                           metadata = preterm.meta)
+```
+
+Construct the design matrix.
+
+```{r}
+preterm_design = Design(metadata = preterm.meta,
+                        Group_var = 'Group',
+                        Pre_processed_Data = preterm_trans,
+                        Sample_ID = 'ID',
+                        Sample_Time = 'Time')
+```
+
+Next, mixed-effects natural spline regression model is applied to construct general OTU time series regression model for each group, with time as a fixed effect and the subject ID within the group as a random effect. Please note that unlike the case of the full-term infant gut microbiome dataset above, the purpose of applying this preterm infant gut microbiome dataset is to identify temporal patterns of gut microbiota differences or biomarker characteristics between the two groups of subjects. Therefore, MicrobTiSDA uniformly employs a mixed-effects natural spline regression model for constructing regression models targeting general temporal patterns of microbial feature abundance at the group level.
+
+```{r}
+preterm_model= Reg.MESR(Data_for_Reg = preterm_design,
+                        pre_processed_data = preterm_trans,
+                        max_Knots = 5,
+                        unique_values = 3)
+```
+Based on the fitted regression models, the \code{Pred.data.MESR} function is used to predict the general time pattern of each microbial feature within the group. Note that \code{Pred.data.MESR} can only accept output from the \code{Reg.MESR} function.
+
+```{r}
+preterm_pred = Pred.data.MESR(Fitted_models = preterm_model,
+                              metadata = preterm.meta,
+                              Group = 'Group',
+                              Sample_Time = 'Time',
+                              time_step = 1)
+```
+
+Following the same analytical workflow as in Case 1, we can also cluster the predicted time patterns of microbial features.
+
+```{r}
+preterm_clust = Data.cluster(predicted_data = preterm_pred,
+                             clust_method = 'average',
+                             dend_title_size = 12,
+                             font_size = 3.5)
+plot(preterm_clust)
+```
+And we can determine the OTU clusters according to the output results above using \code{Data.cluster.cut} by setting the cutting distance equals to 0.15.
+
+```{r}
+preterm_clust_results = Data.cluster.cut(cluster_outputs = preterm_clust,
+                                         cut_height = 0.15,
+                                         font_size = 3.5)
+plot(preterm_clust_results)
+```
+
+Here, OTUs with a correlation distance of less than 0.15 are grouped into clusters.
+
+The visualization of microbial feature abundance time patterns fitted by the linear mixed-effects spline regression model requires the use of the \code{Data.visual.MESR} function.
+
+```{r}
+preterm_data_vis = Data.visual.MESR(Design_data = preterm_design,
+                                    cluster_results = preterm_clust_results,
+                                    cutree_by = 'height',
+                                    cluster_height = c(0.15,0.15),
+                                    predicted_data = preterm_pred,
+                                    pre_processed_data = preterm_trans,
+                                    Taxa = preterm.taxa,
+                                    plot_dots = TRUE,
+                                    plot_lm = FALSE,
+                                    figure_x_scale = 1,
+                                    legend_title_size = 10,
+                                    legend_text_size = 8,
+                                    axis_title_size = 10,
+                                    axis_x_size = 7,
+                                    axis_y_size = 7)
+# Here, we only visualize the first clusters in both groups.
+plot(preterm_data_vis,groups = "Sepsis",clusters = 1)
+plot(preterm_data_vis,groups = "Control",clusters = 1)
+```
+
