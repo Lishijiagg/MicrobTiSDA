@@ -388,7 +388,7 @@ mclr.transform <- function(Z, base = exp(1), eps = 0.1) {
 #'     to split the data based on the \code{"Group"} and \code{"Diet"} (if in \code{metadata})categorical variables to study the
 #'     interaction between different grouping variables, set \code{Group_var = c("Group","Diet")}.
 #'
-#' @return A data frame containing the MCLR-transformed data with the same structure as the input microbial compositional data.
+#' @return An object of class \code{"TransformedData"} containing the transformed count table.
 #' @author Shijia Li
 #' @export
 #'
@@ -888,8 +888,11 @@ Design <- function(metadata, Group_var = NULL, Pre_processed_Data, Sample_Time, 
 #'     knots is determined by minimizing the GCV criterion (default: \code{NULL}).
 #' @param max_Knots An integer indicating the maximum number of knots to consider when selecting the optimal spline model (default: 5).
 #'
-#' @return A list with two elements: \code{fitted_model} is a nested list of the fitted spline regression models for each design dummy
-#'     variable and OTU; \code{knots_info_each_model} contains the corresponding knots information for each model.
+#' @return An object of class \code{"MicrobTiSDA_spline_regression"} containing:
+#'   \item{fitted_model}{A nested list of the fitted spline regression models for each design dummy
+#'     variable and OTU.}
+#'   \item{knots_info}{Contains the corresponding knots information for each model.}
+#'
 #' @export
 #' @import mgcv splines
 #'
@@ -1016,8 +1019,8 @@ Reg.SPLR <- function(Data_for_Reg,
 #' @param time_step A numeric value specifying the interval between new time points in the prediction sequence.
 #' @param Sample_Time A character string indicating the column name in \code{metadata} that contains sample time information.
 #'
-#' @return A list of data frames. Each element of the list corresponds to a group and contains the predicted OTU abundances at the
-#'   new time points, with rows labeled by the group and time (formatted as \code{Group_T_Time}) and an additional column \code{Predicted_Time}.
+#' @return An object of class \code{PredictedData} which contains the predict microbial feature abundances at the new time points, with rows
+#'     labeled by the group and time (formatted as \code{Group_T_Time}) and an additional column \code{Predicted_Time}.
 #' @export
 #' @author Shijia Li
 #'
@@ -1092,7 +1095,7 @@ Pred.data <- function(Fitted_models, metadata, Group, time_step, Sample_Time) {
 #' @param font_size A numeric value specifying the font size for text labels in the dendrogram plots (default: \code{0.2}).
 #' @param dend_title_size A numeric value specifying the font size of the dendrogram plot title (default: \code{15}).
 #'
-#' @return A list with three elements:
+#' @return An object of \code{MicrobTiSDA.cluster} with three elements:
 #' \describe{
 #'   \item{predicted_data}{The original input list of predicted data.}
 #'   \item{cluster_results}{A list of hierarchical clustering objects (one per group).}
@@ -1202,7 +1205,7 @@ Data.cluster <- function(predicted_data,
 #'     silhouette width (default: \code{FALSE}).
 #' @param font_size A numeric value specifying the font size for text labels in the dendrogram plots (default: \code{0.2}).
 #'
-#' @return A list with two elements:
+#' @return A object of \code{MicrobTiSDA.clusterCut} with two elements:
 #' \describe{
 #'   \item{cluster_results}{A list of clustering objects for each group.}
 #'   \item{cluster_figures}{A list of ggplot2 objects containing the annotated dendrogram plots for each group.}
@@ -1373,8 +1376,7 @@ Data.cluster.cut <- function(cluster_outputs,
 #' @param legend_text_size A numeric value specifying the font size for legend text (default: \code{5}).
 #' @param dots_size A numeric value specifying the size of the overlaid raw data points (default: \code{0.7}).
 #' @importFrom ggplot2 ggplot
-#' @return A list of lists of ggplot2 objects, where each top-level element corresponds to a subject and each sub-element corresponds
-#'         to a cluster branch's temporal profile plot.
+#' @return An object of class \code{MicrobTiSDA.visual} which contains the list of visualizations of clustered microbial features.
 #' @export
 #'
 #' @examples
@@ -1586,8 +1588,7 @@ Data.visual <- function(cluster_results,
 #' @param dots_size A numeric value specifying the size of the overlaid raw data points (default: \code{0.7}).
 #'
 #' @author Shijia Li
-#' @return A list of lists of ggplot2 objects. The top-level list is keyed by group names, and each sublist contains plots for each OTU
-#'         that exhibits opposing trends (i.e., has correlations below \code{ng_cor_thres}) in that group.
+#' @return An object of class \code{DataOppCorVis} which contains the list of each targeted microbial feature.
 #' @export
 #'
 Data.opp.cor.vis <- function(predicted_data,
@@ -1756,7 +1757,7 @@ Data.opp.cor.vis <- function(predicted_data,
 #' @param legend_title_size Numeric value for the font size of legend titles. Defaults to 8.
 #' @param legend_text_size Numeric value for the font size of legend text. Defaults to 6.
 #'
-#' @return A list with the following elements:
+#' @return An object of class \code{DataRFClassifier} with the following elements:
 #' \describe{
 #'   \item{Input_data}{The transposed and (optionally) filtered OTU table.}
 #'   \item{Predicted_results_on_train_set}{A vector of predicted group labels for the training set.}
@@ -1942,7 +1943,7 @@ Data.rf.classifier <- function(raw_data,
 #'     specified biomarkers needs to be determined by the user based on the cross-validation result plot output by
 #'     \code{\link[MicrobTiSDA]{Data.rf.classifier}}.
 #'
-#' @return A list with two elements:
+#' @return An object of class \code{RfBiomarker} with two elements:
 #'   \describe{
 #'     \item{OTU_importance}{A data frame of the selected biomarkers (transposed feature table).}
 #'     \item{cross_validation_fig}{A ggplot object of the cross-validation plot with a vertical dashed line indicating the feature selection cutoff.}
@@ -2111,7 +2112,7 @@ Classify.vis = function(classified_results,
 #'     knots is determined by minimizing the GCV criterion (default: \code{NULL}).
 #' @param max_Knots An integer indicating the maximum number of knots to consider when selecting the optimal spline model (default: 3).
 #' @import mgcv splines
-#' @return A list with two elements: \code{fitted_model} is a nested list containing the fitted mixed-effects GAM models for each design
+#' @return An object of class \code{RegMESR} with two elements: \code{fitted_model} is a nested list containing the fitted mixed-effects GAM models for each design
 #'     dummy variable and OTU; \code{knots_info_each_model} is a corresponding nested list with the knots used for each model.
 #' @export
 #' @author Shijia Li
@@ -2244,7 +2245,7 @@ Reg.MESR <- function(Data_for_Reg,
 #' @param time_step A numeric value specifying the interval between new time points in the prediction sequence.
 #' @param Sample_Time A character string indicating the column name in \code{metadata} that contains sample time information.
 #' @author Shijia Li
-#' @return A list of data frames. Each element of the list corresponds to a group and contains the predicted OTU abundances at the
+#' @return An object of \code{PredictedDataMESR}. Each element of the list corresponds to a group and contains the predicted OTU abundances at the
 #'   new time points, with rows labeled by the group and time (formatted as \code{Group_T_Time}) and an additional column \code{Predicted_Time}.
 #' @export
 #'
@@ -2351,8 +2352,8 @@ Pred.data.MESR <- function(Fitted_models, metadata, Group, time_step, Sample_Tim
 #' @param legend_text_size A numeric value specifying the font size for legend text (default: \code{5}).
 #' @param dots_size A numeric value specifying the size of the overlaid raw data points (default: \code{0.7}).
 #'
-#' @return A list of lists of ggplot2 objects, where each top-level element corresponds to a group and each sub-element
-#'     corresponds to a cluster within that group. Each plot visualizes the temporal profiles of microbial features in that cluster.
+#' @return An object of class \code{MicrobTiSDA.MSERvisual} which contains lists of ggplot2 objects, where each top-level element corresponds to a
+#'     group and each sub-element corresponds to a cluster within that group. Each plot visualizes the temporal profiles of microbial features in that cluster.
 #' @importFrom ggplot2 ggplot
 #' @export
 #'

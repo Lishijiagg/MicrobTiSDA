@@ -26,7 +26,7 @@ plot (default: \code{0.2}).}
 silhouette width (default: \code{FALSE}).}
 }
 \value{
-A list with two elements:
+A object of \code{MicrobTiSDA.clusterCut} with two elements:
 \describe{
 \item{cluster_results}{A list of clustering objects for each group.}
 \item{cluster_figures}{A list of ggplot2 objects containing the annotated dendrogram plots for each group.}

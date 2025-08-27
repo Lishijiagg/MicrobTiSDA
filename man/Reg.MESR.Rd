@@ -30,7 +30,7 @@ knots is determined by minimizing the GCV criterion (default: \code{NULL}).}
 \item{max_Knots}{An integer indicating the maximum number of knots to consider when selecting the optimal spline model (default: 3).}
 }
 \value{
-A list with two elements: \code{fitted_model} is a nested list containing the fitted mixed-effects GAM models for each design
+An object of class \code{RegMESR} with two elements: \code{fitted_model} is a nested list containing the fitted mixed-effects GAM models for each design
 dummy variable and OTU; \code{knots_info_each_model} is a corresponding nested list with the knots used for each model.
 }
 \description{

@@ -21,7 +21,7 @@ to split the data based on the \code{"Group"} and \code{"Diet"} (if in \code{met
 interaction between different grouping variables, set \code{Group_var = c("Group","Diet")}.}
 }
 \value{
-A data frame containing the MCLR-transformed data with the same structure as the input microbial compositional data.
+An object of class \code{"TransformedData"} containing the transformed count table.
 }
 \description{
 This function applies the modified centered log-ratio (MCLR) transformation function \code{\link[MicrobTiSDA]{mclr.transform}}

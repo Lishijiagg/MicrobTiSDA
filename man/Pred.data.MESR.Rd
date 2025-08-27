@@ -19,7 +19,7 @@ individual information (\code{Group} and \code{ID}), the sampling \code{Time} po
 \item{Sample_Time}{A character string indicating the column name in \code{metadata} that contains sample time information.}
 }
 \value{
-A list of data frames. Each element of the list corresponds to a group and contains the predicted OTU abundances at the
+An object of \code{PredictedDataMESR}. Each element of the list corresponds to a group and contains the predicted OTU abundances at the
 new time points, with rows labeled by the group and time (formatted as \code{Group_T_Time}) and an additional column \code{Predicted_Time}.
 }
 \description{

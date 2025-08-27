@@ -30,8 +30,10 @@ knots is determined by minimizing the GCV criterion (default: \code{NULL}).}
 \item{max_Knots}{An integer indicating the maximum number of knots to consider when selecting the optimal spline model (default: 5).}
 }
 \value{
-A list with two elements: \code{fitted_model} is a nested list of the fitted spline regression models for each design dummy
-variable and OTU; \code{knots_info_each_model} contains the corresponding knots information for each model.
+An object of class \code{"MicrobTiSDA_spline_regression"} containing:
+\item{fitted_model}{A nested list of the fitted spline regression models for each design dummy
+variable and OTU.}
+\item{knots_info}{Contains the corresponding knots information for each model.}
 }
 \description{
 The \code{Reg.SPLR} function fits natural spline regression models to time-series OTU data for each subgroup

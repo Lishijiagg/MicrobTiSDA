@@ -74,8 +74,7 @@ is added (default: \code{FALSE}).}
 \item{dots_size}{A numeric value specifying the size of the overlaid raw data points (default: \code{0.7}).}
 }
 \value{
-A list of lists of ggplot2 objects, where each top-level element corresponds to a subject and each sub-element corresponds
-to a cluster branch's temporal profile plot.
+An object of class \code{MicrobTiSDA.visual} which contains the list of visualizations of clustered microbial features.
 }
 \description{
 The \code{Data.visual} function generates visualizations of temporal profiles for OTUs by integrating clustering results,

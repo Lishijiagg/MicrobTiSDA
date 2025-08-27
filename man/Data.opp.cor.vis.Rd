@@ -52,8 +52,7 @@ pre-processed OTU data frame with sample IDs as row names and OTU IDs as column 
 \item{dots_size}{A numeric value specifying the size of the overlaid raw data points (default: \code{0.7}).}
 }
 \value{
-A list of lists of ggplot2 objects. The top-level list is keyed by group names, and each sublist contains plots for each OTU
-that exhibits opposing trends (i.e., has correlations below \code{ng_cor_thres}) in that group.
+An object of class \code{DataOppCorVis} which contains the list of each targeted microbial feature.
 }
 \description{
 This function identifies and visualizes OTUs/ASVs that exhibit opposing temporal trends based on a correlation threshold.

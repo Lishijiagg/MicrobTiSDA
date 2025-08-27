@@ -22,7 +22,7 @@ Data.cluster(
 \item{dend_title_size}{A numeric value specifying the font size of the dendrogram plot title (default: \code{15}).}
 }
 \value{
-A list with three elements:
+An object of \code{MicrobTiSDA.cluster} with three elements:
 \describe{
 \item{predicted_data}{The original input list of predicted data.}
 \item{cluster_results}{A list of hierarchical clustering objects (one per group).}

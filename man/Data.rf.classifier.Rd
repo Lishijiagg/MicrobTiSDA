@@ -48,7 +48,7 @@ is retained. The default is \code{NA}.}
 \item{legend_text_size}{Numeric value for the font size of legend text. Defaults to 6.}
 }
 \value{
-A list with the following elements:
+An object of class \code{DataRFClassifier} with the following elements:
 \describe{
 \item{Input_data}{The transposed and (optionally) filtered OTU table.}
 \item{Predicted_results_on_train_set}{A vector of predicted group labels for the training set.}

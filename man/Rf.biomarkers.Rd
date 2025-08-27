@@ -14,7 +14,7 @@ specified biomarkers needs to be determined by the user based on the cross-valid
 \code{\link[MicrobTiSDA]{Data.rf.classifier}}.}
 }
 \value{
-A list with two elements:
+An object of class \code{RfBiomarker} with two elements:
 \describe{
 \item{OTU_importance}{A data frame of the selected biomarkers (transposed feature table).}
 \item{cross_validation_fig}{A ggplot object of the cross-validation plot with a vertical dashed line indicating the feature selection cutoff.}
