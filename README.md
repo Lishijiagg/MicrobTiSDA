@@ -30,7 +30,7 @@ You can install the development version of MicrobTiSDA from
 # install_github("Lishijiagg/MicrobTiSDA")
 ```
 
-## Tutorial
+## For beginners
 
 Here is an example of applying MicrobTiSDA to an in vitro cultured
 aquatic microbiome dataset. The dataset was obtained from the study by
