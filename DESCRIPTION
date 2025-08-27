@@ -1,10 +1,40 @@
 Package: MicrobTiSDA
-Title: What the Package Does (One Line, Title Case)
+Title: Microbiome Time-Series Data Analysis
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+    person("Shijia", "Li", , "s.li2@uva.nl", role = c("aut", "cre"),comment = c(ORCID = "0009-0006-6827-5344"))
+Description: MicrobTiSDA specifically designed for analyzing longitudinal microbiome data. This tool integrates seven functional modules, providing a systematic framework for microbiome time-series analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+URL: https://github.com/Lishijiagg/MicrobTiSDA
+BugReports: https://github.com/Lishijiagg/MicrobTiSDA/issues
+Imports: 
+    caret,
+    cluster,
+    dplyr,
+    ggdendro,
+    ggplot2,
+    ggraph,
+    MASS,
+    mgcv,
+    plyr,
+    pracma,
+    randomForest,
+    reshape2,
+    scales,
+    splines,
+    stats,
+    tibble,
+    tidygraph,
+    tidyr,
+    vegan,
+    visNetwork
+Depends: 
+    R (>= 3.5)
+LazyData: true
+LazyDataCompression: xz
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
