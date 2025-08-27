@@ -3,8 +3,6 @@
 
 # MicrobTiSDA <img src="MicrobTiSDA.png" align="right" height="275" alt="">
 
-# MicrobTiSDA
-
 <!-- badges: start -->
 
 [![License:
