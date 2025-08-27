@@ -34,7 +34,7 @@ You can install the development version of MicrobTiSDA from
 
 Here is an example of applying MicrobTiSDA to an in vitro cultured
 aquatic microbiome dataset. The dataset was obtained from the study by
-Fujita et al.
+[Fujita et al](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-023-01474-5).
 
 First, we should load MicrobTiSDA and other necessary packages.
 
