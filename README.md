@@ -7,6 +7,7 @@
 
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://zenodo.org/badge/1045702379.svg)](https://doi.org/10.5281/zenodo.16987942)
 <!-- badges: end -->
 
 MicrobTiSDA focuses on analyzing microbiome time-series data. Its core
