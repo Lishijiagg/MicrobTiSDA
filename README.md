@@ -42,14 +42,6 @@ First, we should load MicrobTiSDA and other necessary packages.
 ``` r
 library(tidyr)
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(ggplot2)
 library(MicrobTiSDA)
 ```
