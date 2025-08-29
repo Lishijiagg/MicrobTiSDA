@@ -20,6 +20,9 @@ the discrete-time Lotka-Volterra model, and supports the construction of
 natural spline regression models to characterize changes in microbial
 feature abundance over time.
 
+## Workflow
+# <img src="workflow.png" align="middle" height="400" alt="">
+
 ## Installation
 
 You can install the development version of MicrobTiSDA from
