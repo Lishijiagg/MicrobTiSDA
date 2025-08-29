@@ -9,8 +9,7 @@ Interact.dyvis(
   threshold,
   core_arrow_num,
   Taxa = NULL,
-  fontsize = 15,
-  ret_data = FALSE
+  fontsize = 15
 )
 }
 \arguments{
@@ -24,9 +23,6 @@ meaning that the screened keystone species must interact with three other specie
 \item{Taxa}{A data frame providing taxonomic annotations for microbial species.}
 
 \item{fontsize}{Indicates the size of the text font. The default is 15.}
-
-\item{ret_data}{Logical value. If TRUE, outputs a data frame of species interaction nodes and edges; if FALSE, outputs a dynamic network
-diagram of species interactions. The default is FALSE.}
 }
 \value{
 An S3 objects of species interact information or plots.

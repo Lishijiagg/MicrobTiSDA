@@ -649,8 +649,6 @@ Spec.interact <- function(Data, metadata, Group_var, abund_centered_method = 'me
 #' @param core_arrow_num Indicates the number of species pairs involved in species interactions that identify keystone species. The default value is 4,
 #'     meaning that the screened keystone species must interact with three other species populations in addition to its own population.
 #' @param Taxa A data frame providing taxonomic annotations for microbial species.
-#' @param ret_data Logical value. If TRUE, outputs a data frame of species interaction nodes and edges; if FALSE, outputs a dynamic network
-#'     diagram of species interactions. The default is FALSE.
 #' @param fontsize Indicates the size of the text font. The default is 15.
 #'
 #' @return An S3 objects of species interact information or plots.
@@ -678,7 +676,7 @@ Spec.interact <- function(Data, metadata, Group_var, abund_centered_method = 'me
 #' @importFrom visNetwork visLayout
 #'
 
-Interact.dyvis <- function(Interact_data, threshold, core_arrow_num, Taxa = NULL, fontsize = 15, ret_data = FALSE) {
+Interact.dyvis <- function(Interact_data, threshold, core_arrow_num, Taxa = NULL, fontsize = 15) {
 
   if (!inherits(Interact_data, "microbTiSDA")) {
     stop("Interact_data must be a 'microbTiSDA' object")

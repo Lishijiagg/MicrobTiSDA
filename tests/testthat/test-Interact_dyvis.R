@@ -20,8 +20,7 @@ test_that("multiplication works", {
                         threshold = 1e-6,
                         core_arrow_num = 2,
                         Taxa = NULL,
-                        fontsize = 15,
-                        ret_data = FALSE)
+                        fontsize = 15)
 
   expect_true(length(vis$visualization) == length(unique(metadata$Group)))
 

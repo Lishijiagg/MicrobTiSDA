@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Dependencies](https://tinyverse.netlify.app/badge/MicrobTiSDA)](https://CRAN.R-project.org/package=MicrobTiSDA)
+[![DOI](https://zenodo.org/badge/1045702379.svg)](https://doi.org/10.5281/zenodo.16987942)
 <!-- badges: end -->
 
 MicrobTiSDA focuses on analyzing microbiome time-series data. Its core functionalities include inferring species interaction relationships within time-series data, constructing abundance time regression models for microbial features, and assessing the similarity of temporal abundance patterns among different microbial features. It integrates the "Learning Interactions from Microbial Time Series" algorithm based on the discrete-time Lotka-Volterra model, and supports the construction of natural spline regression models to characterize changes in microbial feature abundance over time.

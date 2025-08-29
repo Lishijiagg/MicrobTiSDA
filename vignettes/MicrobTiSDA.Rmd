@@ -63,6 +63,8 @@ oslo_data_intp = Data.interpolate(Data = oslo_data_filt,
                                   Sample_Time = 'day')
 ```
 
+Please note that once the Data.interpolate function is executed, MicrobTiSDA will automatically convert the name of the specified grouping variable in the original metadata to \code{Group}. For example, if the original variable used to distinguish each individual (i.e., grouping) in the metadata is \code{ID}, MicrobTiSDA will automatically convert it to \code{Group} after interpolation analysis. The correct grouping variable must be used in subsequent analyses.
+
 The interpolated OTU table and the new metadata will be used for subsequent analyses.
 
 ```{r}
@@ -94,8 +96,7 @@ oslo_interact_vis = Interact.dyvis(Interact_data = oslo_data_interact,
                                    threshold = 1e-6,
                                    core_arrow_num = 4,
                                    Taxa = OSLO.infant.taxa,
-                                   fontsize = 20,
-                                   ret_data = F)
+                                   fontsize = 20)
 
 # Use plot method to visualized species interaction results
 #plot(oslo_interact_vis)
