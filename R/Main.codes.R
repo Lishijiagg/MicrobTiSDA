@@ -667,6 +667,7 @@ Spec.interact <- function(Data, metadata, Group_var, abund_centered_method = 'me
 #' @importFrom ggplot2 ggplot
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr mutate
+#' @importFrom stats na.omit
 #' @importFrom stats median
 #' @importFrom tibble rownames_to_column
 #' @importFrom visNetwork visEdges
@@ -708,7 +709,7 @@ Interact.dyvis <- function(Interact_data, threshold, core_arrow_num, Taxa = NULL
     )
 
     degree_table <- table(c(edges$from, edges$to)) - 1
-    degree <- setNames(as.numeric(degree_table), names(degree_table))
+    degree <- stats::setNames(as.numeric(degree_table), names(degree_table))
     nodes$degree <- degree[as.character(nodes$id)]
     nodes$degree[is.na(nodes$degree)] <- 0
     nodes$core_microbe <- nodes$degree >= core_arrow_num
@@ -827,7 +828,7 @@ Design <- function(metadata, Group_var = NULL, Pre_processed_Data, Sample_Time, 
 
     interaction_terms <- interaction(selected_columns, drop = TRUE)
 
-    design_matrix <- model.matrix(~interaction_terms - 1)
+    design_matrix <- stats::model.matrix(~interaction_terms - 1)
 
     colnames(design_matrix) <- levels(interaction_terms)
 
@@ -947,18 +948,18 @@ Reg.SPLR <- function(Data_for_Reg,
 
         if (is.null(Knots)) {
           for (k in 1:max_Knots) {
-            formula <- as.formula(paste(j, " ~ splines::ns(Time, df = ", 1+k, ")", sep = ""))
+            formula <- stats::as.formula(paste(j, " ~ splines::ns(Time, df = ", 1+k, ")", sep = ""))
             sp_model <- mgcv::gam(formula = formula, data = Sub_data_filout)
             GCV[k] <- summary(sp_model)$sp.criterion[[1]]
           }
           best_knots <- c(1:max_Knots)[which.min(GCV)]
           knots <- attr(splines::ns(Sub_data_filout$Time, df = 1+best_knots), "knots")
           knots_info[[i]][[j]] <- knots
-          best_formula <- as.formula(paste(j, " ~ splines::ns(Time, df = ", 1+best_knots, ")", sep = ""))
+          best_formula <- stats::as.formula(paste(j, " ~ splines::ns(Time, df = ", 1+best_knots, ")", sep = ""))
           fit_data[[i]][[j]] <- mgcv::gam(formula = best_formula, data = Sub_data_filout)
         } else {
           Knots_str <- paste(Knots, collapse = ",")
-          formula <- as.formula(paste(j, " ~ splines::ns(Time, knots = c(", Knots_str, "))", sep = ''))
+          formula <- stats::as.formula(paste(j, " ~ splines::ns(Time, knots = c(", Knots_str, "))", sep = ''))
           fit_data[[i]][[j]] <- mgcv::gam(formula = formula, data = Sub_data_filout)
           knots_info[[i]][[j]] <- Knots
         }
@@ -1052,7 +1053,7 @@ Pred.data <- function(Fitted_models, metadata, Group, time_step, Sample_Time) {
     colnames(pred_data) <- names(fitted_models[[i]])
 
     for (j in 1:length(fitted_models[[i]])) {
-      pred_data[,j] <- predict(fitted_models[[i]][[j]],
+      pred_data[,j] <- stats::predict(fitted_models[[i]][[j]],
                                data.frame(Time = New_time))
     }
 
@@ -1257,7 +1258,7 @@ Data.cluster.cut <- function(cluster_outputs,
       message("Number of optimal clusters for group ", i, ": ", optimal_k)
 
       dend <- stats::as.dendrogram(cluster_results[[i]])
-      clusters <- stats::cutree(cluster_results[[i]], optimal_k)[order.dendrogram(dend)]
+      clusters <- stats::cutree(cluster_results[[i]], optimal_k)[stats::order.dendrogram(dend)]
       clusters.df <- data.frame(label = names(clusters), cluster = factor(clusters))
       cut_assignments[[i]] <- clusters.df
 
@@ -1288,7 +1289,7 @@ Data.cluster.cut <- function(cluster_outputs,
       cut_height <- as.numeric(cut_height)
 
       clusters <- stats::cutree(cluster_results[[i]], h = cut_height)
-      clusters_ordered <- clusters[order.dendrogram(dend)]
+      clusters_ordered <- clusters[stats::order.dendrogram(dend)]
       clusters_df <- data.frame(label = names(clusters_ordered),
                                 cluster = factor(clusters_ordered))
       cut_assignments[[i]] <- clusters_df
@@ -1519,7 +1520,7 @@ Data.visual <- function(cluster_results,
       }
 
       if (plot_lm) {
-        lm_model <- lm(Abundance ~ Predicted_Time,data = data_for_plot_long)
+        lm_model <- stats:lm(Abundance ~ Predicted_Time,data = data_for_plot_long)
         lm_model_summary <- summary(lm_model)
         r_squared <- lm_model_summary$r.squared
         slope <- as.numeric(lm_model$coefficients[2])
@@ -1853,10 +1854,10 @@ Data.rf.classifier <- function(raw_data,
              label = paste("Out of Bag error = ",oob_error,sep = ""),
              size = 4,color = "black")
 
-  train_predict <- predict(otu_train.forest, otu_train)
+  train_predict <- stats::predict(otu_train.forest, otu_train)
   compare_train <- table(train_predict,otu_train$group, dnn = c('Actural','Predicted'))
 
-  test_predict <- predict(otu_train.forest,otu_test)
+  test_predict <- stats::predict(otu_train.forest,otu_test)
   compare_test <- table(otu_test$group, test_predict, dnn = c('Actural','Predicted'))
 
   importance_otu <- otu_train.forest$importance
@@ -2015,7 +2016,7 @@ Rf.biomarkers <- function(rf = rf_results,feature_select_num) {
 #'
 #' @importFrom vegan metaMDS
 #' @importFrom plyr ddply
-#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 ggplot .data
 #' @author Shijia Li
 #' @export
 #'
@@ -2053,9 +2054,9 @@ Classify.vis = function(classified_results,
   result$samples <- as.character(result$samples)
   result <- cbind(result, predict_group)
 
-  p <- ggplot2::ggplot(result,aes(NMDS1,NMDS2,color = predict_group)) +
+  p <- ggplot2::ggplot(result,aes(.data$NMDS1,.data$NMDS2,color = predict_group)) +
     geom_polygon(data = plyr::ddply(result,'predict_group',
-                                    function(df) df[chull(df[[1]], df[[2]]),]),fill = NA) +
+                                    function(df) df[grDevices::chull(df[[1]], df[[2]]),]),fill = NA) +
     labs(title = fig_title,
          color = legd_title) +
     theme(legend.title = element_text(size = legend_title_size),
@@ -2175,7 +2176,7 @@ Reg.MESR <- function(Data_for_Reg,
 
         if (is.null(Knots)) {
           for (k in 1:max_Knots) {
-            formula <- as.formula(paste(j," ~ splines::ns(Time, df = ",1+k,")+s(ID,bs = 're')",
+            formula <- stats::as.formula(paste(j," ~ splines::ns(Time, df = ",1+k,")+s(ID,bs = 're')",
                                         sep = ""))
             sp_model <- mgcv::gam(formula = formula,
                                   data = Sub_data_for_fit,
@@ -2185,14 +2186,14 @@ Reg.MESR <- function(Data_for_Reg,
           best_knots <- c(1:max_Knots)[which.min(GCV)]
           knots <- attr(splines::ns(Sub_data_for_fit$Time,df = 1+best_knots),"knots")
           knots_info[[i]][[j]] <- knots
-          best_formula <- as.formula(paste(j," ~ splines::ns(Time, df = ",1+best_knots,")+s(ID,bs = 're')",
+          best_formula <- stats::as.formula(paste(j," ~ splines::ns(Time, df = ",1+best_knots,")+s(ID,bs = 're')",
                                            sep = ""))
           fit_data[[i]][[j]] <- mgcv::gam(formula = best_formula,
                                           data = Sub_data_for_fit,
                                           method = 'GCV.Cp')
         } else {
           Knots_str <- paste(Knots,collapse = ",")
-          formula <- as.formula(paste(j," ~ splines::ns(Time, knots = c(",Knots_str,"))+s(ID,bs='re')",
+          formula <- stats::as.formula(paste(j," ~ splines::ns(Time, knots = c(",Knots_str,"))+s(ID,bs='re')",
                                       sep = ''))
           fit_data[[i]][[j]] <- mgcv::gam(formula = formula,data = Sub_data_for_fit,
                                           method = 'GCV.Cp')
@@ -2281,7 +2282,7 @@ Pred.data.MESR <- function(Fitted_models, metadata, Group, time_step, Sample_Tim
     colnames(pred_data) <- names(Fitted_models[[i]])
 
     for (k in names(Fitted_models[[i]])) {
-      pred_data[,k] <- predict(Fitted_models[[i]][[k]],
+      pred_data[,k] <- stats::predict(Fitted_models[[i]][[k]],
                                newdata = new_data,
                                type = 'response',
                                re.form = NA)
@@ -2353,6 +2354,7 @@ Pred.data.MESR <- function(Fitted_models, metadata, Group, time_step, Sample_Tim
 #' @return An object of class \code{MicrobTiSDA.MSERvisual} which contains lists of ggplot2 objects, where each top-level element corresponds to a
 #'     group and each sub-element corresponds to a cluster within that group. Each plot visualizes the temporal profiles of microbial features in that cluster.
 #' @importFrom ggplot2 ggplot
+#' @importFrom utils head str tail
 #' @export
 #'
 #' @examples
@@ -2526,7 +2528,7 @@ Data.visual.MESR <- function(cluster_results,
       }
 
       if (plot_lm == TRUE) {
-        lm_model <- lm(Abundance ~ Predicted_Time,data = data_for_plot_long)
+        lm_model <- stats:lm(Abundance ~ Predicted_Time,data = data_for_plot_long)
         lm_model_summary <- summary(lm_model)
         r_squared <- lm_model_summary$r.squared
         slope <- as.numeric(lm_model$coefficients[2])
