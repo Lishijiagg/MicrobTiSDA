@@ -180,8 +180,7 @@ replicate aquatic microbiome experiment.
 fujita_interact_vis = Interact.dyvis(Interact_data = fujita_interact,
                                      threshold = 1e-6,
                                      core_arrow_num = 4,
-                                     Taxa = fujita.taxa,
-                                     ret_data = F)
+                                     Taxa = fujita.taxa)
 ```
 
 We can use the function to visualize species interaction networks. The
