@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MicrobTiSDA <img src="MicrobTiSDA.png" align="right" height="275" alt="">
+# MicrobTiSDA <img src="/Figures/MicrobTiSDA.png" align="right" height="275" alt="">
 
 <!-- badges: start -->
 
@@ -193,7 +193,7 @@ is specified, the network for each group will be plotted by default.
 plot(fujita_interact_vis,groups = "Rep.1")
 #> Plot: Rep.1
 ```
-# <img src="Interact_plot.png" align="middle" height="400" alt="">
+# <img src="/Figures/Interact_plot.png" align="middle" height="400" alt="">
 Please note that the output is an interactive HTML chart supporting
 zooming and dragging for detailed exploration. However, since
 interactive htmlwidgets cannot be rendered here, only a static
