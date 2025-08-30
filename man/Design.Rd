@@ -20,7 +20,7 @@ pre-processed OTU data frame with sample IDs as row names and OTU IDs as column 
 \item{Sample_ID}{A character string indicating the column name in \code{metadata} that contains sample identifiers.}
 }
 \value{
-An object of class \code{"Design"}, which contains:
+An object of class \code{Design}, which contains:
 \item{data}{A data frame ready for regression modeling.}
 \item{params}{A list of parameters used to construct the design.}
 }

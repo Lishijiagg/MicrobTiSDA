@@ -35,8 +35,8 @@ and no logarithmic transformation is applied. For large datasets, the logarithm 
 
 \item{Group_var}{A string or a vector. This specifies the grouping variables, which should match the column names in
 the \code{metadata} used to designate sample groups, and for pre-processing OTU data of each group or individual separately.
-For instance, to split the OTU table based on the \code{"Group"} variable, set \code{Group_var = "Group"};
-to split the data based on the \code{"Group"} and \code{"Diet"} (if in \code{metadata})categorical variables to study the
+For instance, to split the OTU table based on the \code{Group} variable, set \code{Group_var = "Group"};
+to split the data based on the \code{Group} and \code{Diet} (if in \code{metadata})categorical variables to study the
 interaction between different grouping variables, set \code{Group_var = c("Group","Diet")}.}
 }
 \value{
@@ -44,7 +44,7 @@ A list of class \code{FilteredData} containing:
 \describe{
 \item{filtered_table}{The filtered OTU count table, optionally log-transformed.}
 \item{parameters}{A list of the filtering parameters used.}
-\item{metadata}{The input metadata, possibly augmented with a combined grouping variable if multiple \code{Group_var}s were provided.}
+\item{metadata}{The input metadata, possibly augmented with a combined grouping variable if multiple \code{Group}s were provided.}
 }
 }
 \description{
