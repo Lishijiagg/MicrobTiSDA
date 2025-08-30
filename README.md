@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MicrobTiSDA <img src="/Figures/MicrobTiSDA.png" align="right" height="275" alt="">
+# MicrobTiSDA <img src="/Figures/Logo.png" align="right" height="275" alt="">
 
 <!-- badges: start -->
 
