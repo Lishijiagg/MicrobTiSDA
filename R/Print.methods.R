@@ -13,7 +13,7 @@ print.TransformedData <- function(x, ...) {
 
 #' Print Method for FilteredData Object
 #'
-#' @param x A \code{FIlteredData} object
+#' @param x A \code{FilteredData} object
 #' @param ... Additional arguments
 #'
 #' @method print FilteredData

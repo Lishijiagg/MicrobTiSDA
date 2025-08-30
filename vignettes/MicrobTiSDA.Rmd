@@ -168,7 +168,7 @@ oslo_model_vis = Data.visual(cluster_results = oslo_clust_results,
                              legend_title_size = 12,
                              legend_text_size = 10,axis_x_size = 8,axis_title_size = 10,axis_y_size = 10)
 # Here we will only visualize ID_10's gut microbial features in the first cluster.
-plot(oslo_model_vis,groups = "ID_10",clusters = 1)
+#plot(oslo_model_vis,groups = "ID_10",clusters = 1)
 ```
 
 The output results above represent microbial feature clusters with highly similar temporal patterns. If you want to find microbial features with temporal patterns that are opposite to those of the identified microbial features, you can use the \code{Data.opp.cor.vis} function. This function will help identify and visualize microbial features that exhibit contrasting temporal patterns. The microbial features being compared will be represented by solid curves, while those that are negatively correlated (with a high correlation distance, for example, greater than 0.9, and \code{ng_cor_thres} set to 0.1) will be represented by dashed curves. This distinction will help to clearly visualize the relationships between the microbial features in the plots.
@@ -183,7 +183,7 @@ opposite_vis = Data.opp.cor.vis(predicted_data = oslo_model_pred,
 
 # For example, taking OTU_000001 of ID10
 # we can observe microbial features with a correlation distance greater than 0.9
-plot(opposite_vis,group = 'ID_10',feature = 'OTU_000001')
+#plot(opposite_vis,group = 'ID_10',feature = 'OTU_000001')
 ```
 
 ### Case study 2: Gut microbiome dataset of preterm infant with sepsis.
@@ -217,7 +217,7 @@ preterm_rf = Data.rf.classifier(raw_data = preterm.data,
 
 # The output object contains the results of classification model evaluation 
 # and cross-validation results, use plot() to visualize them.
-plot(preterm_rf)
+#plot(preterm_rf)
 ```
 
 The results indicate that the sample classification model built using all OTUs as inputs demonstrates high performance, with an Out of Bag error of 0.081.
@@ -226,7 +226,7 @@ Additionally, based on the cross-validation curve output above, we selected the 
 
 ```{r}
 selected_biomarkers = Rf.biomarkers(rf = preterm_rf,feature_select_num = 10)
-plot(selected_biomarkers)
+#plot(selected_biomarkers)
 ```
 
 Using the selected biomarkers and applying NMDS (Non-metric Multidimensional Scaling), we can observe that the selected biomarkers effectively distinguish between the two groups of samples.
@@ -283,7 +283,7 @@ preterm_clust = Data.cluster(predicted_data = preterm_pred,
                              clust_method = 'average',
                              dend_title_size = 12,
                              font_size = 3.5)
-plot(preterm_clust)
+#plot(preterm_clust)
 ```
 And we can determine the OTU clusters according to the output results above using \code{Data.cluster.cut} by setting the cutting distance equals to 0.15.
 
@@ -291,7 +291,7 @@ And we can determine the OTU clusters according to the output results above usin
 preterm_clust_results = Data.cluster.cut(cluster_outputs = preterm_clust,
                                          cut_height = 0.15,
                                          font_size = 3.5)
-plot(preterm_clust_results)
+#plot(preterm_clust_results)
 ```
 
 Here, OTUs with a correlation distance of less than 0.15 are grouped into clusters.
@@ -315,7 +315,7 @@ preterm_data_vis = Data.visual.MESR(Design_data = preterm_design,
                                     axis_x_size = 7,
                                     axis_y_size = 7)
 # Here, we only visualize the first clusters in both groups.
-plot(preterm_data_vis,groups = "Sepsis",clusters = 1)
-plot(preterm_data_vis,groups = "Control",clusters = 1)
+#plot(preterm_data_vis,groups = "Sepsis",clusters = 1)
+#plot(preterm_data_vis,groups = "Control",clusters = 1)
 ```
 

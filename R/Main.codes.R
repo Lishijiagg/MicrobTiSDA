@@ -1147,9 +1147,9 @@ Data.cluster <- function(predicted_data,
       dend <- stats::as.dendrogram(pred_data_dist_hc)
       cluster_figures[[i]] <- ggplot() +
         geom_segment(data = ggdendro::dendro_data(dend, type = "rectangle")$segments,
-                     aes(x = x, y = y, xend = xend, yend = yend)) +
+                     aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend)) +
         geom_text(data = ggdendro::dendro_data(dend, type = "rectangle")$labels,
-                  aes(x = x, y = y, label = label),
+                  aes(x = .data$x, y = .data$y, label = label),
                   size = font_size, hjust = 0) +
         coord_flip() + scale_y_reverse(expand = c(0.2, 0)) +
         labs(title = paste("Feature profiles clustering plot for group", i)) +
@@ -1267,9 +1267,9 @@ Data.cluster.cut <- function(cluster_outputs,
 
       cluster_figures[[i]] <- ggplot() +
         geom_segment(data = dend_data$segments,
-                     aes(x = x, y = y, xend = xend, yend = yend)) +
+                     aes(x = .data$x, y = .data$y, xend = .data$xend, yend = .data$yend)) +
         geom_text(data = dend_data$labels,
-                  aes(x = x, y = y, label = label, color = cluster),
+                  aes(x = .data$x, y = .data$y, label = label, color = cluster),
                   size = font_size, hjust = 0) +
         coord_flip() + scale_y_reverse(expand = c(0.2, 0)) +
         labs(title = paste("Feature profiles clustering plot for group", i,

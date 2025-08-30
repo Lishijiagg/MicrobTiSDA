@@ -7,7 +7,7 @@
 \method{print}{FilteredData}(x, ...)
 }
 \arguments{
-\item{x}{A \code{FIlteredData} object}
+\item{x}{A \code{FilteredData} object}
 
 \item{...}{Additional arguments}
 }
