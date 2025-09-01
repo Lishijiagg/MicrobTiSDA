@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MicrobTiSDA <img src="MicrobTiSDA.png" align="right" height="275" alt="">
+# MicrobTiSDA <img src="man/figures/Logo.png" align="right" height="275" alt="">
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -23,6 +23,9 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 MicrobTiSDA focuses on analyzing microbiome time-series data. Its core functionalities include inferring species interaction relationships within time-series data, constructing abundance time regression models for microbial features, and assessing the similarity of temporal abundance patterns among different microbial features. It integrates the "Learning Interactions from Microbial Time Series" algorithm based on the discrete-time Lotka-Volterra model, and supports the construction of natural spline regression models to characterize changes in microbial feature abundance over time.
+
+## Workflow
+# <img src="man/figures/workflow.jpg" align="middle" height="400" alt="">
 
 ## Installation
 
@@ -112,8 +115,7 @@ Next, we can visualize the results of the species interaction inference. The \co
 fujita_interact_vis = Interact.dyvis(Interact_data = fujita_interact,
                                      threshold = 1e-6,
                                      core_arrow_num = 4,
-                                     Taxa = fujita.taxa,
-                                     ret_data = F)
+                                     Taxa = fujita.taxa)
 ```
 
 We can use the \code{plot()} function to visualize species interaction networks. The \code{groups} parameter allows users to specify which group or individual to display. For instance, to visualize the species interaction network only for the first replicate experiment (Rep.1) in the dataset, specify \code{groups = 'Rep.1'}. If no group is specified, the network for each group will be plotted by default.
@@ -122,7 +124,8 @@ We can use the \code{plot()} function to visualize species interaction networks.
 plot(fujita_interact_vis,groups = "Rep.1")
 ```
 
-Please note that the output is an interactive HTML chart supporting zooming and dragging for detailed exploration. However, since interactive htmlwidgets cannot be rendered here, only a static screenshot is displayed. In the chart, arrow colors indicate interaction types: orange represents positive interactions, and blue represents negative interactions. Nodes represent species, with keystone species (i.e., those involved in multiple pairwise interactions) highlighted in yellow.
+# <img src="man/figures/Interact_plot.png" align="middle" height="400" alt="">
+Please note that the output is an interactive HTML chart supporting zooming and dragging for detailed exploration. However, since interactive htmlwidgets cannot be rendered here, users can do it for your own. In the chart, arrow colors indicate interaction types: orange represents positive interactions, and blue represents negative interactions. Nodes represent species, with keystone species (i.e., those involved in multiple pairwise interactions) highlighted in yellow.
 
 After completing species interaction inference for the aquatic microbiome, we can proceed to analyze the temporal abundance patterns of microbial features using MicrobTiSDA. To support this analysis, MicrobTiSDA provides a method for fitting regression models to the abundance trajectories of microbial features. To begin, we first need to construct a design matrix for modeling temporal trends for each microbial feature. This can be accomplished using the \code{Design} function, where users must specify the variables in the metadata that represent the group ID for each subject or replicate, the sample ID, and the time point of each sample.
 

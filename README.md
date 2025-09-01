@@ -1,7 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MicrobTiSDA <img src="MicrobTiSDA.png" align="right" height="275" alt="">
+# MicrobTiSDA <img src="man/figures/Logo.png" align="right" height="275" alt="">
+
+# MicrobTiSDA
 
 <!-- badges: start -->
 
@@ -21,7 +23,8 @@ natural spline regression models to characterize changes in microbial
 feature abundance over time.
 
 ## Workflow
-# <img src="workflow.png" align="middle" height="400" alt="">
+
+# <img src="man/figures/workflow.jpg" align="middle" height="400" alt="">
 
 ## Installation
 
@@ -34,17 +37,25 @@ You can install the development version of MicrobTiSDA from
 # install_github("Lishijiagg/MicrobTiSDA")
 ```
 
-## For beginners
+## Tutorial
 
 Here is an example of applying MicrobTiSDA to an in vitro cultured
 aquatic microbiome dataset. The dataset was obtained from the study by
-[Fujita et al](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-023-01474-5).
+Fujita et al.
 
 First, we should load MicrobTiSDA and other necessary packages.
 
 ``` r
 library(tidyr)
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(ggplot2)
 library(MicrobTiSDA)
 ```
@@ -62,10 +73,12 @@ data("fujita.meta")
 data("fujita.taxa")
 ```
 
-Please note that MicrobTiSDA has specific format requirements for the microbial community count tables, metadata, and taxonomic annotation files provided by users. If you need to run your own data, please prepare them strictly according to the following examples:
+Please note that MicrobTiSDA has specific format requirements for the
+user-provided microbiome count table, metadata, and taxonomic annotation
+files:
 
 - The count table (OTU/ASV table) must have OTU/ASV IDs as row names and
-  sample IDs as column names, and no annotations attached.
+  sample IDs as column names.
 
 ``` r
 head(fujita.data[,c(1:6)])
@@ -193,15 +206,16 @@ is specified, the network for each group will be plotted by default.
 plot(fujita_interact_vis,groups = "Rep.1")
 #> Plot: Rep.1
 ```
-# <img src="Interact_plot.png" align="middle" height="400" alt="">
+
+# <img src="man/figures/Interact_plot.png" align="middle" height="400" alt="">
+
 Please note that the output is an interactive HTML chart supporting
 zooming and dragging for detailed exploration. However, since
-interactive htmlwidgets cannot be rendered here, only a static
-screenshot is displayed. In the chart, arrow colors indicate interaction
-types: orange represents positive interactions, and blue represents
-negative interactions. Nodes represent species, with keystone species
-(i.e., those involved in multiple pairwise interactions) highlighted in
-yellow.
+interactive htmlwidgets cannot be rendered here, users can do it for
+your own. In the chart, arrow colors indicate interaction types: orange
+represents positive interactions, and blue represents negative
+interactions. Nodes represent species, with keystone species (i.e.,
+those involved in multiple pairwise interactions) highlighted in yellow.
 
 After completing species interaction inference for the aquatic
 microbiome, we can proceed to analyze the temporal abundance patterns of
