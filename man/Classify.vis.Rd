@@ -52,9 +52,26 @@ Bray-Curtis) and then maps the predicted group labels onto the NMDS coordinates.
 using \code{ggplot2}, with polygons delineating the convex hull of each predicted group.
 }
 \examples{
-\dontrun{
-# Assuming 'classified_results' is the output from a classification function:
-nm_plot <- Classify.vis(classified_results = results,
+\donttest{
+# Example OTU count data (20 OTUs x 10 samples)
+set.seed(123)
+otu_data <- matrix(sample(0:100, 200, replace = TRUE), nrow = 20)
+colnames(otu_data) <- paste0("Sample", 1:10)
+rownames(otu_data) <- paste0("OTU", 1:20)
+
+# Example metadata with group labels
+metadata <- data.frame(Group = rep(c("Control", "Treatment"), each = 5))
+
+# Run the classifier
+rf_result <- Data.rf.classifier(raw_data = otu_data,
+                             metadata = metadata,
+                             train_p = 0.7,
+                             Group = "Group",
+                             OTU_counts_filter_value = 50)
+# If you wish to select the top 5 features:
+result <- Rf.biomarkers(rf = rf_result, feature_select_num = 5)
+
+nm_plot <- Classify.vis(classified_results = result,
                         dist_method = 'bray',
                         fig_title = 'NMDS Plot',
                         legd_title = 'Predicted Groups',

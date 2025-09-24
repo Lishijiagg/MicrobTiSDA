@@ -15,6 +15,9 @@ parameters settings, number of result groups/items, and previews of tabular of l
 
 \item{...}{Additional arguments}
 }
+\value{
+A summary list.
+}
 \description{
 Summary method for MicrobTiSDA objects
 Provides a structure summary of a \code{microbTiSDA} object, including its parameters and results. It prints object class,

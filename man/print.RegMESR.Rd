@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{RegMESR} object, returned invisibly.
+}
 \description{
 Information of the fitted mixed-effect spline regression models
 }

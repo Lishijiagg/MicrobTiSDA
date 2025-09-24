@@ -18,6 +18,9 @@ each selected group. If \code{NULL}, all clusters are plotted.}
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{MicrobTiSDA.MSERvisual} object, return invisibly.
+}
 \description{
 This function prints feature cluster plots stored in a
 \code{MicrobTiSDA.MSERvisual} object. Users can specify which groups and

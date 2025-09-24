@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{DataRFClassifier} object, returned invisibly.
+}
 \description{
 Information of the constructed Random Forest classification model
 }

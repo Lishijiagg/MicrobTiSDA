@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{MicrobTiSDA.cluster} object, returned invisibly.
+}
 \description{
 Print the information of fitted temporal profile clusters
 }

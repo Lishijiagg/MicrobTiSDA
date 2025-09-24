@@ -15,7 +15,8 @@ Data.rf.classifier(
   title_size = 10,
   axis_title_size = 8,
   legend_title_size = 8,
-  legend_text_size = 6
+  legend_text_size = 6,
+  seed = 123
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ is retained. The default is \code{NA}.}
 \item{legend_title_size}{Numeric value for the font size of legend titles. Defaults to 8.}
 
 \item{legend_text_size}{Numeric value for the font size of legend text. Defaults to 6.}
+
+\item{seed}{Random seed.}
 }
 \value{
 An object of class \code{DataRFClassifier} with the following elements:
@@ -84,7 +87,7 @@ of OTUs based on the plot.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 # Example OTU count data (20 OTUs x 10 samples)
 set.seed(123)
 otu_data <- matrix(sample(0:100, 200, replace = TRUE), nrow = 20)

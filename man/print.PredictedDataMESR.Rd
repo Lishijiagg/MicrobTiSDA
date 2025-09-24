@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments.}
 }
+\value{
+The input \code{PredictedDataMESR} object, returned invisibly.
+}
 \description{
 Print method for PredictedDataMESR objects
 }

@@ -8,6 +8,7 @@
 #' @param groups A character vector specifying the names of groups to plot.
 #'     if \code{NULL}, all groups in \code{x$visualization} will be plotted.
 #' @param ... Additional arguments
+#' @return The input \code{microbTiSDA_dynamic_vis} object, returned invisibly.
 #'
 #' @export
 plot.microbTiSDA_dynamic_vis <- function(x, groups = NULL, ...) {
@@ -32,6 +33,7 @@ plot.microbTiSDA_dynamic_vis <- function(x, groups = NULL, ...) {
 #'   If \code{NULL}, all groups in \code{x$cluster_figures} will be plotted.
 #' @param ... Additional arguments (currently not used) for compatibility with
 #'   generic \code{plot} methods.
+#' @return The input \code{MicrobTiSDA.cluster} object, return invisibly.
 #'
 #' @export
 plot.MicrobTiSDA.cluster <- function(x, groups = NULL, ...) {
@@ -58,6 +60,7 @@ plot.MicrobTiSDA.cluster <- function(x, groups = NULL, ...) {
 #'   If \code{NULL}, all groups in \code{x$cluster_figures} will be plotted.
 #' @param ... Additional arguments (currently not used) for compatibility with
 #'   generic \code{plot} methods.
+#' @return The input \code{MicrobTiSDA.clusterCut} object, return invisibly.
 #'
 #' @export
 plot.MicrobTiSDA.clusterCut <- function(x, groups = NULL, ...) {
@@ -84,6 +87,8 @@ plot.MicrobTiSDA.clusterCut <- function(x, groups = NULL, ...) {
 #'   each selected group. If \code{NULL}, all clusters are plotted.
 #' @param ... Additional arguments (currently not used) for compatibility with
 #'   generic \code{plot} methods.
+#'
+#' @return The input \code{MicrobTiSDA.visual} object, return invisibly.
 #'
 #' @export
 plot.MicrobTiSDA.visual <- function(x, groups = NULL, clusters = NULL, ...) {
@@ -112,6 +117,7 @@ plot.MicrobTiSDA.visual <- function(x, groups = NULL, clusters = NULL, ...) {
 #' @param feature A character string specifying the feature within the group to plot.
 #'   If omitted, all features within the specified group will be plotted.
 #' @param ... Additional arguments
+#' @return The input \code{DataOppCorVis} visualization object.
 #'
 #' @export
 plot.DataOppCorVis <- function(x, group, feature, ...) {
@@ -134,7 +140,8 @@ plot.DataOppCorVis <- function(x, group, feature, ...) {
 #'
 #' @param x A \code{DataRFClassifier} object containing margin scores and
 #'   cross-validation curve plots.
-#' @param ... Additional arguments
+#' @param ... Additional arguments.
+#' @return The input \code{DataRFClassifier} object, return invisibly.
 #'
 #' @export
 plot.DataRFClassifier <- function(x,...) {
@@ -174,6 +181,7 @@ plot.DataRFClassifier <- function(x,...) {
 #' @param x A \code{RfBiomarker} object containing selected important OTUs,
 #'   predictions on training and test sets, and a cross-validation figure.
 #' @param ... Additional arguments
+#' @return The input \code{RfBiomarker} object, return invisibly.
 #'
 #' @export
 plot.RfBiomarker <- function(x, ...) {
@@ -194,6 +202,7 @@ plot.RfBiomarker <- function(x, ...) {
 #' @param clusters An integer vector specifying which clusters to plot within
 #'   each selected group. If \code{NULL}, all clusters are plotted.
 #' @param ... Additional arguments
+#' @return The input \code{MicrobTiSDA.MSERvisual} object, return invisibly.
 #'
 #' @export
 plot.MicrobTiSDA.MSERvisual <- function(x, groups = NULL, clusters = NULL, ...) {

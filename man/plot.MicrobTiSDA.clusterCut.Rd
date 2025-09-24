@@ -16,6 +16,9 @@ If \code{NULL}, all groups in \code{x$cluster_figures} will be plotted.}
 \item{...}{Additional arguments (currently not used) for compatibility with
 generic \code{plot} methods.}
 }
+\value{
+The input \code{MicrobTiSDA.clusterCut} object, return invisibly.
+}
 \description{
 This function prints cluster plots stored in a \code{MicrobTiSDA.clusterCut} object.
 Users can specify which groups to plot; if \code{groups} is \code{NULL},

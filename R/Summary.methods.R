@@ -31,7 +31,7 @@ summary.FilteredData <- function(object, ...) {
 #'
 #' @param object A \code{MicrobTiSDA.interpolate} object created by the package functions.
 #' @param ... Additional arguments
-#'
+#' @return A summary list of the interpolated data.
 #' @export
 summary.MicrobTiSDA.interpolate <- function(object, ...) {
   cat("Summary of MicrobTiSDA.interpolate object\n")
@@ -54,6 +54,7 @@ summary.MicrobTiSDA.interpolate <- function(object, ...) {
 #'
 #' @param object A \code{TransformedData} object returned by \code{Data.trans()}.
 #' @param ... Additional arguments.
+#' @return A summary list of the transformed data.
 #'
 #' @export
 summary.TransformedData <- function(object, ...) {
@@ -77,6 +78,7 @@ summary.TransformedData <- function(object, ...) {
 #' @param object A \code{microbTiSDA} object created by the package functions
 #' @param max_preview Integer. Maximum number of rows and columns to preview for tabular results. Default is \code{5}
 #' @param ... Additional arguments
+#' @return A summary list.
 #'
 #' @export
 #'
@@ -121,7 +123,7 @@ summary.microbTiSDA <- function(object, max_preview = 5, ...) {
 #'
 #' @param object An object of class \code{Design}.
 #' @param ... Additional arguments
-#'
+#' @return A summary list of the designed matrix.
 #' @export
 summary.Design <- function(object, ...) {
   cat("Summary of Design object\n")
@@ -147,6 +149,7 @@ summary.Design <- function(object, ...) {
 #'
 #' @param object An object of class \code{microbTiSDA_dynamic_vis}, typically created by visualization functions in the \pkg{MicrobTiSDA} package.
 #' @param ... Additional arguments.
+#' @return A summary list of the dynamic visualization for interspecies interactions.
 #'
 #' @export
 summary.microbTiSDA_dynamic_vis <- function(object, ...) {
@@ -167,6 +170,7 @@ summary.microbTiSDA_dynamic_vis <- function(object, ...) {
 #'
 #' @param object An object of class \code{MicrobTiSDA_spline_regression}, usually created by spline regression functions in the \pkg{MicrobTiSDA} package.
 #' @param ... Additional arguments.
+#' @return A summary list of the fitted natural spline regression models.
 #'
 #' @export
 summary.MicrobTiSDA_spline_regression <- function(object, ...) {
@@ -186,6 +190,7 @@ summary.MicrobTiSDA_spline_regression <- function(object, ...) {
 #'
 #' @param object A \code{PredictedData} object returned by \code{Pred.data}.
 #' @param ... Additional arguments.
+#' @return A summary list of the model predicted data.
 #'
 #' @export
 summary.PredictedData <- function(object, ...) {
@@ -223,7 +228,8 @@ summary.PredictedData <- function(object, ...) {
 #' indicates if group was excluded.
 #'
 #' @param object An object of class \code{MicrobTiSDA.cluster}, typically produced by clustering functions in the \pkg{MicrobTiSDA} pacjage.
-#' @param ... Additional arguments/
+#' @param ... Additional arguments.
+#' @return A summary list of the clustered objects.
 #' @export
 summary.MicrobTiSDA.cluster <- function(object, ...) {
   cat("Summary of MicrobTiSDA Clustering Object\n")
@@ -245,6 +251,7 @@ summary.MicrobTiSDA.cluster <- function(object, ...) {
 #'
 #' @param object An object of class \code{MicrobTiSDA.clusterCut}, typically produced by cluster cutting function in the \pkg{MicrobTiSDA} package.
 #' @param ... Additional arguments
+#' @return A summary list of the clustered objects.
 #'
 #' @export
 summary.MicrobTiSDA.clusterCut <- function(object, ...) {
@@ -267,6 +274,7 @@ summary.MicrobTiSDA.clusterCut <- function(object, ...) {
 #'
 #' @param object An object of class \code{MicrobTiSDA.visual}, typically produced by visualization functions in the \pkg{MicrobTiSDA} package.
 #' @param ... Additional arguments
+#' @return A list of ggplot2 objects.
 #'
 #' @export
 summary.MicrobTiSDA.visual <- function(object, ...) {
@@ -285,6 +293,7 @@ summary.MicrobTiSDA.visual <- function(object, ...) {
 #' results on training and test sets, and information about cross-validation.
 #' @param object An object of class \code{"RfBiomarker"}.
 #' @param ... Additional arguments
+#' @return Summary information of the constructed random forest classification model.
 #'
 #' @export
 summary.RfBiomarker <- function(object, ...) {
@@ -334,6 +343,7 @@ summary.RfBiomarker <- function(object, ...) {
 #' groups fitted, the total number of fitted models, and the model parameters.
 #' @param object An object of class \code{"RegMESR"}.
 #' @param ... Additional arguments
+#' @return A summary list of the fitted mixed-effect natural spline regression models.
 #'
 #' @export
 summary.RegMESR <- function(object, ...) {
@@ -355,7 +365,7 @@ summary.RegMESR <- function(object, ...) {
 #'
 #' @param object An object of class PredictedDataMESR.
 #' @param ... Additional arguments.
-#'
+#' @return A summary list of the model predicted data.
 #' @export
 summary.PredictedDataMESR <- function(object, ...) {
   cat("Summary of PredictedDataMESR object\n")

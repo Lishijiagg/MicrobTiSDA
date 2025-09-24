@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+A summary list of the clustered objects.
+}
 \description{
 Provides a summary of cluster cutting results for objects of class \code{MicrobTiSDA.clusterCut}. It reports the number of clusters for
 each group, or indicates if no valid clustering was performend.

@@ -52,7 +52,7 @@ updated metadata is generated for the interpolated time points, preserving the s
 updated metadata.
 }
 \examples{
-\dontrun{
+\donttest{
 # Example data: 5 features across 8 samples with time points from two subjects.
 set.seed(123)
 Data <- matrix(sample(1:100, 40, replace = TRUE), nrow = 5)

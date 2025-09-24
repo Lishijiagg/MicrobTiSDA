@@ -19,6 +19,9 @@ each selected group. If \code{NULL}, all clusters are plotted.}
 \item{...}{Additional arguments (currently not used) for compatibility with
 generic \code{plot} methods.}
 }
+\value{
+The input \code{MicrobTiSDA.visual} object, return invisibly.
+}
 \description{
 This function prints feature cluster plots stored in a \code{MicrobTiSDA.visual} object.
 Users can specify which groups and which clusters within each group to plot.

@@ -37,7 +37,7 @@ entered by the user and the grouping situation of samples based on qualitative v
 of each sample will be added as a column to the generated design matrix.
 }
 \examples{
-\dontrun{
+\donttest{
 # Example metadata with grouping variables
 metadata <- data.frame(
   TimePoint = c(1, 2, 3, 4),

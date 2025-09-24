@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+Summary information of the constructed random forest classification model.
+}
 \description{
 Provides a concise summary of the results from a Random Forest biomarker
 analysis, including the number of selected OTUs, their names, prediction

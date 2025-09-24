@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments.}
 }
+\value{
+A summary list of the model predicted data.
+}
 \description{
 Summary method for PredictedDataMESR objects
 }

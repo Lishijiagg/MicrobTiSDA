@@ -50,16 +50,48 @@ the plot with the cut-off value. In both cases, the function prints the dendrogr
 clustering results and the corresponding ggplot2 objects of the dendrograms.
 }
 \examples{
-\dontrun{
-# Suppose you have clustering outputs from a previous analysis stored in 'clust_out'
-# To use a user-specified cut-off height:
-result <- Data.cluster.cut(cluster_outputs = clust_out,
+\donttest{
+# Example metadata with grouping variables
+metadata <- data.frame(
+  TimePoint = c(1, 2, 3, 4),
+  Sample = c('S1', 'S2', 'S3', 'S4'),
+  GroupA = c('A', 'A', 'B', 'B'),
+  GroupB = c('X', 'Y', 'X', 'Y')
+)
+
+# Example pre-processed data (e.g., transformed abundance data)
+Pre_processed_Data <- data.frame(
+  Feature1 = rnorm(4),
+  Feature2 = rnorm(4)
+)
+
+# Create design matrix using grouping variables
+design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+                      Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+
+reg <- Reg.SPLR(design_data,
+                  Pre_processed_Data,
+                  z_score = 2,
+                  unique_values = 5,
+                  Knots = NULL,
+                  max_Knots = 5)
+predictions <- Pred.data(reg,
+                        metadata,
+                        Group = "GroupA",
+                        time_step = 1,
+                        Sample_Time = "TimePoint")
+result <- Data.cluster(predicted_data = predictions,
+                       clust_method = "average",
+                       font_size = 0.2,
+                       dend_title_size = 15)
+
+result <- Data.cluster.cut(cluster_outputs = result,
                           cut_height = 0.3,
                           cut_height_dist = 0.2,
                           auto_cutree = FALSE)
 
 # To automatically determine the optimal number of clusters:
-result_auto <- Data.cluster.cut(cluster_outputs = clust_out, auto_cutree = TRUE)
+result_auto <- Data.cluster.cut(cluster_outputs = result, auto_cutree = TRUE)
 }
 }
 \author{

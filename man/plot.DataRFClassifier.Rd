@@ -10,7 +10,10 @@
 \item{x}{A \code{DataRFClassifier} object containing margin scores and
 cross-validation curve plots.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
+}
+\value{
+The input \code{DataRFClassifier} object, return invisibly.
 }
 \description{
 This function plots the margin scores and cross-validation curve of a

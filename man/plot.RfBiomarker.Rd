@@ -12,6 +12,9 @@ predictions on training and test sets, and a cross-validation figure.}
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{RfBiomarker} object, return invisibly.
+}
 \description{
 This function prints the cross-validation figure of a \code{RfBiomarker} object
 and displays basic information about the object contents.

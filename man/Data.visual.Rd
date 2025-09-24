@@ -94,31 +94,53 @@ the R-squared and slope values. The resulting list of ggplot2 objects can be use
 OTUs across different clusters and groups.
 }
 \examples{
-\dontrun{
-# Assuming cluster_results, predicted_data, Design_data, pre_processed_data,
-# and Taxa are properly defined:
-curves <- Data.visual(cluster_results = cluster_output,
+\donttest{
+metadata <- data.frame(
+  TimePoint = c(1, 2, 3, 4),
+  Sample = c('S1', 'S2', 'S3', 'S4'),
+  GroupA = c('A', 'A', 'B', 'B'),
+  GroupB = c('X', 'Y', 'X', 'Y')
+)
+
+# Example pre-processed data (e.g., transformed abundance data)
+Pre_processed_Data <- data.frame(
+  Feature1 = rnorm(4),
+  Feature2 = rnorm(4)
+)
+
+# Create design matrix using grouping variables
+design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+                      Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+
+reg <- Reg.SPLR(design_data,
+                  Pre_processed_Data,
+                  z_score = 2,
+                  unique_values = 5,
+                  Knots = NULL,
+                  max_Knots = 5)
+predictions <- Pred.data(reg,
+                        metadata,
+                        Group = "GroupA",
+                        time_step = 1,
+                        Sample_Time = "TimePoint")
+result <- Data.cluster(predicted_data = predictions,
+                       clust_method = "average",
+                       font_size = 0.2,
+                       dend_title_size = 15)
+
+result <- Data.cluster.cut(cluster_outputs = result,
+                          cut_height = 0.3,
+                          cut_height_dist = 0.2,
+                          auto_cutree = FALSE)
+
+curves <- Data.visual(cluster_results = result,
                       cutree_by = "height",
-                      cluster_height = c(0.3, 0.25, 0.4),
+                      cluster_height = c(0.2,0.2),
                       cluster_branches = NA,
-                      predicted_data = predicted_data,
+                      predicted_data = predictions,
                       Design_data = design_data,
-                      pre_processed_data = pre_processed_data,
-                      Taxa = taxa_data,
-                      plot_dots = TRUE,
-                      figure_x_scale = 5,
-                      plot_lm = TRUE,
-                      lm_R2 = 0.01,
-                      lm_abs_slope = 0.005,
-                      title_size = 10,
-                      axis_title_size = 8,
-                      axis_y_size = 5,
-                      axis_x_size = 5,
-                      lm_sig_size = 5,
-                      legend_title_size = 5,
-                      legend_text_size = 5,
-                      dots_size = 0.7)
-# To view the plot for group 'Subject1' and cluster branch 2:
-print(curves[['Subject1']][[2]])
+                      pre_processed_data = Pre_processed_Data,
+                      Taxa = NULL,
+                      plot_dots = TRUE)
 }
 }

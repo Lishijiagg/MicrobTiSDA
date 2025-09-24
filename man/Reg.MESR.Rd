@@ -10,7 +10,8 @@ Reg.MESR(
   unique_values = 5,
   z_score = NA,
   Knots = NULL,
-  max_Knots = 3
+  max_Knots = 3,
+  seed = 123
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ outlier filtering is performed (default: \code{NA}).}
 knots is determined by minimizing the GCV criterion (default: \code{NULL}).}
 
 \item{max_Knots}{An integer indicating the maximum number of knots to consider when selecting the optimal spline model (default: 3).}
+
+\item{seed}{Random seed.}
 }
 \value{
 An object of class \code{RegMESR} with two elements: \code{fitted_model} is a nested list containing the fitted mixed-effects GAM models for each design
@@ -60,19 +63,30 @@ and extracts the corresponding knot locations. Alternatively, if \code{Knots} is
 model fitting. The resulting fitted models and associated knots information are organized into nested lists and returned.
 }
 \examples{
-\dontrun{
-# Assuming design_data is obtained from the Design function,
-# otu_data contains pre-processed OTU data,
-# and metadata is available:
+\donttest{
+metadata <- data.frame(
+  TimePoint = c(1, 2, 3, 4),
+  Sample = c('S1', 'S2', 'S3', 'S4'),
+  GroupA = c('A', 'A', 'B', 'B'),
+  GroupB = c('X', 'Y', 'X', 'Y')
+)
+
+# Example pre-processed data (e.g., transformed abundance data)
+Pre_processed_Data <- data.frame(
+  Feature1 = rnorm(4),
+  Feature2 = rnorm(4)
+)
+
+# Create design matrix using grouping variables
+design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+                      Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+
 fit_result <- Reg.MESR(Data_for_Reg = design_data,
-                       pre_processed_data = otu_data,
-                       metadata = metadata,
+                       pre_processed_data = Pre_processed_Data,
                        unique_values = 5,
                        z_score = 2,
                        Knots = NULL,
                        max_Knots = 5)
-# Access the fitted model for a specific group and OTU:
-model_example <- fit_result$fitted_model[['Group1']][['OTU1']]
 }
 }
 \author{

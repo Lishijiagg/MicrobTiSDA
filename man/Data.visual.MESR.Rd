@@ -94,34 +94,3 @@ for significant trends. When the linear model meets criteria based on p-value (<
 (greater than \code{lm_abs_slope}), a dashed regression line is added with an annotation indicating the trend direction (upward or downward) along with
 the R² and slope values. Various parameters allow customization of plot appearance including axis scales, font sizes, and legend properties.
 }
-\examples{
-\dontrun{
-# Assuming you have hierarchical clustering results (cluster_results),
-# predicted data (predicted_data), design data (Design_data), pre-processed microbial data
-# (pre_processed_data), and optional taxonomy annotations (Taxa):
-curves <- Data.visual.MESR(cluster_results = cluster_res,
-                           cutree_by = "height",
-                           cluster_height = c(0.3, 0.25, 0.4),
-                           cluster_branches = NA,
-                           predicted_data = predicted_data,
-                           Design_data = design_data,
-                           pre_processed_data = otu_data,
-                           Taxa = taxa_df,
-                           plot_dots = TRUE,
-                           figure_x_scale = 10,
-                           plot_lm = TRUE,
-                           lm_R2 = 0.01,
-                           lm_abs_slope = 0.005,
-                           title_size = 10,
-                           axis_title_size = 8,
-                           axis_y_size = 5,
-                           axis_x_size = 5,
-                           lm_sig_size = 5,
-                           legend_title_size = 5,
-                           legend_text_size = 5,
-                           dots_size = 0.7)
-# To view the plot for a specific group and cluster:
-print(curves[['Group1']][[2]])
-}
-
-}

@@ -36,7 +36,7 @@ default \eqn{\varepsilon = 0.1}. The MCLR transformation is invariant to the add
 preserves the original zero measurements, and is overal rank preserving. For more details, see Yoon et al. (2019).
 }
 \examples{
-\dontrun{
+\donttest{
 # Example compositional data matrix
 Z <- matrix(c(1, 2, 0, 4, 5, 6, 0, 8, 9), nrow = 3, byrow = TRUE)
 transformed_Z <- mclr.transform(Z, base = 10, eps = 0.1)

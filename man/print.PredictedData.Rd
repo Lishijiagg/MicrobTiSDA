@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{PredictedData} object, returned invisibly.
+}
 \description{
 Print the information of fitted regression model predicted data
 }

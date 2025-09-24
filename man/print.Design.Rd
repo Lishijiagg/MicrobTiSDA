@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{Design} object, returned invisibly.
+}
 \description{
 Print information of the Design matrix
 }

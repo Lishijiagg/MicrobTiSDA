@@ -217,7 +217,7 @@ Data.filter <- function(Data,
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Example data: 5 features across 8 samples with time points from two subjects.
 #' set.seed(123)
 #' Data <- matrix(sample(1:100, 40, replace = TRUE), nrow = 5)
@@ -326,7 +326,7 @@ Data.interpolate <- function(Data,
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Example compositional data matrix
 #' Z <- matrix(c(1, 2, 0, 4, 5, 6, 0, 8, 9), nrow = 3, byrow = TRUE)
 #' transformed_Z <- mclr.transform(Z, base = 10, eps = 0.1)
@@ -393,7 +393,7 @@ mclr.transform <- function(Z, base = exp(1), eps = 0.1) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Create example data matrix (5 features x 10 samples)
 #' set.seed(123)
 #' Data <- matrix(sample(1:100, 50, replace = TRUE), nrow = 5)
@@ -499,6 +499,7 @@ Data.trans <- function(Data,metadata,Group_var) {
 #' @param error_threshold A numeric value representing the relative error improvement threshold for adding new predictors during bagging iteration.
 #'     Default is 1e-3.
 #' @param pre_error A numeric value specifying the initial (large) error used for comparison in the iterative procedure. Default is 10000.
+#' @param seed Random seed, default by \code{NULL}.
 #'
 #' @return A S3 object with an element for each group defined by \code{Group_var}. Each element is a list containing:
 #' \describe{
@@ -509,21 +510,30 @@ Data.trans <- function(Data,metadata,Group_var) {
 #' @export
 #' @author Shijia Li
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Example usage:
-#' # Assume 'abundance_data' is a matrix of species abundances (samples x species)
-#' # and 'sample_metadata' is a data frame with sample information
-#' # including a grouping variable "Treatment".
-#' results <- Spec.interact(Data = abundance_data,
-#'                          metadata = sample_metadata,
-#'                          Group_var = "Treatment",
+#' set.seed(123)
+#' Data <- matrix(sample(1:100, 50, replace = TRUE), nrow = 5)
+#' rownames(Data) <- paste0("Feature", 1:5)
+#' colnames(Data) <- paste0("Sample", 1:10)
+#'
+#' # Create example metadata with a grouping variable
+#' metadata <- data.frame(Group = rep(c("A", "B"), each = 5))
+#' rownames(metadata) <- paste0("Sample", 1:10)
+#' metadata$Time = rep(c(1,2,3,4,5),2)
+#' metadata$ID = paste("ID",seq(1:10),"")
+#'
+#' results <- Spec.interact(Data = as.data.frame(t(Data)),
+#'                          metadata = metadata,
+#'                          Group_var = "Group",
 #'                          abund_centered_method = "median",
-#'                          num_iterations = 20,
+#'                          num_iterations = 5,
 #'                          error_threshold = 1e-3,
 #'                          pre_error = 10000)
 #' }
 Spec.interact <- function(Data, metadata, Group_var, abund_centered_method = 'median',
-                          num_iterations = 10, error_threshold = 1e-3, pre_error = 10000) {
+                          num_iterations = 10, error_threshold = 1e-3, pre_error = 10000,
+                          seed = NULL) {
 
   new_microbTiSDA <- function(results, params = list()) {
     structure(list(
@@ -563,7 +573,9 @@ Spec.interact <- function(Data, metadata, Group_var, abund_centered_method = 'me
     interaction_matrices <- array(0, dim = c(ncol(otu_table), ncol(otu_table), num_iterations))
 
     for (iter in 1:num_iterations) {
-      set.seed(iter)
+      if (!is.null(seed)) {
+        set.seed(seed)
+      } else {set.seed(iter)}
       sample_indices <- sample(1:(nrow(otu_table) - 1), size = floor((nrow(otu_table) - 1) / 2))
       training_data <- otu_table[sample_indices, ]
       test_data <- otu_table[-sample_indices, ]
@@ -786,7 +798,7 @@ Interact.dyvis <- function(Interact_data, threshold, core_arrow_num, Taxa = NULL
 #' @author Shijia Li
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Example metadata with grouping variables
 #' metadata <- data.frame(
 #'   TimePoint = c(1, 2, 3, 4),
@@ -886,6 +898,7 @@ Design <- function(metadata, Group_var = NULL, Pre_processed_Data, Sample_Time, 
 #' @param Knots An optional numeric vector specifying the knots to use in the spline regression. If \code{NULL}, the optimal number of
 #'     knots is determined by minimizing the GCV criterion (default: \code{NULL}).
 #' @param max_Knots An integer indicating the maximum number of knots to consider when selecting the optimal spline model (default: 5).
+#' @param seed Random seed.
 #'
 #' @return An object of class \code{"MicrobTiSDA_spline_regression"} containing:
 #'   \item{fitted_model}{A nested list of the fitted spline regression models for each design dummy
@@ -896,10 +909,27 @@ Design <- function(metadata, Group_var = NULL, Pre_processed_Data, Sample_Time, 
 #' @import mgcv splines
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming Data_for_Reg is obtained from a design step and pre_processed_data contains OTU data:
-#' result <- Reg.SPLR(Data_for_Reg,
-#'                   pre_processed_data,
+#' \donttest{
+#' # Example metadata with grouping variables
+#' metadata <- data.frame(
+#'   TimePoint = c(1, 2, 3, 4),
+#'   Sample = c('S1', 'S2', 'S3', 'S4'),
+#'   GroupA = c('A', 'A', 'B', 'B'),
+#'   GroupB = c('X', 'Y', 'X', 'Y')
+#' )
+#'
+#' # Example pre-processed data (e.g., transformed abundance data)
+#' Pre_processed_Data <- data.frame(
+#'   Feature1 = rnorm(4),
+#'   Feature2 = rnorm(4)
+#' )
+#'
+#' # Create design matrix using grouping variables
+#' design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+#'                       Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+#'
+#' result <- Reg.SPLR(design_data,
+#'                   Pre_processed_Data,
 #'                   z_score = 2,
 #'                   unique_values = 5,
 #'                   Knots = NULL,
@@ -912,7 +942,8 @@ Reg.SPLR <- function(Data_for_Reg,
                      z_score = NA,
                      unique_values = 5,
                      Knots = NULL,
-                     max_Knots = 5) {
+                     max_Knots = 5,
+                     seed = 123) {
 
   if (is.object(Data_for_Reg)) {
     Data_for_Reg <- Data_for_Reg[[1]]
@@ -928,7 +959,9 @@ Reg.SPLR <- function(Data_for_Reg,
   knots_info <- list()
 
   for (i in colnames(inde_vars_data[,-c(1,ncol(inde_vars_data))])) {
-    set.seed(123)
+    if (!is.null(seed)) {
+      set.seed(seed)
+    }
     GCV <- rep(0, max_Knots)
     Sub_Data <- cbind(pre_processed_data, inde_vars_data[1], inde_vars_data[i])
     Sub_Data <- Sub_Data[Sub_Data[,i] == 1,]
@@ -1024,16 +1057,36 @@ Reg.SPLR <- function(Data_for_Reg,
 #' @author Shijia Li
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming Fitted_models is obtained from a spline regression
-#' # fitting function (e.g., Reg.SPLR) and metadata is available:
-#' predictions <- Pred.data(Fitted_models,
+#' \donttest{
+#' # Example metadata with grouping variables
+#' metadata <- data.frame(
+#'   TimePoint = c(1, 2, 3, 4),
+#'   Sample = c('S1', 'S2', 'S3', 'S4'),
+#'   GroupA = c('A', 'A', 'B', 'B'),
+#'   GroupB = c('X', 'Y', 'X', 'Y')
+#' )
+#'
+#' # Example pre-processed data (e.g., transformed abundance data)
+#' Pre_processed_Data <- data.frame(
+#'   Feature1 = rnorm(4),
+#'   Feature2 = rnorm(4)
+#' )
+#'
+#' # Create design matrix using grouping variables
+#' design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+#'                       Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+#'
+#' reg <- Reg.SPLR(design_data,
+#'                   Pre_processed_Data,
+#'                   z_score = 2,
+#'                   unique_values = 5,
+#'                   Knots = NULL,
+#'                   max_Knots = 5)
+#' predictions <- Pred.data(reg,
 #'                         metadata,
-#'                         Group = "Subject",
+#'                         Group = "GroupA",
 #'                         time_step = 1,
 #'                         Sample_Time = "TimePoint")
-#' # View predictions for a specific group:
-#' head(predictions[["Subject1"]])
 #' }
 Pred.data <- function(Fitted_models, metadata, Group, time_step, Sample_Time) {
 
@@ -1107,17 +1160,41 @@ Pred.data <- function(Fitted_models, metadata, Group, time_step, Sample_Time) {
 #' @importFrom cluster silhouette
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming you have a list of predicted data for each group (my_predicted_data)
-#' # generated by \code{\link[MicrobTiSDA]{Pred.data}}
-#' # and you wish to use the "average" linkage method:
-#' result <- Data.cluster(predicted_data = my_predicted_data,
+#' \donttest{
+#' # Example metadata with grouping variables
+#' metadata <- data.frame(
+#'   TimePoint = c(1, 2, 3, 4),
+#'   Sample = c('S1', 'S2', 'S3', 'S4'),
+#'   GroupA = c('A', 'A', 'B', 'B'),
+#'   GroupB = c('X', 'Y', 'X', 'Y')
+#' )
+#'
+#' # Example pre-processed data (e.g., transformed abundance data)
+#' Pre_processed_Data <- data.frame(
+#'   Feature1 = rnorm(4),
+#'   Feature2 = rnorm(4)
+#' )
+#'
+#' # Create design matrix using grouping variables
+#' design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+#'                       Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+#'
+#' reg <- Reg.SPLR(design_data,
+#'                   Pre_processed_Data,
+#'                   z_score = 2,
+#'                   unique_values = 5,
+#'                   Knots = NULL,
+#'                   max_Knots = 5)
+#' predictions <- Pred.data(reg,
+#'                         metadata,
+#'                         Group = "GroupA",
+#'                         time_step = 1,
+#'                         Sample_Time = "TimePoint")
+#' result <- Data.cluster(predicted_data = predictions,
 #'                        clust_method = "average",
 #'                        font_size = 0.2,
 #'                        dend_title_size = 15)
 #'
-#' # To view the dendrogram plot for a particular group:
-#' print(result$cluster_figures[["Group1"]])
 #' }
 Data.cluster <- function(predicted_data,
                          clust_method = "complete",
@@ -1218,16 +1295,48 @@ Data.cluster <- function(predicted_data,
 #' @author Shijia Li
 #'
 #' @examples
-#' \dontrun{
-#' # Suppose you have clustering outputs from a previous analysis stored in 'clust_out'
-#' # To use a user-specified cut-off height:
-#' result <- Data.cluster.cut(cluster_outputs = clust_out,
+#' \donttest{
+#' # Example metadata with grouping variables
+#' metadata <- data.frame(
+#'   TimePoint = c(1, 2, 3, 4),
+#'   Sample = c('S1', 'S2', 'S3', 'S4'),
+#'   GroupA = c('A', 'A', 'B', 'B'),
+#'   GroupB = c('X', 'Y', 'X', 'Y')
+#' )
+#'
+#' # Example pre-processed data (e.g., transformed abundance data)
+#' Pre_processed_Data <- data.frame(
+#'   Feature1 = rnorm(4),
+#'   Feature2 = rnorm(4)
+#' )
+#'
+#' # Create design matrix using grouping variables
+#' design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+#'                       Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+#'
+#' reg <- Reg.SPLR(design_data,
+#'                   Pre_processed_Data,
+#'                   z_score = 2,
+#'                   unique_values = 5,
+#'                   Knots = NULL,
+#'                   max_Knots = 5)
+#' predictions <- Pred.data(reg,
+#'                         metadata,
+#'                         Group = "GroupA",
+#'                         time_step = 1,
+#'                         Sample_Time = "TimePoint")
+#' result <- Data.cluster(predicted_data = predictions,
+#'                        clust_method = "average",
+#'                        font_size = 0.2,
+#'                        dend_title_size = 15)
+#'
+#' result <- Data.cluster.cut(cluster_outputs = result,
 #'                           cut_height = 0.3,
 #'                           cut_height_dist = 0.2,
 #'                           auto_cutree = FALSE)
 #'
 #' # To automatically determine the optimal number of clusters:
-#' result_auto <- Data.cluster.cut(cluster_outputs = clust_out, auto_cutree = TRUE)
+#' result_auto <- Data.cluster.cut(cluster_outputs = result, auto_cutree = TRUE)
 #' }
 Data.cluster.cut <- function(cluster_outputs,
                              cut_height,
@@ -1379,32 +1488,54 @@ Data.cluster.cut <- function(cluster_outputs,
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming cluster_results, predicted_data, Design_data, pre_processed_data,
-#' # and Taxa are properly defined:
-#' curves <- Data.visual(cluster_results = cluster_output,
+#' \donttest{
+#' metadata <- data.frame(
+#'   TimePoint = c(1, 2, 3, 4),
+#'   Sample = c('S1', 'S2', 'S3', 'S4'),
+#'   GroupA = c('A', 'A', 'B', 'B'),
+#'   GroupB = c('X', 'Y', 'X', 'Y')
+#' )
+#'
+#' # Example pre-processed data (e.g., transformed abundance data)
+#' Pre_processed_Data <- data.frame(
+#'   Feature1 = rnorm(4),
+#'   Feature2 = rnorm(4)
+#' )
+#'
+#' # Create design matrix using grouping variables
+#' design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+#'                       Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+#'
+#' reg <- Reg.SPLR(design_data,
+#'                   Pre_processed_Data,
+#'                   z_score = 2,
+#'                   unique_values = 5,
+#'                   Knots = NULL,
+#'                   max_Knots = 5)
+#' predictions <- Pred.data(reg,
+#'                         metadata,
+#'                         Group = "GroupA",
+#'                         time_step = 1,
+#'                         Sample_Time = "TimePoint")
+#' result <- Data.cluster(predicted_data = predictions,
+#'                        clust_method = "average",
+#'                        font_size = 0.2,
+#'                        dend_title_size = 15)
+#'
+#' result <- Data.cluster.cut(cluster_outputs = result,
+#'                           cut_height = 0.3,
+#'                           cut_height_dist = 0.2,
+#'                           auto_cutree = FALSE)
+#'
+#' curves <- Data.visual(cluster_results = result,
 #'                       cutree_by = "height",
-#'                       cluster_height = c(0.3, 0.25, 0.4),
+#'                       cluster_height = c(0.2,0.2),
 #'                       cluster_branches = NA,
-#'                       predicted_data = predicted_data,
+#'                       predicted_data = predictions,
 #'                       Design_data = design_data,
-#'                       pre_processed_data = pre_processed_data,
-#'                       Taxa = taxa_data,
-#'                       plot_dots = TRUE,
-#'                       figure_x_scale = 5,
-#'                       plot_lm = TRUE,
-#'                       lm_R2 = 0.01,
-#'                       lm_abs_slope = 0.005,
-#'                       title_size = 10,
-#'                       axis_title_size = 8,
-#'                       axis_y_size = 5,
-#'                       axis_x_size = 5,
-#'                       lm_sig_size = 5,
-#'                       legend_title_size = 5,
-#'                       legend_text_size = 5,
-#'                       dots_size = 0.7)
-#' # To view the plot for group 'Subject1' and cluster branch 2:
-#' print(curves[['Subject1']][[2]])
+#'                       pre_processed_data = Pre_processed_Data,
+#'                       Taxa = NULL,
+#'                       plot_dots = TRUE)
 #' }
 Data.visual <- function(cluster_results,
                         cutree_by = "height",
@@ -1755,6 +1886,7 @@ Data.opp.cor.vis <- function(predicted_data,
 #' @param axis_title_size Numeric value for the font size of axis titles. Defaults to 8.
 #' @param legend_title_size Numeric value for the font size of legend titles. Defaults to 8.
 #' @param legend_text_size Numeric value for the font size of legend text. Defaults to 6.
+#' @param seed Random seed.
 #'
 #' @return An object of class \code{DataRFClassifier} with the following elements:
 #' \describe{
@@ -1779,7 +1911,7 @@ Data.opp.cor.vis <- function(predicted_data,
 #' @export
 #' @author Shijia Li
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Example OTU count data (20 OTUs x 10 samples)
 #' set.seed(123)
 #' otu_data <- matrix(sample(0:100, 200, replace = TRUE), nrow = 20)
@@ -1806,7 +1938,8 @@ Data.rf.classifier <- function(raw_data,
                                title_size = 10,
                                axis_title_size = 8,
                                legend_title_size = 8,
-                               legend_text_size = 6) {
+                               legend_text_size = 6,
+                               seed = 123) {
 
   otu <- raw_data
 
@@ -1821,18 +1954,18 @@ Data.rf.classifier <- function(raw_data,
   otu$group <- meta[,Group]
   otu$group <- as.factor(otu$group)
 
-  set.seed(123)
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
   select_train <- caret::createDataPartition(otu$group,p = train_p,list = FALSE)
   otu_train <- otu[select_train,]
   otu_train$group <- as.factor(otu_train$group)
   otu_test <- otu[-select_train,]
 
-  set.seed(123)
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
   otu_train.forest <- randomForest::randomForest(group ~ ., data = otu_train, importance = TRUE)
-  cat('==================================================================================\n')
-  print(otu_train.forest)
-  cat('==================================================================================\n')
-  cat('\n')
   margin_scores <- randomForest::margin(otu_train.forest, otu_train$group)
   margin_df <- data.frame(
     Group = names(margin_scores),
@@ -1865,7 +1998,9 @@ Data.rf.classifier <- function(raw_data,
   importance_otu <- importance_otu[order(importance_otu$MeanDecreaseAccuracy,
                                          decreasing = TRUE),]
 
-  set.seed(123)
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
   otu_train.cv <- replicate(reps, randomForest::rfcv(otu_train[-ncol(otu_train)],
                                                      otu_train$group,cv.fold = cv_fold,step = 1.5),
                             simplify = FALSE)
@@ -1886,14 +2021,6 @@ Data.rf.classifier <- function(raw_data,
     labs(title = 'Cross-validation curve',
          x = 'Number of Features',
          y = 'Cross-validation error')
-
-  cat('=========Classification results of the classifier on the training dataset=========\n')
-  print(compare_train)
-  cat('==================================================================================\n')
-  cat('\n')
-  cat('==========Classification results of the classifier on the testing dataset=========\n')
-  print(compare_test)
-  cat('==================================================================================\n')
 
   output_result <- list(otu,
                         train_predict,
@@ -1952,10 +2079,24 @@ Data.rf.classifier <- function(raw_data,
 #' @author Shijia Li
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming rf_results contains the necessary components from a random forest classification
-#' # and you wish to select the top 20 features:
-#' result <- Rf.biomarkers(rf = rf_results, feature_select_num = 20)
+#' \donttest{
+#' # Example OTU count data (20 OTUs x 10 samples)
+#' set.seed(123)
+#' otu_data <- matrix(sample(0:100, 200, replace = TRUE), nrow = 20)
+#' colnames(otu_data) <- paste0("Sample", 1:10)
+#' rownames(otu_data) <- paste0("OTU", 1:20)
+#'
+#' # Example metadata with group labels
+#' metadata <- data.frame(Group = rep(c("Control", "Treatment"), each = 5))
+#'
+#' # Run the classifier
+#' rf_result <- Data.rf.classifier(raw_data = otu_data,
+#'                              metadata = metadata,
+#'                              train_p = 0.7,
+#'                              Group = "Group",
+#'                              OTU_counts_filter_value = 50)
+#' # If you wish to select the top 5 features:
+#' result <- Rf.biomarkers(rf = rf_result, feature_select_num = 5)
 #' # View the biomarker table
 #' print(result$OTU_importance)
 #' # View the updated cross-validation plot
@@ -2021,9 +2162,26 @@ Rf.biomarkers <- function(rf = rf_results,feature_select_num) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming 'classified_results' is the output from a classification function:
-#' nm_plot <- Classify.vis(classified_results = results,
+#' \donttest{
+#' # Example OTU count data (20 OTUs x 10 samples)
+#' set.seed(123)
+#' otu_data <- matrix(sample(0:100, 200, replace = TRUE), nrow = 20)
+#' colnames(otu_data) <- paste0("Sample", 1:10)
+#' rownames(otu_data) <- paste0("OTU", 1:20)
+#'
+#' # Example metadata with group labels
+#' metadata <- data.frame(Group = rep(c("Control", "Treatment"), each = 5))
+#'
+#' # Run the classifier
+#' rf_result <- Data.rf.classifier(raw_data = otu_data,
+#'                              metadata = metadata,
+#'                              train_p = 0.7,
+#'                              Group = "Group",
+#'                              OTU_counts_filter_value = 50)
+#' # If you wish to select the top 5 features:
+#' result <- Rf.biomarkers(rf = rf_result, feature_select_num = 5)
+#'
+#' nm_plot <- Classify.vis(classified_results = result,
 #'                         dist_method = 'bray',
 #'                         fig_title = 'NMDS Plot',
 #'                         legd_title = 'Predicted Groups',
@@ -2066,8 +2224,6 @@ Classify.vis = function(classified_results,
     geom_point(size = points_size)+
     theme(panel.grid = element_blank(),
           panel.background = element_rect(color = 'black', fill = 'transparent'))
-
-  print(p)
   return(p)
 }
 
@@ -2110,32 +2266,45 @@ Classify.vis = function(classified_results,
 #' @param Knots An optional numeric vector specifying the knots to use in the spline regression. If \code{NULL}, the optimal number of
 #'     knots is determined by minimizing the GCV criterion (default: \code{NULL}).
 #' @param max_Knots An integer indicating the maximum number of knots to consider when selecting the optimal spline model (default: 3).
+#' @param seed Random seed.
 #' @import mgcv splines
 #' @return An object of class \code{RegMESR} with two elements: \code{fitted_model} is a nested list containing the fitted mixed-effects GAM models for each design
 #'     dummy variable and OTU; \code{knots_info_each_model} is a corresponding nested list with the knots used for each model.
 #' @export
 #' @author Shijia Li
 #' @examples
-#' \dontrun{
-#' # Assuming design_data is obtained from the Design function,
-#' # otu_data contains pre-processed OTU data,
-#' # and metadata is available:
+#' \donttest{
+#' metadata <- data.frame(
+#'   TimePoint = c(1, 2, 3, 4),
+#'   Sample = c('S1', 'S2', 'S3', 'S4'),
+#'   GroupA = c('A', 'A', 'B', 'B'),
+#'   GroupB = c('X', 'Y', 'X', 'Y')
+#' )
+#'
+#' # Example pre-processed data (e.g., transformed abundance data)
+#' Pre_processed_Data <- data.frame(
+#'   Feature1 = rnorm(4),
+#'   Feature2 = rnorm(4)
+#' )
+#'
+#' # Create design matrix using grouping variables
+#' design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+#'                       Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+#'
 #' fit_result <- Reg.MESR(Data_for_Reg = design_data,
-#'                        pre_processed_data = otu_data,
-#'                        metadata = metadata,
+#'                        pre_processed_data = Pre_processed_Data,
 #'                        unique_values = 5,
 #'                        z_score = 2,
 #'                        Knots = NULL,
 #'                        max_Knots = 5)
-#' # Access the fitted model for a specific group and OTU:
-#' model_example <- fit_result$fitted_model[['Group1']][['OTU1']]
 #' }
 Reg.MESR <- function(Data_for_Reg,
                      pre_processed_data,
                      unique_values = 5,
                      z_score = NA,
                      Knots = NULL,
-                     max_Knots = 3) {
+                     max_Knots = 3,
+                     seed = 123) {
 
   if (inherits(Data_for_Reg,"Design")) {
     Data_for_Reg <- Data_for_Reg$data
@@ -2153,7 +2322,9 @@ Reg.MESR <- function(Data_for_Reg,
 
   for (i in colnames(inde_var_data[,-c(1,ncol(inde_var_data))])) {
 
-    set.seed(123)
+    if (!is.null(seed)) {
+      set.seed(seed)
+    }
     GCV <- rep(0,max_Knots)
     Sub_data <- cbind(pre_processed_data,inde_var_data[1],inde_var_data[i],inde_var_data[ncol(inde_var_data)])
     Sub_data <- Sub_data[Sub_data[,i] == 1,]
@@ -2202,7 +2373,9 @@ Reg.MESR <- function(Data_for_Reg,
       } else {
         fit_data[[i]][[j]] <- NULL
         knots_info[[i]][[j]] <- NULL
-        cat("The number of non-zero value for",j,"in group",i,"is",length(unique(Sub_data_for_fit[,1])),"less than",unique_values,", thus the model was excluded.\n")
+        message("The number of non-zero value for ",j," in group ",i," is ",
+                length(unique(Sub_data_for_fit[,1]))," less than ",
+                unique_values,", thus the model was excluded.\n")
       }
     }
   }
@@ -2249,16 +2422,36 @@ Reg.MESR <- function(Data_for_Reg,
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming Fitted_models is obtained from a spline regression
-#' # fitting function (e.g., Reg.SPLR) and metadata is available:
-#' predictions <- Pred.data.MESR(Fitted_models,
+#' \donttest{
+#' metadata <- data.frame(
+#'   TimePoint = c(1, 2, 3, 4),
+#'   Sample = c('S1', 'S2', 'S3', 'S4'),
+#'   GroupA = c('A', 'A', 'B', 'B'),
+#'   GroupB = c('X', 'Y', 'X', 'Y')
+#' )
+#'
+#' # Example pre-processed data (e.g., transformed abundance data)
+#' Pre_processed_Data <- data.frame(
+#'   Feature1 = rnorm(4),
+#'   Feature2 = rnorm(4)
+#' )
+#'
+#' # Create design matrix using grouping variables
+#' design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+#'                       Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+#'
+#' fit_result <- Reg.MESR(Data_for_Reg = design_data,
+#'                        pre_processed_data = Pre_processed_Data,
+#'                        unique_values = 5,
+#'                        z_score = 2,
+#'                        Knots = NULL,
+#'                        max_Knots = 5)
+#'
+#' predictions <- Pred.data.MESR(fit_result,
 #'                              metadata,
 #'                              Group = "Group",
 #'                              time_step = 1,
 #'                              Sample_Time = "TimePoint")
-#' # View predictions for a specific group:
-#' head(predictions[["Group1"]])
 #' }
 Pred.data.MESR <- function(Fitted_models, metadata, Group, time_step, Sample_Time) {
 
@@ -2356,36 +2549,6 @@ Pred.data.MESR <- function(Fitted_models, metadata, Group, time_step, Sample_Tim
 #' @importFrom ggplot2 ggplot
 #' @importFrom utils head str tail
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#' # Assuming you have hierarchical clustering results (cluster_results),
-#' # predicted data (predicted_data), design data (Design_data), pre-processed microbial data
-#' # (pre_processed_data), and optional taxonomy annotations (Taxa):
-#' curves <- Data.visual.MESR(cluster_results = cluster_res,
-#'                            cutree_by = "height",
-#'                            cluster_height = c(0.3, 0.25, 0.4),
-#'                            cluster_branches = NA,
-#'                            predicted_data = predicted_data,
-#'                            Design_data = design_data,
-#'                            pre_processed_data = otu_data,
-#'                            Taxa = taxa_df,
-#'                            plot_dots = TRUE,
-#'                            figure_x_scale = 10,
-#'                            plot_lm = TRUE,
-#'                            lm_R2 = 0.01,
-#'                            lm_abs_slope = 0.005,
-#'                            title_size = 10,
-#'                            axis_title_size = 8,
-#'                            axis_y_size = 5,
-#'                            axis_x_size = 5,
-#'                            lm_sig_size = 5,
-#'                            legend_title_size = 5,
-#'                            legend_text_size = 5,
-#'                            dots_size = 0.7)
-#' # To view the plot for a specific group and cluster:
-#' print(curves[['Group1']][[2]])
-#' }
 #'
 Data.visual.MESR <- function(cluster_results,
                              cutree_by = "height",

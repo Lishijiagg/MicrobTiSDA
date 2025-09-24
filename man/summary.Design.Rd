@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+A summary list of the designed matrix.
+}
 \description{
 Summary Method for Design Objects
 }

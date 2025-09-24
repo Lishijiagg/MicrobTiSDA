@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments.}
 }
+\value{
+A summary list of the transformed data.
+}
 \description{
 Summary Method for TransformedData Objects
 }

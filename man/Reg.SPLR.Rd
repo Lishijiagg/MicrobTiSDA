@@ -10,7 +10,8 @@ Reg.SPLR(
   z_score = NA,
   unique_values = 5,
   Knots = NULL,
-  max_Knots = 5
+  max_Knots = 5,
+  seed = 123
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ outlier filtering is performed (default: \code{NA}).}
 knots is determined by minimizing the GCV criterion (default: \code{NULL}).}
 
 \item{max_Knots}{An integer indicating the maximum number of knots to consider when selecting the optimal spline model (default: 5).}
+
+\item{seed}{Random seed.}
 }
 \value{
 An object of class \code{"MicrobTiSDA_spline_regression"} containing:
@@ -57,10 +60,27 @@ in constructing the natural spline basis. The fitted models and their correspond
 structure and returned.
 }
 \examples{
-\dontrun{
-# Assuming Data_for_Reg is obtained from a design step and pre_processed_data contains OTU data:
-result <- Reg.SPLR(Data_for_Reg,
-                  pre_processed_data,
+\donttest{
+# Example metadata with grouping variables
+metadata <- data.frame(
+  TimePoint = c(1, 2, 3, 4),
+  Sample = c('S1', 'S2', 'S3', 'S4'),
+  GroupA = c('A', 'A', 'B', 'B'),
+  GroupB = c('X', 'Y', 'X', 'Y')
+)
+
+# Example pre-processed data (e.g., transformed abundance data)
+Pre_processed_Data <- data.frame(
+  Feature1 = rnorm(4),
+  Feature2 = rnorm(4)
+)
+
+# Create design matrix using grouping variables
+design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+                      Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+
+result <- Reg.SPLR(design_data,
+                  Pre_processed_Data,
                   z_score = 2,
                   unique_values = 5,
                   Knots = NULL,

@@ -15,6 +15,9 @@ if \code{NULL}, all groups in \code{x$visualization} will be plotted.}
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{microbTiSDA_dynamic_vis} object, returned invisibly.
+}
 \description{
 This function iterates over all visualization elements stored in a
 \code{microbTiSDA_dynamic_vis} object and prints each plot with its name.

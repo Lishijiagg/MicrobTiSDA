@@ -36,16 +36,36 @@ frame with an additional column \code{Predicted_Time} indicating the prediction 
 to a subject, containing the predicted OTU abundances.
 }
 \examples{
-\dontrun{
-# Assuming Fitted_models is obtained from a spline regression
-# fitting function (e.g., Reg.SPLR) and metadata is available:
-predictions <- Pred.data(Fitted_models,
+\donttest{
+# Example metadata with grouping variables
+metadata <- data.frame(
+  TimePoint = c(1, 2, 3, 4),
+  Sample = c('S1', 'S2', 'S3', 'S4'),
+  GroupA = c('A', 'A', 'B', 'B'),
+  GroupB = c('X', 'Y', 'X', 'Y')
+)
+
+# Example pre-processed data (e.g., transformed abundance data)
+Pre_processed_Data <- data.frame(
+  Feature1 = rnorm(4),
+  Feature2 = rnorm(4)
+)
+
+# Create design matrix using grouping variables
+design_data <- Design(metadata, Group_var = c('GroupA', 'GroupB'), Pre_processed_Data,
+                      Sample_Time = 'TimePoint', Sample_ID = 'Sample')
+
+reg <- Reg.SPLR(design_data,
+                  Pre_processed_Data,
+                  z_score = 2,
+                  unique_values = 5,
+                  Knots = NULL,
+                  max_Knots = 5)
+predictions <- Pred.data(reg,
                         metadata,
-                        Group = "Subject",
+                        Group = "GroupA",
                         time_step = 1,
                         Sample_Time = "TimePoint")
-# View predictions for a specific group:
-head(predictions[["Subject1"]])
 }
 }
 \author{

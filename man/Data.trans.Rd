@@ -37,7 +37,7 @@ a composite grouping factor is created using the interaction of the specified va
 applied to each composite group in a similar manner.
 }
 \examples{
-\dontrun{
+\donttest{
 # Create example data matrix (5 features x 10 samples)
 set.seed(123)
 Data <- matrix(sample(1:100, 50, replace = TRUE), nrow = 5)

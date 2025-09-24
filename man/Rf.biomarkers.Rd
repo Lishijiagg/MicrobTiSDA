@@ -36,10 +36,24 @@ from the original microbial feature table. The function returns a list that incl
 table and the modified cross-validation plot.
 }
 \examples{
-\dontrun{
-# Assuming rf_results contains the necessary components from a random forest classification
-# and you wish to select the top 20 features:
-result <- Rf.biomarkers(rf = rf_results, feature_select_num = 20)
+\donttest{
+# Example OTU count data (20 OTUs x 10 samples)
+set.seed(123)
+otu_data <- matrix(sample(0:100, 200, replace = TRUE), nrow = 20)
+colnames(otu_data) <- paste0("Sample", 1:10)
+rownames(otu_data) <- paste0("OTU", 1:20)
+
+# Example metadata with group labels
+metadata <- data.frame(Group = rep(c("Control", "Treatment"), each = 5))
+
+# Run the classifier
+rf_result <- Data.rf.classifier(raw_data = otu_data,
+                             metadata = metadata,
+                             train_p = 0.7,
+                             Group = "Group",
+                             OTU_counts_filter_value = 50)
+# If you wish to select the top 5 features:
+result <- Rf.biomarkers(rf = rf_result, feature_select_num = 5)
 # View the biomarker table
 print(result$OTU_importance)
 # View the updated cross-validation plot

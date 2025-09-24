@@ -15,8 +15,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-# MicrobTiSDA
-
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://zenodo.org/badge/1045702379.svg)](https://doi.org/10.5281/zenodo.16987942)
@@ -82,7 +80,7 @@ head(fujita.taxa)
 Next, we need to perform filtering on the feature table in this dataset. However, given the relatively small number of microbial features (ASVs) in this dataset, we chose not to filter out ASVs with low abundance or low prevalence.
 
 ```{r}
-fujita_filt = Data.filter(Data = fujita.data,
+fujita_filt <- Data.filter(Data = fujita.data,
                           metadata = fujita.meta,
                           OTU_counts_filter_value = 0,
                           OTU_filter_value = 0,
@@ -95,7 +93,7 @@ fujita_filt = Data.filter(Data = fujita.data,
 Typically, the filtered data need to be transformed prior to analysis. MicrobTiSDA provides a modified centered log-ratio (MCLR) transformation for this purpose. This transformation is performed separately for each sampled individual or experimental group; therefore, users are required to specify the grouping variable from the metadata. In this dataset, the variable representing the eight replicate experiments is “replicate.id”.
 
 ```{r}
-fujita_trans = Data.trans(Data = fujita_filt,
+fujita_trans <- Data.trans(Data = fujita_filt,
                           metadata = fujita.meta,
                           Group_var = 'replicate.id')
 ```
@@ -103,7 +101,7 @@ fujita_trans = Data.trans(Data = fujita_filt,
 After filtering and transforming the dataset, MicrobTiSDA can be used to infer species interactions within each individual subject or replicate microbiome. By integrating the "Learning Interactions from Microbial Time-Series" (LIMITS) framework, MicrobTiSDA is able to infer sparse interaction networks from microbiome time-series data. This step may take a considerable amount of time to complete, depending on the size of the dataset.
 
 ```{r}
-fujita_interact = Spec.interact(Data = fujita_trans,
+fujita_interact <- Spec.interact(Data = fujita_trans,
                                 metadata = fujita.meta,
                                 Group_var = 'replicate.id',
                                 num_iterations = 10)
@@ -112,7 +110,7 @@ fujita_interact = Spec.interact(Data = fujita_trans,
 Next, we can visualize the results of the species interaction inference. The \code{Interact.dyvis} function generates network plots of species interactions for each replicate aquatic microbiome experiment.
 
 ```{r}
-fujita_interact_vis = Interact.dyvis(Interact_data = fujita_interact,
+fujita_interact_vis <- Interact.dyvis(Interact_data = fujita_interact,
                                      threshold = 1e-6,
                                      core_arrow_num = 4,
                                      Taxa = fujita.taxa)
@@ -130,7 +128,7 @@ Please note that the output is an interactive HTML chart supporting zooming and 
 After completing species interaction inference for the aquatic microbiome, we can proceed to analyze the temporal abundance patterns of microbial features using MicrobTiSDA. To support this analysis, MicrobTiSDA provides a method for fitting regression models to the abundance trajectories of microbial features. To begin, we first need to construct a design matrix for modeling temporal trends for each microbial feature. This can be accomplished using the \code{Design} function, where users must specify the variables in the metadata that represent the group ID for each subject or replicate, the sample ID, and the time point of each sample.
 
 ```{r}
-fujita_design = Design(metadata = fujita.meta,
+fujita_design <- Design(metadata = fujita.meta,
                        Group_var = 'replicate.id',
                        Sample_ID = 'timeChar',
                        Pre_processed_Data = fujita_trans,
@@ -140,7 +138,7 @@ fujita_design = Design(metadata = fujita.meta,
 When fitting regression models for each microbial feature, MicrobTiSDA employs natural spline regression. Users can manually specify the positions of spline knots by providing a vector—for example, \code{Knots = c(10, 20, 30)} sets the 10th, 20th, and 30th days in the time series as knot positions. Alternatively, MicrobTiSDA can automatically determine the optimal number and placement of knots using generalized cross-validation, based on a user-defined maximum number of knots \code{max_Knots}.
 
 ```{r}
-fujita_model = Reg.SPLR(Data_for_Reg = fujita_design,
+fujita_model <- Reg.SPLR(Data_for_Reg = fujita_design,
                       pre_processed_data = fujita_trans,
                       max_Knots = 5,
                       unique_values = 5)
@@ -151,13 +149,13 @@ here, it is important to account for the sparsity and zero-inflated nature of mi
 Based on the fitted regression models, we can predict the temporal abundance patterns of each microbial feature. These features can then be clustered according to the similarity of their abundance temporal patterns, using correlation distance as the clustering metric.
 
 ```{r}
-fujita_model_pred = Pred.data(Fitted_models = fujita_model,
+fujita_model_pred <- Pred.data(Fitted_models = fujita_model,
                               metadata = fujita.meta,
                               Group = 'replicate.id',
                               Sample_Time = 'time',
                               time_step = 1)
 
-fujita_model_clust = Data.cluster(predicted_data = fujita_model_pred,
+fujita_model_clust <- Data.cluster(predicted_data = fujita_model_pred,
                                   clust_method = 'average',
                                   dend_title_size = 12,
                                   font_size = 3)
@@ -169,7 +167,7 @@ plot(fujita_model_clust,groups = "Rep.1")
 We can also identify the optimal clusters of microbial features based on the clustering results. Here we select features with correlation distance less than 0.15 for clustering.
 
 ```{r}
-fujita_clust_results = Data.cluster.cut(cluster_outputs = fujita_model_clust,
+fujita_clust_results <- Data.cluster.cut(cluster_outputs = fujita_model_clust,
                                         cut_height = 0.15,
                                         font_size = 4)
 
@@ -180,7 +178,7 @@ plot(fujita_clust_results,groups = "Rep.1")
 Finally, we can visualize the abundance patterns of microbial features within each selected cluster.
 
 ```{r}
-fujita_model_vis = Data.visual(cluster_results = fujita_clust_results,
+fujita_model_vis <- Data.visual(cluster_results = fujita_clust_results,
                                cutree_by = 'height',
                                cluster_height = rep(0.15,8),
                                predicted_data = fujita_model_pred,
@@ -197,3 +195,24 @@ fujita_model_vis = Data.visual(cluster_results = fujita_clust_results,
 # For example, we can visualize the fourth feature cluster temporal profiles of the first replicate.
 plot(fujita_model_vis, groups = "Rep.1", clusters = 4)
 ```
+
+MicrobTiSDA offers users with multiple visualization functions. In addition to the interactive HTML widget for species interaction visualization generated by the \code{Interact.dyvis} function, all other visualization outputs from MicrobTiSDA are structured as ggplot2 objects. Users can extract the underlying ggplot2 object of each visualization and further customize the visual appearance using functions such as \code{theme()} and \code{scale_color_brewer()} etc. For more information, please refer to \code{\link[ggplot2]{ggplot}}.
+
+For example:
+
+```{r}
+# Extract the ggplot2 object of the fourth clustered features from the Rep.1 experimental aquatic microbiome
+fujita_vis_rep1_cluster4 <- fujita_model_vis$plots$Rep.1[[4]]
+print(fujita_vis_rep1_cluster4)
+```
+
+The output objects can be further modified using built-in ggplot2 functions such as \code{theme} and \code{labs}.
+
+```{r}
+# Assume we want to change the title and increase the legend title font size
+fujita_vis_rep1_cluster4 <- fujita_vis_rep1_cluster4 +
+  theme(legend.title = element_text(size = 15))+
+  labs(title = "The Fourth ASV cluster of Rep.1")
+print(fujita_vis_rep1_cluster4)
+```
+

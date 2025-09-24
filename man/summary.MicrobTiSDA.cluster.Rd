@@ -9,7 +9,10 @@
 \arguments{
 \item{object}{An object of class \code{MicrobTiSDA.cluster}, typically produced by clustering functions in the \pkg{MicrobTiSDA} pacjage.}
 
-\item{...}{Additional arguments/}
+\item{...}{Additional arguments.}
+}
+\value{
+A summary list of the clustered objects.
 }
 \description{
 Provides a summary of clustering results for objecs of class \code{MicrobTiSDA.cluster}. It reports the number of OTUs for each group, or

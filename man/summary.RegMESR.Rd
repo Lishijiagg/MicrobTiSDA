@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+A summary list of the fitted mixed-effect natural spline regression models.
+}
 \description{
 Provides a concise summary of the results from a Regularized Multivariate
 Exponential Spline Regression (RegMESR) analysis, including the number of

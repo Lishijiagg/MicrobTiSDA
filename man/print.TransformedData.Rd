@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+No return value, called for its side effect of printing a summary to the console.
+}
 \description{
 Print Method for TransformedData Object
 }

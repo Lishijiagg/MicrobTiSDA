@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments.}
 }
+\value{
+A summary list of the model predicted data.
+}
 \description{
 Provides a concise summary of a \code{PredictedData} object,
 including number of groups, number of time points, number of features,

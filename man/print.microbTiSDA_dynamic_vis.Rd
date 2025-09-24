@@ -7,9 +7,12 @@
 \method{print}{microbTiSDA_dynamic_vis}(x, ...)
 }
 \arguments{
-\item{x}{An object of class microbTiSDA_dynamic_vis}
+\item{x}{An object of class \code{microbTiSDA_dynamic_vis}}
 
 \item{...}{Additional arguments}
+}
+\value{
+The input \code{microbTiSDA_dynamic_vis} object, returned invisibly.
 }
 \description{
 Print information of species interaction dynamic visualizations

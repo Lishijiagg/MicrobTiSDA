@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments.}
 }
+\value{
+A summary list of the dynamic visualization for interspecies interactions.
+}
 \description{
 Provides a concise summary of the dynamic interaction visualization results stored in a 'microbTiSDA_dynamic_vis' object.
 The summary includes the number of nodes and edges in each group.

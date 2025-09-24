@@ -4,6 +4,7 @@
 #' @param ... Additional arguments
 #'
 #' @method print TransformedData
+#' @return No return value, called for its side effect of printing a summary to the console.
 #' @export
 print.TransformedData <- function(x, ...) {
   cat("An object of class 'TransformedData'\n")
@@ -17,6 +18,7 @@ print.TransformedData <- function(x, ...) {
 #' @param ... Additional arguments
 #'
 #' @method print FilteredData
+#' @return The input \code{FilteredData} object, returned invisibly.
 #' @export
 print.FilteredData <- function(x, ...) {
   cat("FilteredData object\n")
@@ -34,6 +36,7 @@ print.FilteredData <- function(x, ...) {
 #' @param x An object of class \code{MicrobTiSDA.interpolate}
 #' @param ... Additional arguments
 #' @method print MicrobTiSDA.interpolate
+#' @return The input \code{MicrobTiSDA.interpolate} object, returned invisibly.
 #'
 #' @export
 print.MicrobTiSDA.interpolate <- function(x, ...) {
@@ -50,6 +53,7 @@ print.MicrobTiSDA.interpolate <- function(x, ...) {
 #' @param x An object of class \code{microbTiSDA}
 #' @param ... Additional arguments
 #' @method print microbTiSDA
+#' @return The input \code{microbTiSDA} object, returned invisibly.
 #' @export
 print.microbTiSDA <- function(x, ...) {
   cat("MicrobTiSDA Object of class:", class(x), "\n")
@@ -67,10 +71,11 @@ print.microbTiSDA <- function(x, ...) {
 
 #' Print information of species interaction dynamic visualizations
 #'
-#' @param x An object of class microbTiSDA_dynamic_vis
+#' @param x An object of class \code{microbTiSDA_dynamic_vis}
 #' @param ... Additional arguments
 #'
 #' @method print microbTiSDA_dynamic_vis
+#' @return The input \code{microbTiSDA_dynamic_vis} object, returned invisibly.
 #' @export
 print.microbTiSDA_dynamic_vis <- function(x, ...) {
   cat("MicrobTiSDA Dynamic Interaction Visualization\n")
@@ -87,6 +92,7 @@ print.microbTiSDA_dynamic_vis <- function(x, ...) {
 #' @param x An object of class Design.
 #' @param ... Additional arguments
 #' @method print Design
+#' @return The input \code{Design} object, returned invisibly.
 #' @export
 print.Design <- function(x, ...) {
   cat("Design object\n")
@@ -106,6 +112,7 @@ print.Design <- function(x, ...) {
 #' @param x An object of class MicrobTiSDA_spline_regression
 #' @param ... Additional arguments
 #' @method print MicrobTiSDA_spline_regression
+#' @return The input \code{MicrobTiSDA_spline_regression} object, returned invisibly.
 #' @export
 print.MicrobTiSDA_spline_regression <- function(x, ...) {
   cat("MicrobTiSDA Spline Regression Object\n")
@@ -121,6 +128,7 @@ print.MicrobTiSDA_spline_regression <- function(x, ...) {
 #' @param ... Additional arguments
 #'
 #' @method print PredictedData
+#' @return The input \code{PredictedData} object, returned invisibly.
 #' @export
 print.PredictedData <- function(x, ...) {
   cat("PredictedData object\n")
@@ -135,6 +143,7 @@ print.PredictedData <- function(x, ...) {
 #' @param x An object of class MicrobTiSDA.cluster
 #' @param ... Additional arguments
 #' @method print MicrobTiSDA.cluster
+#' @return The input \code{MicrobTiSDA.cluster} object, returned invisibly.
 #' @export
 print.MicrobTiSDA.cluster <- function(x, ...) {
   cat("MicrobTiSDA Clustering Object\n")
@@ -149,6 +158,7 @@ print.MicrobTiSDA.cluster <- function(x, ...) {
 #' @param x An object of class MicrobTiSDA.clusterCut
 #' @param ... Additional arguments
 #' @method print MicrobTiSDA.clusterCut
+#' @return The input \code{MicrobTiSDA.clusterCut} object, returned invisibly.
 #' @export
 print.MicrobTiSDA.clusterCut <- function(x, ...) {
   cat("MicrobTiSDA Cluster Cutting Object\n")
@@ -162,6 +172,7 @@ print.MicrobTiSDA.clusterCut <- function(x, ...) {
 #' @param x An object of class MicrobTiSDA.visual
 #' @param ... Additional arguments
 #' @method print MicrobTiSDA.visual
+#' @return The input \code{MicrobTiSDA.visual} object, returned invisibly.
 #' @export
 print.MicrobTiSDA.visual <- function(x, ...) {
   cat("MicrobTiSDA Visualization Object\n")
@@ -176,6 +187,7 @@ print.MicrobTiSDA.visual <- function(x, ...) {
 #' @param x An object of class DataOppCorVis
 #' @param ... Additional arguments
 #' @method print DataOppCorVis
+#' @return The input \code{DataOppCorVis} object, returned invisibly.
 #' @export
 print.DataOppCorVis <- function(x, ...) {
   cat("S3 Object of class 'DataOppCorVis'\n")
@@ -188,6 +200,7 @@ print.DataOppCorVis <- function(x, ...) {
 #' @param x An object of class DataRFClassifier
 #' @param ... Additional arguments
 #' @method print DataRFClassifier
+#' @return The input \code{DataRFClassifier} object, returned invisibly.
 #' @export
 print.DataRFClassifier <- function(x, ...) {
   message("S3 Object of class 'DataRFClassifier'")
@@ -200,6 +213,7 @@ print.DataRFClassifier <- function(x, ...) {
 #' @param x An object of class RegMESR
 #' @param ... Additional arguments
 #' @method print RegMESR
+#' @return The input \code{RegMESR} object, returned invisibly.
 #' @export
 print.RegMESR <- function(x, ...) {
   cat("S3 Object of class 'RegMESR'\n")
@@ -217,6 +231,7 @@ print.RegMESR <- function(x, ...) {
 #' @param ... Additional arguments.
 #'
 #' @method print PredictedDataMESR
+#' @return The input \code{PredictedDataMESR} object, returned invisibly.
 #' @export
 print.PredictedDataMESR <- function(x, ...) {
   cat("PredictedDataMESR object\n")
@@ -233,6 +248,7 @@ print.PredictedDataMESR <- function(x, ...) {
 #' @param x An object of class MicrobTiSDA.MESRvisual
 #' @param ... Additional arguments
 #' @method print MicrobTiSDA.MSERvisual
+#' @return The input \code{MicrobTiSDA.MSERvisual} object, returned invisibly.
 #' @export
 print.MicrobTiSDA.MSERvisual <- function(x, ...) {
   cat("S3 Object of class 'MicrobTiSDA.MSERvisual'\n")

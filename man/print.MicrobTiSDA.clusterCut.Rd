@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{MicrobTiSDA.clusterCut} object, returned invisibly.
+}
 \description{
 Print the plot information of user selected feature clustering figures
 }

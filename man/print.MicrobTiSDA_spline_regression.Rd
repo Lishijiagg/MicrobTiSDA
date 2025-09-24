@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{MicrobTiSDA_spline_regression} object, returned invisibly.
+}
 \description{
 Print information of fitted natural spline regression models
 }

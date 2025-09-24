@@ -17,6 +17,9 @@ If omitted, all features within the specified group will be plotted.}
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{DataOppCorVis} visualization object.
+}
 \description{
 This function prints correlation curve plots stored in a \code{DataOppCorVis} object.
 Users can specify a group and optionally a specific feature within that group to plot.

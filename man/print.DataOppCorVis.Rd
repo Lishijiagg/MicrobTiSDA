@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{DataOppCorVis} object, returned invisibly.
+}
 \description{
 Information of Microbial features with opposite temporal shapes to users selected feature
 }

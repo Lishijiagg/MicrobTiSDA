@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments.}
 }
+\value{
+A summary list of the fitted natural spline regression models.
+}
 \description{
 Provides a concise summary for objects of class \code{MicrobTiSDA_spline_regression}. Prints the names of independent
 variables and shows an example of the first fitted microbial feature.

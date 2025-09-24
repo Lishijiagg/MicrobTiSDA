@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+A list of ggplot2 objects.
+}
 \description{
 Provides a summary of visualization results for objects of class \code{MicrobTiSDA.visual}. It reports, for each group, the number of cluster-speficif
 visualization plot available.

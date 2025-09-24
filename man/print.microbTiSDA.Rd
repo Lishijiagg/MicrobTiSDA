@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{microbTiSDA} object, returned invisibly.
+}
 \description{
 Print MicrobTiSDA objects
 }

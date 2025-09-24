@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{MicrobTiSDA.MSERvisual} object, returned invisibly.
+}
 \description{
 Information of visualizations of feature temporal patterns fitted with mixed-effect spline regression models
 }

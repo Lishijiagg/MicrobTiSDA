@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{FilteredData} object, returned invisibly.
+}
 \description{
 Print Method for FilteredData Object
 }

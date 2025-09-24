@@ -11,7 +11,8 @@ Spec.interact(
   abund_centered_method = "median",
   num_iterations = 10,
   error_threshold = 0.001,
-  pre_error = 10000
+  pre_error = 10000,
+  seed = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ Accepted values are \code{median} (default) and \code{mean}.}
 Default is 1e-3.}
 
 \item{pre_error}{A numeric value specifying the initial (large) error used for comparison in the iterative procedure. Default is 10000.}
+
+\item{seed}{Random seed, default by \code{NULL}.}
 }
 \value{
 A S3 object with an element for each group defined by \code{Group_var}. Each element is a list containing:
@@ -66,16 +69,24 @@ iterations by repeating the random splitting and stepwise regression, enhancing 
 This approach refines the inferred species interactions while ensuring sparsity.
 }
 \examples{
-\dontrun{
+\donttest{
 # Example usage:
-# Assume 'abundance_data' is a matrix of species abundances (samples x species)
-# and 'sample_metadata' is a data frame with sample information
-# including a grouping variable "Treatment".
-results <- Spec.interact(Data = abundance_data,
-                         metadata = sample_metadata,
-                         Group_var = "Treatment",
+set.seed(123)
+Data <- matrix(sample(1:100, 50, replace = TRUE), nrow = 5)
+rownames(Data) <- paste0("Feature", 1:5)
+colnames(Data) <- paste0("Sample", 1:10)
+
+# Create example metadata with a grouping variable
+metadata <- data.frame(Group = rep(c("A", "B"), each = 5))
+rownames(metadata) <- paste0("Sample", 1:10)
+metadata$Time = rep(c(1,2,3,4,5),2)
+metadata$ID = paste("ID",seq(1:10),"")
+
+results <- Spec.interact(Data = as.data.frame(t(Data)),
+                         metadata = metadata,
+                         Group_var = "Group",
                          abund_centered_method = "median",
-                         num_iterations = 20,
+                         num_iterations = 5,
                          error_threshold = 1e-3,
                          pre_error = 10000)
 }

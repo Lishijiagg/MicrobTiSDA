@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+The input \code{MicrobTiSDA.visual} object, returned invisibly.
+}
 \description{
 Print the information of those clustered microbial features' temporal patterns
 }

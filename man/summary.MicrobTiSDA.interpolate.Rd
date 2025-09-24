@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+A summary list of the interpolated data.
+}
 \description{
 Provides a structure summary of a \code{MicrobTiSDA.interpolate} object, including its parameters and results.
 It prints object class, the information of interpolated microbial count data and updated metadata.
