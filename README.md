@@ -8,6 +8,8 @@
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://zenodo.org/badge/1045702379.svg)](https://doi.org/10.5281/zenodo.16987942)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/MicrobTiSDA)](https://CRAN.R-project.org/package=MicrobTiSDA)
 <!-- badges: end -->
 
 MicrobTiSDA focuses on analyzing microbiome time-series data. Its core
@@ -26,8 +28,15 @@ feature abundance over time.
 
 ## Installation
 
-You can install the development version of MicrobTiSDA from
-[GitHub](https://github.com/) with:
+You can install MicrobTiSDA from
+[CRAN](https://CRAN.R-project.org/package=MicrobTiSDA) with:
+
+``` r
+# install.packages("MicrobTiSDA")
+```
+
+Or the newest virsion of MicrobTiSDA from [GitHub](https://github.com/)
+with:
 
 ``` r
 # install.packages("devtools")
@@ -277,7 +286,7 @@ fujita_model_clust <- Data.cluster(predicted_data = fujita_model_pred,
 plot(fujita_model_clust,groups = "Rep.1")
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 We can also identify the optimal clusters of microbial features based on
 the clustering results. Here we select features with correlation
@@ -292,7 +301,7 @@ fujita_clust_results <- Data.cluster.cut(cluster_outputs = fujita_model_clust,
 plot(fujita_clust_results,groups = "Rep.1")
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 Finally, we can visualize the abundance patterns of microbial features
 within each selected cluster.
@@ -318,7 +327,7 @@ plot(fujita_model_vis, groups = "Rep.1", clusters = 4)
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 MicrobTiSDA offers users with multiple visualization functions. In
 addition to the interactive HTML widget for species interaction
@@ -337,7 +346,7 @@ print(fujita_vis_rep1_cluster4)
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 The output objects can be further modified using built-in ggplot2
 functions such as and .
@@ -351,4 +360,4 @@ print(fujita_vis_rep1_cluster4)
 #> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
